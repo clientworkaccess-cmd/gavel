@@ -1,0 +1,9 @@
+# *
+User-agent: *
+Allow: /
+
+# Host
+Host: https://gavel-frontend.vercel.app
+
+# Sitemaps
+Sitemap: https://gavel-frontend.vercel.app/sitemap.xml
