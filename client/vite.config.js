@@ -5,17 +5,20 @@ import path from "path"
 
 // https://vite.dev/config/
 export default defineConfig({
-   content: [
+  content: [
     "./index.html",
     "./src/**/*.{js,ts,jsx,tsx}"
   ],
   plugins: [react(),
-    tailwindcss()
+  tailwindcss()
   ],
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),
     },
+  },
+  build: {
+    outDir: "dist",
   },
   server: {
     historyApiFallback: true
