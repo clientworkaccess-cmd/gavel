@@ -58,7 +58,7 @@ const LoginForm = () => {
 
 
   return (
-    <div className="max-w-7xl mx-auto px-4 bg-secondary/10 bg-[radial-gradient(circle_at_center,_#ffff,_transparent_60%)]">
+    <div className="px-4 bg-secondary/10 bg-[radial-gradient(circle_at_center,_#ffff,_transparent_60%)]">
       <ToastContainer position="top-right" autoClose={3000} />
      <Link to="/" className="flex items-center space-x-2 pt-8">
         <FaGavel className="text-blue-600 text-3xl" />
