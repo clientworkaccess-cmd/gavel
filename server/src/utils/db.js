@@ -2,7 +2,6 @@ import mongoose from "mongoose";
 import { User } from "../models/user.js";
 
 const MONGO_URI = process.env.MONGODB_URI
-// "mongodb+srv://GavelDatabase:j5NmOUB8hi1LfBxI@gavelcluster.p7kueq8.mongodb.net/gavel?retryWrites=true&w=majority&appName=GavelCluster";
 
 let isConnected = false;
 export default async function dbConnection() {
