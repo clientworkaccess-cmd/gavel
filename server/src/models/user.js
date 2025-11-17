@@ -7,6 +7,28 @@ const UserSchema = new mongoose.Schema({
   phoneNumber: { type: Number },
   company: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Company' }],
   role: { type: String, default: 'candidate' },
+  address: { type: String, trim: true },
+  linkedinProfile: { type: String, trim: true },
+  skills: {
+    type: [String],
+    default: [],
+  },
+  qualification: { type: String, trim: true },
+  communication: {
+    type: String,
+    enum: ["Excellent", "Good", "Average", "Poor"],
+    default: "Average",
+  },
+  culturalFit: {
+    type: String,
+    enum: ["Excellent", "Good", "Average", "Poor"],
+    default: "Average",
+  },
+  overAllFitScore: { type: Number, min: 0, max: 100 },
+  position: [
+    { type: mongoose.Schema.Types.ObjectId, ref: "Position" },
+  ],
+  interviews: [{type: mongoose.Schema.Types.ObjectId, ref: "Interview"}],
   passwordResetToken: { type: String },
   passwordResetTokenExpiresAt: { type: Date },
   emailOtp: { type: String },
@@ -18,7 +40,7 @@ const UserSchema = new mongoose.Schema({
 }, { timestamps: true })
 
 
-UserSchema.index({ creattedAt: -1});
+UserSchema.index({ creattedAt: -1 });
 const User = mongoose.model('User', UserSchema);
 
-export {User};
+export { User };

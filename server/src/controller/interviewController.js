@@ -1,5 +1,6 @@
 import Interview from "../models/interview.js";
 import Position from "../models/position.js";
+import { User } from "../models/user.js";
 import dbConnection from "../utils/db.js";
 
 // ✅ Create new interview (after AI completes or starts)
@@ -41,6 +42,7 @@ export const createInterview = async (req, res) => {
 
     // Auto link to position
     await Position.findByIdAndUpdate(position, { $push: { interview: newInterview._id } });
+    await User.findByIdAndUpdate(candidateId, { $push: { interviews: newInterview._id } });
 
     res.status(201).json({ success: true, interview: newInterview });
   } catch (error) {
@@ -56,6 +58,7 @@ export const getAllInterviews = async (req, res) => {
   try {
     const interviews = await Interview.find()
       .populate("position")
+      .populate("candidateId")
       .sort({ createdAt: -1 });
 
     res.status(200).json({ success: true, interviews });

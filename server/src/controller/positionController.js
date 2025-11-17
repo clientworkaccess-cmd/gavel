@@ -1,5 +1,6 @@
 import Company from "../models/company.js";
 import Position from "../models/position.js";
+import { User } from "../models/user.js";
 import dbConnection from "../utils/db.js";
 
 
@@ -62,7 +63,11 @@ export const addPosition = async (req, res) => {
 export const getPositions = async (req, res) => {
     try {
         await dbConnection();
-        const positions = await Position.find().populate("company").populate("interview").sort({ createdAt: -1 });
+        const positions = await Position.find()
+        .populate("company")
+        .populate("interview")
+        .populate("user")
+        .sort({ createdAt: -1 });
         res.status(200).json(positions);
     } catch (error) {
         res.status(500).json({ message: error.message });
@@ -73,7 +78,11 @@ export const getPositions = async (req, res) => {
 export const getPositionById = async (req, res) => {
     try {
         await dbConnection();
-        const position = await Position.findById(req.params.id).populate("company").populate("interview");
+        const position = await Position.findById(req.params.id)
+        .populate("company")
+        .populate("interview")
+        .populate("user")
+        .sort({createdAt: -1});
         if (!position) return res.status(404).json({ message: "Position not found" });
         res.status(200).json(position);
     } catch (error) {

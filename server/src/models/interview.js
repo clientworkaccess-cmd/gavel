@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 const interviewSchema = new mongoose.Schema({
   position: { type: mongoose.Schema.Types.ObjectId, ref: 'Position', required: true },
   name: {type: String},
-  candidateId: { type: String, required: true },
+  candidateId: { type: mongoose.Schema.Types.ObjectId, ref: "User" , required: true },
   email: { type: String, required: true },
   interviewID: { type: String, required: true },
   positionDescription: { type: String },

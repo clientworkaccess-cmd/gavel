@@ -1,5 +1,4 @@
 import { useEffect, useRef, useState, useCallback } from "react";
-// eslint-disable-next-line no-unused-vars
 import { AnimatePresence, motion } from "framer-motion";
 import Vapi from "@vapi-ai/web";
 import { toast, ToastContainer } from "react-toastify";
@@ -11,9 +10,14 @@ import {
     CardFooter,
 } from "@/components/ui/card";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Button } from "@/components/ui/button";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { Loader2, Mic, StopCircle, Info, CheckCircle2 } from "lucide-react";
+import {
+    Loader2,
+    Mic,
+    StopCircle,
+    Info,
+    CheckCircle2,
+} from "lucide-react";
 import { getReq, postReq } from "@/axios/axios";
 import API_ENDPOINTS from "@/config/api";
 import { useAuth } from "../context/AuthContext";
@@ -24,10 +28,10 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/components/ui/select";
+import { FaGavel } from "react-icons/fa";
 
 const VAPI_PUBLIC_KEY = import.meta.env.VITE_VAPI_PUBLIC_KEY;
 const WEBHOOK_URL = import.meta.env.VITE_WEBHOOK_URL;
-
 
 const Interview = () => {
     const { user } = useAuth();
@@ -39,11 +43,17 @@ const Interview = () => {
     const [interviewCompleted, setInterviewCompleted] = useState(false);
     const [positions, setPositions] = useState([]);
     const [selectedPosition, setSelectedPosition] = useState("");
+    const [selectedLanguage, setSelectedLanguage] = useState("english")
     const [isApplied, setIsApplied] = useState(false);
 
     const vapiRef = useRef(null);
     const positionDescriptionRef = useRef("");
     const abortFetchRef = useRef(null);
+
+    // ✅ FIX: Reset position description whenever a new position is selected
+    useEffect(() => {
+        positionDescriptionRef.current = "";
+    }, [selectedPosition]);
 
     const fetchPositions = useCallback(async () => {
         setLoading(true);
@@ -52,14 +62,16 @@ const Interview = () => {
             const controller = new AbortController();
             abortFetchRef.current = controller;
 
-            const res = await getReq(API_ENDPOINTS.POSITION, { signal: controller.signal });
+            const res = await getReq(API_ENDPOINTS.POSITION, {
+                signal: controller.signal,
+            });
             const data = res?.data ?? res ?? [];
             if (!Array.isArray(data)) {
                 console.warn("Unexpected positions response shape:", data);
                 setPositions([]);
             } else setPositions(data);
         } catch (err) {
-            if (err.name === 'AbortError') return;
+            if (err.name === "AbortError") return;
             console.error("Failed to load positions:", err);
             toast.error("Failed to load positions");
         } finally {
@@ -101,7 +113,6 @@ const Interview = () => {
                 });
             } catch (e) {
                 console.log(e);
-
             }
         }
 
@@ -109,6 +120,9 @@ const Interview = () => {
     }, []);
 
     const handleBeginInterview = async () => {
+        // ✅ FIX: Always reset ref before starting interview
+        positionDescriptionRef.current = "";
+
         if (!selectedPosition) {
             toast.error("Please select a position first");
             return;
@@ -122,19 +136,26 @@ const Interview = () => {
         setLoading(true);
 
         try {
-            const checkRes = await getReq(`${API_ENDPOINTS.INTERVIEW_CHECK}?candidateId=${userId}&positionId=${selectedPosition}`);
+            const checkRes = await getReq(
+                `${API_ENDPOINTS.INTERVIEW_CHECK}?candidateId=${userId}&positionId=${selectedPosition}`
+            );
             if (checkRes?.message) {
                 toast.error(checkRes.message);
+                setSelectedPosition("");
                 return;
             }
 
-            const found = positions.find((p) => p._id === selectedPosition || p.id === selectedPosition);
+            const found = positions.find(
+                (p) => p._id === selectedPosition || p.id === selectedPosition
+            );
             if (!found) {
                 toast.error("Selected position not found. Refresh and try again.");
                 return;
             }
 
-            positionDescriptionRef.current = found.positionDescription || found.description || "";
+            // ✅ FIX: Update description for the selected position only
+            positionDescriptionRef.current =
+                found.positionDescription || found.description || "";
 
             const payload = {
                 id: userId,
@@ -185,7 +206,6 @@ const Interview = () => {
             }
         } catch (err) {
             console.error(err);
-            toast.error("Unable to start interview");
         } finally {
             setLoading(false);
         }
@@ -250,114 +270,189 @@ const Interview = () => {
     }, []);
 
     return (
-        <div className="w-full min-h-screen flex items-center justify-center p-6 bg-gray-50">
+        <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-50 via-white to-blue-50 p-6">
             <ToastContainer position="top-right" autoClose={3000} />
-
-            <Card className="w-full max-w-5xl shadow-xl min-h-[80vh] overflow-y-auto border border-gray-200">
-                <CardHeader className="text-center pb-2">
-                    <CardTitle className="text-2xl font-semibold text-gray-800">AI-Powered Interview</CardTitle>
-                    <p className="text-sm text-gray-500 mt-1">Smart, voice-based interview powered by AI.</p>
+            <Card className="w-full max-w-4xl backdrop-blur-xl bg-white/80 border border-gray-200 shadow-2xl rounded-3xl overflow-hidden">
+                <CardHeader className="text-center py-8 border-b border-gray-100">
+                    <div className="flex flex-col items-center space-y-3">
+                        <div className="h-16 w-16 rounded-full bg-blue-100 flex items-center justify-center">
+                            <FaGavel className="h-8 w-8 text-blue-600" />
+                        </div>
+                        <CardTitle className="text-3xl font-semibold text-gray-800">
+                            Gavel AI Interview
+                        </CardTitle>
+                        <p className="text-sm text-gray-500">
+                            Hello, {name || "Candidate"} 👋 — Get ready for your smart
+                            interview powered by AI
+                        </p>
+                    </div>
                 </CardHeader>
 
-                <CardContent>
+                <CardContent className="px-6 py-8">
                     <Tabs value={activeTab} onValueChange={setActiveTab}>
-                        <TabsList className="grid grid-cols-2 w-full mb-4">
-                            <TabsTrigger value="interview">Interview</TabsTrigger>
-                            <TabsTrigger value="instructions">Instructions</TabsTrigger>
+                        <TabsList className="grid grid-cols-2 mb-6 bg-gray-100 rounded-full p-1 w-full">
+                            <TabsTrigger
+                                value="interview"
+                                className="data-[state=active]:bg-white data-[state=active]:text-blue-600 rounded-full transition-all"
+                            >
+                                Interview
+                            </TabsTrigger>
+                            <TabsTrigger
+                                value="instructions"
+                                className="data-[state=active]:bg-white data-[state=active]:text-blue-600 rounded-full transition-all"
+                            >
+                                Instructions
+                            </TabsTrigger>
                         </TabsList>
 
                         <AnimatePresence mode="wait">
                             {activeTab === "interview" ? (
-                                <motion.div key="interview" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }} transition={{ duration: 0.3 }}>
-                                    <div className="mt-6 flex flex-col items-center">
-                                        <div className="w-full max-w-sm mb-6">
-                                            <label className="block text-sm font-medium text-gray-700 mb-2">Select Position for start interview</label>
-
-                                            <Select value={selectedPosition} onValueChange={setSelectedPosition}>
-                                                <SelectTrigger className="w-full">
-                                                    <SelectValue placeholder={loading ? "Loading positions..." : "Choose a position"} />
-                                                </SelectTrigger>
-
-                                                <SelectContent className="max-h-50 overflow-auto">
-                                                    {positions?.length > 0 ? (
-                                                        positions.map((pos) =>
-                                                            pos.status === "open" ? (
-                                                                <SelectItem key={pos._id || pos.id} value={pos._id || pos.id}>
-                                                                    {pos.name} — {pos?.company?.name || "N/A"}
-                                                                </SelectItem>
-                                                            ) : null
-                                                        )
-                                                    ) : (
-                                                        <p className="text-center text-sm p-2 text-gray-500">No positions available</p>
-                                                    )}
-                                                </SelectContent>
-                                            </Select>
+                                <motion.div
+                                    key="interview"
+                                    initial={{ opacity: 0, y: 10 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    exit={{ opacity: 0, y: -10 }}
+                                    transition={{ duration: 0.4 }}
+                                >
+                                    <div className="flex flex-col items-center space-y-6">
+                                        <div className="flex justify-between items-center px-4 w-full pb-4">
+                                            <div className="w-full max-w-sm">
+                                                <label className="block text-sm font-medium text-gray-700 mb-2">
+                                                    Select a Position
+                                                </label>
+                                                <Select
+                                                    value={selectedPosition}
+                                                    onValueChange={setSelectedPosition}
+                                                >
+                                                    <SelectTrigger className="w-full border-gray-300 bg-white/60 backdrop-blur-sm">
+                                                        <SelectValue
+                                                            placeholder={
+                                                                loading
+                                                                    ? "Loading positions..."
+                                                                    : "Choose a position"
+                                                            }
+                                                        />
+                                                    </SelectTrigger>
+                                                    <SelectContent>
+                                                        {positions?.length > 0 ? (
+                                                            positions.map((pos) =>
+                                                                pos.status === "open" ? (
+                                                                    <SelectItem
+                                                                        key={pos._id || pos.id}
+                                                                        value={pos._id || pos.id}
+                                                                    >
+                                                                        {pos.name} — {pos?.company?.name || "N/A"}
+                                                                    </SelectItem>
+                                                                ) : null
+                                                            )
+                                                        ) : (
+                                                            <p className="text-center text-sm p-2 text-gray-500">
+                                                                No positions available
+                                                            </p>
+                                                        )}
+                                                    </SelectContent>
+                                                </Select>
+                                            </div>
+                                            <div className="w-full max-w-sm">
+                                                <label className="block text-sm font-medium text-gray-700 mb-2">
+                                                    Select a Language
+                                                </label>
+                                                <Select
+                                                    value={selectedLanguage}
+                                                    onValueChange={setSelectedLanguage}
+                                                >
+                                                    <SelectTrigger className="w-full border-gray-300 bg-white/60 backdrop-blur-sm">
+                                                        <SelectValue placeholder="Choose a language" />
+                                                    </SelectTrigger>
+                                                    <SelectContent>
+                                                        <SelectItem value="english">
+                                                            English
+                                                        </SelectItem>
+                                                        <SelectItem value="spanish">
+                                                            Spanish
+                                                        </SelectItem>
+                                                    </SelectContent>
+                                                </Select>
+                                            </div>
                                         </div>
-
-                                        <h3 className="text-lg font-medium text-gray-800 mb-2">Ready to start your AI interview?</h3>
-                                        <p className="text-gray-500 text-sm mb-6">Click below to begin your session. Ensure your mic is enabled.</p>
-
                                         {!interviewActive ? (
-                                            <Button size="lg" disabled={loading || isApplied} onClick={handleBeginInterview} className="bg-blue-600 hover:bg-blue-700 text-white px-8">
+                                            <motion.button
+                                                whileTap={{ scale: 0.95 }}
+                                                onClick={handleBeginInterview}
+                                                disabled={loading || isApplied}
+                                                className="relative h-24 w-24 flex items-center justify-center rounded-full bg-gradient-to-br from-blue-600 to-blue-700 text-white shadow-lg hover:shadow-blue-300/50 transition-all"
+                                            >
                                                 {loading ? (
-                                                    <>
-                                                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                                                        Starting Interview...
-                                                    </>
+                                                    <Loader2 className="h-8 w-8 animate-spin" />
                                                 ) : (
-                                                    <>
-                                                        <Mic className="mr-2 h-4 w-4" />
-                                                        Begin Interview
-                                                    </>
+                                                    <Mic className="h-10 w-10" />
                                                 )}
-                                            </Button>
+                                            </motion.button>
                                         ) : (
-                                            <Button size="lg" variant="destructive" onClick={handleStopInterview} className="px-8">
-                                                <StopCircle className="mr-2 h-4 w-4" />
-                                                Complete Interview
-                                            </Button>
+                                            <motion.button
+                                                whileTap={{ scale: 0.95 }}
+                                                onClick={handleStopInterview}
+                                                className="relative h-24 w-24 flex items-center justify-center rounded-full bg-gradient-to-br from-red-600 to-red-700 text-white shadow-lg hover:shadow-red-300/50 transition-all animate-pulse"
+                                            >
+                                                <StopCircle className="h-10 w-10" />
+                                            </motion.button>
                                         )}
 
                                         {interviewActive && (
-                                            <Alert className="mt-6 border-blue-200 bg-blue-50 text-blue-800">
+                                            <Alert className="border-blue-200 bg-blue-50 text-blue-800">
                                                 <Info className="h-4 w-4" />
                                                 <AlertTitle>Interview in Progress</AlertTitle>
-                                                <AlertDescription>🎤 Speak clearly and answer all questions. The AI will adapt to your responses.</AlertDescription>
+                                                <AlertDescription>
+                                                    🎤 Speak clearly and answer naturally. The AI will
+                                                    adapt to your tone and responses.
+                                                </AlertDescription>
                                             </Alert>
                                         )}
 
                                         {interviewCompleted && (
-                                            <Alert className="mt-6 border-green-200 bg-green-50 text-green-800">
+                                            <Alert className="border-green-200 bg-green-50 text-green-800">
                                                 <CheckCircle2 className="h-4 w-4" />
                                                 <AlertTitle>Interview Completed</AlertTitle>
-                                                <AlertDescription>✅ Your interview has been recorded and will be reviewed shortly.</AlertDescription>
+                                                <AlertDescription>
+                                                    ✅ Your interview has been successfully recorded and
+                                                    submitted.
+                                                </AlertDescription>
                                             </Alert>
                                         )}
                                     </div>
                                 </motion.div>
                             ) : (
-                                <motion.div key="instructions" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }} transition={{ duration: 0.3 }}>
-                                    <div className="mt-6 space-y-3 text-sm text-gray-700">
+                                <motion.div
+                                    key="instructions"
+                                    initial={{ opacity: 0, y: 10 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    exit={{ opacity: 0, y: -10 }}
+                                    transition={{ duration: 0.4 }}
+                                >
+                                    <div className="space-y-4 text-sm text-gray-700 leading-relaxed">
                                         <Alert className="bg-blue-50 border-blue-200 text-blue-700">
                                             <Info className="h-4 w-4" />
                                             <AlertTitle>Before You Start</AlertTitle>
-                                            <AlertDescription>Please make sure your microphone is connected and working properly.</AlertDescription>
+                                            <AlertDescription>
+                                                Ensure your microphone is connected and working
+                                                properly.
+                                            </AlertDescription>
                                         </Alert>
-
-                                        <ul className="list-disc pl-6 space-y-1">
+                                        <ul className="list-disc pl-6 space-y-2">
                                             <li>Allow microphone access when prompted.</li>
-                                            <li>Gavel AI will guide you through your interview.</li>
-                                            <li>Speak clearly and wait for each question to complete.</li>
-                                            <li>Once done, click "Complete Interview".</li>
+                                            <li>Answer clearly and stay calm.</li>
+                                            <li>Click the red button when you wish to end.</li>
+                                            <li>Interview duration: ~3-5 minutes.</li>
                                         </ul>
-
-                                        <div className="mt-4 p-3 rounded-lg border bg-gray-50 text-xs text-gray-600">
-                                            <p className="font-medium mb-1">Technical Requirements:</p>
+                                        <div className="p-4 rounded-xl bg-gray-50 border text-xs text-gray-600">
+                                            <p className="font-medium mb-1">
+                                                Technical Requirements:
+                                            </p>
                                             <ul className="list-disc pl-4">
                                                 <li>Stable internet connection</li>
                                                 <li>Working microphone</li>
                                                 <li>Quiet environment</li>
-                                                <li>Use Chrome, Edge, or Firefox browser</li>
+                                                <li>Chrome or Edge browser recommended</li>
                                             </ul>
                                         </div>
                                     </div>
@@ -367,12 +462,14 @@ const Interview = () => {
                     </Tabs>
                 </CardContent>
 
-                <CardFooter className="text-xs text-gray-500 text-center flex justify-center">Powered by Gavel AI • Vapi Voice Interface</CardFooter>
+                <CardFooter className="text-xs text-gray-500 border-t border-gray-100 py-4 text-center bg-white/60 backdrop-blur-md">
+                    Powered by{" "}
+                    <span className="text-blue-600 font-semibold">&nbsp;Gavel AI</span> •
+                    Voice Intelligence by Vapi
+                </CardFooter>
             </Card>
         </div>
     );
-}
+};
 
-
-
-export default Interview
+export default Interview;

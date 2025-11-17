@@ -2,11 +2,11 @@ import { User } from "../models/user.js";
 import crypto from "crypto";
 import bcrypt from "bcryptjs";
 import { sendEmail } from "../utils/email.js";
-import { isProductionEnv } from "../utils/helper.js";
 import { generateTokens } from "../middleware/verificationMiddleware.js";
 import jwt from "jsonwebtoken"
 import dbConnection from "../utils/db.js";
 import Company from "../models/company.js";
+
 
 // 🔹 Signup Controller
 export const signupController = async (req, res) => {
@@ -41,7 +41,7 @@ export const signupController = async (req, res) => {
             token = crypto.randomBytes(20).toString("hex");
             const tokenExpiresAt = Date.now() + 60 * 60 * 1000;
 
-            await User.create({
+            const user = await User.create({
                 name,
                 email,
                 password: hashedPassword,

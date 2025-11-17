@@ -66,16 +66,17 @@ const bucketByMonth = (items = [], monthsLabels = []) => {
 };
 
 const roleDistribution = (users = []) => {
-  const map = { admin: 0, client: 0, candidate: 0 };
+  const map = { candidate: 0, client: 0, admin: 0 };
   users.forEach((u) => {
     const r = (u.role || "").toLowerCase();
     if (map[r] !== undefined) map[r]++;
   });
-  return [map.admin, map.client, map.candidate];
+  return [map.candidate, map.admin , map.client,];
 };
 
 const AdminDashboard = () => {
   const [users, setUsers] = useState([]);
+  const [newCandidates, setNewCandidates] = useState([])
   const [companies, setCompanies] = useState([]);
   const [positions, setPositions] = useState([]);
   const [interviews, setInterviews] = useState([]);
@@ -90,6 +91,7 @@ const AdminDashboard = () => {
       ]);
 
       setUsers(uRes?.users || uRes || []);
+      setNewCandidates(uRes?.users.filter(item => item.role === "candidate") || [])
       setCompanies(cRes?.companies || cRes || []);
       setPositions(pRes?.positions || pRes || []);
       setInterviews(iRes?.interviews || iRes || []);
@@ -98,45 +100,47 @@ const AdminDashboard = () => {
   }, []);
 
   const months = useMemo(() => lastNMonths(6), []);
-  const monthlyUsers = useMemo(() => bucketByMonth(users, months), [users, months]);
-  const monthlyRevenue = useMemo(() => {
-    const interviewCounts = bucketByMonth(interviews.filter(i => i.status === "completed"), months);
-    return interviewCounts.map((c) => c * 150);
-  }, [interviews, months]);
+  const monthlyUsers = useMemo(() => bucketByMonth(newCandidates, months), [newCandidates, months]);
+  const monthlyInterview = useMemo(() => bucketByMonth(interviews , months),[interviews, months]);
 
   const roleDist = useMemo(() => roleDistribution(users), [users]);
-  const adminsCount = users.filter(u => u.role === "admin").length;
   const clientsCount = users.filter(u => u.role !== "admin" && u.role !== "candidate").length;
   const candidatesCount = users.filter(u => u.role === "candidate").length;
 
   const monthlyUsersData = {
     labels: months,
-    datasets: [{ label: "New Users", data: monthlyUsers, backgroundColor: "#6366f1" }],
+    datasets: [{ label: "New Candidates", data: monthlyUsers, backgroundColor: "#6366f1" }],
   };
-  const revenueLineData = {
+  const interviewLineData = {
     labels: months,
-    datasets: [{ label: "Revenue ($)", data: monthlyRevenue, borderColor: "#06b6d4", tension: 0.3 }],
+    datasets: [{ label: "Interview", data: monthlyInterview, borderColor: "#06b6d4", tension: 0.4 }],
   };
+  const uniqueRoles = Array.from(
+    new Map(users.map((item) => [item.role, item])).values()
+  );
+
   const roleData = {
-    labels: ["Admins", "Clients", "Candidates"],
+    labels: uniqueRoles.map(item => item.role) ,
     datasets: [{ data: roleDist, backgroundColor: ["#6366f1", "#06b6d4", "#22c55e"] }],
   };
+
+  console.log(users);
+  
 
   return (
     <div className=" p-6 space-y-8">
       {/* Header */}
-      <div className="bg-linear-to-r from-blue-500 via-indigo-600 to-purple-600 text-white rounded-xl p-8 shadow">
+      <div className="bg-linear-to-br from-secondary via-indigo-600/80 to-purple-600/70 text-white rounded-xl p-8 shadow">
         <h1 className="text-3xl font-bold mb-1">Welcome back, Admin 👋</h1>
         <p className="opacity-90">Here’s your overview of users, companies, and performance.</p>
       </div>
 
       {/* Stat cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 2xl:gap-8">
         <Link to="/admin/candidates"><StatCard title="Candidates" value={candidatesCount} Icon={Users} color="#f97316" /></Link>
         <Link to="/admin/positions"><StatCard title="Positions" value={positions.length} Icon={Briefcase} color="#7c3aed" /></Link>
         <Link to="/admin/companies"><StatCard title="Companies" value={companies.length} Icon={Building2} color="#3b82f6" /></Link>
         <Link to="/admin/clients"><StatCard title="Clients" value={clientsCount} Icon={UserCheck} color="#16a34a" /></Link>
-        <Link to="/admin/admins"><StatCard title="Admins" value={adminsCount} Icon={UserCog} color="#ef4444" /></Link>
       </div>
 
       {/* Charts */}
@@ -144,8 +148,8 @@ const AdminDashboard = () => {
         <Card>
           <CardHeader>
             <div className="flex justify-between items-center">
-              <h3 className="font-semibold text-lg">Monthly New Users</h3>
-              <Badge>Live</Badge>
+              <h3 className="font-semibold text-lg">Monthly New Candidates</h3>
+              <Badge variant="secondary">Live</Badge>
             </div>
           </CardHeader>
           <CardContent className="h-64">
@@ -156,12 +160,12 @@ const AdminDashboard = () => {
         <Card>
           <CardHeader>
             <div className="flex justify-between items-center">
-              <h3 className="font-semibold text-lg">Revenue Trend</h3>
-              <TrendingUp className="text-cyan-500" />
+              <h3 className="font-semibold text-lg">Interview Trend</h3>
+              <Badge variant="secondary" className="animate-pulse bg-green-600">Live</Badge>
             </div>
           </CardHeader>
           <CardContent className="h-64">
-            <Line data={revenueLineData} options={{ responsive: true, maintainAspectRatio: false }} />
+            <Line data={interviewLineData} options={{ responsive: true, maintainAspectRatio: false }} />
           </CardContent>
         </Card>
       </div>
@@ -169,7 +173,7 @@ const AdminDashboard = () => {
       {/* Role distribution */}
       <Card>
         <CardHeader>
-          <h3 className="font-semibold text-lg">User Role Distribution</h3>
+          <h3 className="font-semibold text-lg">Roles Distribution</h3>
         </CardHeader>
         <CardContent className="flex flex-col md:flex-row gap-6 items-center">
           <div className="w-60 h-60">
@@ -178,9 +182,8 @@ const AdminDashboard = () => {
           <div>
             <p className="text-sm text-muted-foreground mb-2">Breakdown of user roles across the platform.</p>
             <ul className="space-y-1">
-              <li><span className="text-indigo-600 font-semibold">Admins:</span> {adminsCount}</li>
               <li><span className="text-cyan-600 font-semibold">Clients:</span> {clientsCount}</li>
-              <li><span className="text-green-600 font-semibold">Candidates:</span> {candidatesCount}</li>
+              <li><span className="text-indigo-500 font-semibold">Candidates:</span> {candidatesCount}</li>
             </ul>
           </div>
         </CardContent>

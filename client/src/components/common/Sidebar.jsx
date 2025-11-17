@@ -55,7 +55,7 @@ const Sidebar = ({ collapsed, setCollapsed }) => {
       { to: "/admin/companies", label: "Companies", icon: Building },
       { to: "/admin/candidates", label: "Candidates", icon: CreditCard },
       { to: "/admin/positions", label: "Positions", icon: Wrench },
-      { to: "/admin/transcripts", label: "Transcripts", icon: FileText },
+      { to: "/admin/transcripts", label: "Interviews", icon: FileText },
       { to: "/admin/admins", label: "Admins", icon: Users },
     ];
   } else if (role === "candidate") {

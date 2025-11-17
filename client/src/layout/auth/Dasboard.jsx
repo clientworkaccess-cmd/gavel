@@ -16,6 +16,7 @@ import API_ENDPOINTS from "@/config/api";
 import { useAuth } from "../context/AuthContext";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
+import Interview from "../modules/Interviews";
 
 const Dashboard = () => {
   const { userId, user, role , loading} = useAuth();
@@ -56,7 +57,7 @@ const Dashboard = () => {
     const total = interviews.length;
     const completed = interviews.filter((i) => i.reviewStatus === "approved").length;
     const pending = interviews.filter((i) => i.reviewStatus === "pending").length;
-    const reject = interviews.filter((i) => i.reviewStatus === "reject").length;
+    const reject = interviews.filter((i) => i.reviewStatus === "rejected").length;
 
     setStats({ total, completed, pending, reject });
   };
@@ -99,6 +100,10 @@ const Dashboard = () => {
     return <div className="min-h-screen w-full flex justify-center items-center">
       <div className="loader"></div>
     </div>
+  }
+  
+  if (role === "candidate" && stats.total === 0) {
+    return <Interview />
   }
 
   return (
