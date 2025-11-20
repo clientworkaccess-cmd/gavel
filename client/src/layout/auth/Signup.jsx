@@ -7,9 +7,11 @@ import { API_ENDPOINTS } from "../../config/api";
 import "react-toastify/dist/ReactToastify.css";
 import { getReq, postReq } from "../../axios/axios";
 import { FaGavel } from "react-icons/fa";
+import ReCAPTCHA from "react-google-recaptcha";
 
 const SignupForm = () => {
   const [showPassword, setShowPassword] = useState(false);
+  const [captchaValue, setCaptchaValue] = useState()
   const navigate = useNavigate();
 
   // ✅ Auto redirect if already logged in
@@ -32,6 +34,11 @@ const SignupForm = () => {
   } = useForm();
 
   const onSubmit = async (data) => {
+    if (!captchaValue) {
+      toast.warn("Please complete catcha")
+      return
+    }
+
     try {
       const payload = {
         name: `${data.firstName} ${data.lastName}`,
@@ -175,6 +182,11 @@ const SignupForm = () => {
                 <p className="text-red-500 text-sm mt-1">{errors.password.message}</p>
               )}
             </div>
+
+            <ReCAPTCHA
+              sitekey={import.meta.env.VITE_CAPTCHA_KEY}
+              onChange={(token) => setCaptchaValue(token)}
+            />
 
             <button
               type="submit"
