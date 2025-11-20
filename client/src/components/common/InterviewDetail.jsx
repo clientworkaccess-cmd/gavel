@@ -15,6 +15,7 @@ import {
     Star, BarChart3, Users, Target, MessageSquare
 } from "lucide-react";
 import { useAuth } from "@/layout/context/AuthContext";
+import { CircleProgress } from "../ui/circle-progress";
 
 const InterviewDetail = () => {
     const { id } = useParams();
@@ -95,39 +96,14 @@ const InterviewDetail = () => {
         const strokeDashoffset = circumference - (circumference * score) / 100;
 
         return (
-            <div className="flex flex-col items-center">
-                <div className="relative w-36 h-36">
-                    <svg className="w-full h-full transform -rotate-90">
-                        <circle
-                            cx="72"
-                            cy="72"
-                            r="70"
-                            stroke="currentColor"
-                            strokeWidth="8"
-                            fill="transparent"
-                            className="text-slate-100"
-                        />
-                        <circle
-                            cx="72"
-                            cy="72"
-                            r="68"
-                            stroke="currentColor"
-                            strokeWidth="6"
-                            fill="transparent"
-                            strokeDasharray={circumference}
-                            strokeDashoffset={strokeDashoffset}
-                            className={`${color} transition-all duration-1000 ease-out`}
-                            strokeLinecap="round"
-                        />
-                    </svg>
-                    <div className="absolute inset-0 flex items-center justify-center">
-                        <div className="text-center">
-                            <span className="text-3xl font-bold text-slate-900">{score}</span>
-                        </div>
-                    </div>
+            <div className="flex flex-col items-center gap-2">
+                <div className="relative">
+                    <CircleProgress value={score} maxValue={score} size={100} />
+                    <span className="absolute top-7 left-8 font-bold">{score}</span>
                 </div>
                 <span className="text-sm font-medium text-slate-700 mt-2">{label}</span>
             </div>
+
         );
     };
 
@@ -161,7 +137,7 @@ const InterviewDetail = () => {
 
     const statusConfig = getStatusConfig(interview.reviewStatus);
     const StatusIcon = statusConfig.icon;
-console.log(interview);
+    console.log(interview);
 
     return (
         <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50">

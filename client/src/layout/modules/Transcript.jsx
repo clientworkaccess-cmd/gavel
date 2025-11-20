@@ -125,8 +125,8 @@ const Transcript = () => {
                                 ) : filterdData.length > 0 ? (
                                     filterdData?.map((row, idx) => (
                                         <TableRow key={idx}>
-                                            <TableCell>{row?.email}</TableCell>
-                                            <TableCell>{row?.position?.name}</TableCell>
+                                            <TableCell>{row?.candidate}</TableCell>
+                                            <TableCell>{row?.jobName}</TableCell>
                                             <TableCell>{new Date(row?.createdAt).toLocaleString()}</TableCell>
                                             <TableCell>{row?.reviewStatus}</TableCell>
                                             <TableCell className={role === "admin" && "flex gap-2 items-center justify-center"}>
@@ -142,8 +142,8 @@ const Transcript = () => {
                                 ) : (
                                     dataRows?.map((row, idx) => (
                                         <TableRow key={idx}>
-                                            <TableCell>{row?.email}</TableCell>
-                                            <TableCell>{row?.position?.name}</TableCell>
+                                             <TableCell>{row?.candidate}</TableCell>
+                                            <TableCell>{row?.jobName}</TableCell>
                                             <TableCell>{new Date(row?.createdAt).toLocaleString()}</TableCell>
                                             <TableCell>{row?.reviewStatus}</TableCell>
                                             <TableCell className={role === "admin" && "flex gap-2 items-center justify-center"}>

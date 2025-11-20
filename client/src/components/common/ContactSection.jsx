@@ -1,5 +1,5 @@
 import { useForm } from "react-hook-form";
-import { ToastContainer } from "react-toastify";
+import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { postReq } from "../../axios/axios";
 import API_ENDPOINTS from "../../config/api";
@@ -9,8 +9,11 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
+import { useState } from "react";
+import ReCAPTCHA from "react-google-recaptcha";
 
 const ContactSection = () => {
+  const [captchaValue , setCaptchaValue] = useState()
   const {
     register,
     handleSubmit,
@@ -19,6 +22,13 @@ const ContactSection = () => {
   } = useForm();
 
   const onSubmit = async (data) => {
+    if (!captchaValue) {
+      toast.warn("Please complete catcha")
+    }
+
+    await postReq(API_ENDPOINTS.CAPTCHA_VERRIFICATION , {
+      token: captchaValue
+    })
     await postReq(API_ENDPOINTS.SEND_EMAIL, {
       email: data.email,
       subject: `Contact Form Submission from ${data.name}`,
@@ -107,6 +117,11 @@ const ContactSection = () => {
                   <p className="text-red-500 text-sm">{errors.details.message}</p>
                 )}
               </div>
+
+              <ReCAPTCHA
+                sitekey={import.meta.env.VITE_CAPTCHA_KEY}
+                onChange={(token) => setCaptchaValue(token)}
+              />
 
               <Button
                 type="submit"

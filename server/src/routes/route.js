@@ -50,6 +50,7 @@ import {
 } from "../controller/positionController.js";
 
 import { sendEmail } from "../controller/emailControler.js";
+import CaptchaController from "../controller/captchaController.js";
 
 
 const router = express.Router();
@@ -100,6 +101,7 @@ router.delete("/api/interview/:id", verifyToken, deleteInterview);
 router.get("/api/dashboard", verifyToken, dashboardController);
 router.get("/api/refresh-token", refreshTokenController);
 router.post("/api/send-email", sendEmail);
+router.post("/api/verify-captcha" , CaptchaController)
 
 
 export default router;
