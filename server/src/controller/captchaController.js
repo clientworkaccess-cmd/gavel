@@ -11,7 +11,7 @@
         }
     );
 
-    if (response.data.success) {
+    if (response.success) {
         res.json({ success: true });
     } else {
         res.status(400).json({ success: false, message: "Captcha failed" });
