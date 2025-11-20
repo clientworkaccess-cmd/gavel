@@ -24,6 +24,7 @@ const ContactSection = () => {
   const onSubmit = async (data) => {
     if (!captchaValue) {
       toast.warn("Please complete catcha")
+      return
     }
 
     await postReq(API_ENDPOINTS.CAPTCHA_VERRIFICATION , {
