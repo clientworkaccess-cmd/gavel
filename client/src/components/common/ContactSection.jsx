@@ -26,10 +26,6 @@ const ContactSection = () => {
       toast.warn("Please complete catcha")
       return
     }
-
-    await postReq(API_ENDPOINTS.CAPTCHA_VERRIFICATION , {
-      token: captchaValue
-    })
     await postReq(API_ENDPOINTS.SEND_EMAIL, {
       email: data.email,
       subject: `Contact Form Submission from ${data.name}`,

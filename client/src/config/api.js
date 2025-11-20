@@ -21,7 +21,6 @@ export const API_ENDPOINTS = {
 
   // ✉️ Utilities
   SEND_EMAIL: `${API_BASE_URL}/api/send-email`,
-  CAPTCHA_VERRIFICATION: `${API_BASE_URL}/api/verify-captcha`,
 
   // 🧑‍💼 Admin system
   ADMINS: `${API_BASE_URL}/api/admins`,
