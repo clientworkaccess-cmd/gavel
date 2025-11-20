@@ -38,6 +38,7 @@ const SignupForm = () => {
       toast.warn("Please complete catcha")
       return
     }
+    
     try {
       const payload = {
         name: `${data.firstName} ${data.lastName}`,
