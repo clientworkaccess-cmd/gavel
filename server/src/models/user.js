@@ -14,17 +14,6 @@ const UserSchema = new mongoose.Schema({
     default: [],
   },
   qualification: { type: String, trim: true },
-  communication: {
-    type: String,
-    enum: ["Excellent", "Good", "Average", "Poor"],
-    default: "Average",
-  },
-  culturalFit: {
-    type: String,
-    enum: ["Excellent", "Good", "Average", "Poor"],
-    default: "Average",
-  },
-  overAllFitScore: { type: Number, min: 0, max: 100 },
   position: [
     { type: mongoose.Schema.Types.ObjectId, ref: "Position" },
   ],

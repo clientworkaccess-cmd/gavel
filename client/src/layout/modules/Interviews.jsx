@@ -29,13 +29,12 @@ import {
     SelectValue,
 } from "@/components/ui/select";
 import { FaGavel } from "react-icons/fa";
+import VapiWidget from "@/components/common/VoiceInterviewSection";
 
-const VAPI_PUBLIC_KEY = import.meta.env.VITE_VAPI_PUBLIC_KEY;
-const WEBHOOK_URL = import.meta.env.VITE_WEBHOOK_URL;
 
 const Interview = () => {
-    const { user } = useAuth();
-    const { _id: userId, email, name } = user || {};
+    const { user, userId } = useAuth();
+    const { email, name } = user || {};
 
     const [activeTab, setActiveTab] = useState("interview");
     const [loading, setLoading] = useState(false);
@@ -44,11 +43,53 @@ const Interview = () => {
     const [positions, setPositions] = useState([]);
     const [selectedPosition, setSelectedPosition] = useState("");
     const [selectedLanguage, setSelectedLanguage] = useState("english")
-    const [isApplied, setIsApplied] = useState(false);
+    const [sendReportData, setSendReportData] = useState({})
+    const [vapi, setVapi] = useState(null);
+    const [isConnected, setIsConnected] = useState(false);
+    const [isSpeaking, setIsSpeaking] = useState(false);
+    const [transcript, setTranscript] = useState([]);
 
-    const vapiRef = useRef(null);
     const positionDescriptionRef = useRef("");
     const abortFetchRef = useRef(null);
+
+    useEffect(() => {
+        const vapiInstance = new Vapi(API_ENDPOINTS.VAPI_PUBLIC_KEY);
+        setVapi(vapiInstance);
+
+        vapiInstance.on('call-start', () => {
+            console.log('Call started');
+            setIsConnected(true);
+        });
+
+        vapiInstance.on('call-end', () => {
+            console.log('Call ended');
+            setIsConnected(false);
+            setIsSpeaking(false);
+        });
+
+        vapiInstance.on('speech-start', () => {
+            console.log('Assistant started speaking');
+            setIsSpeaking(true);
+        });
+
+        vapiInstance.on('speech-end', () => {
+            console.log('Assistant stopped speaking');
+            setIsSpeaking(false);
+        });
+
+        vapiInstance.on("message", (message) => {
+            setTranscript([...message.conversation])
+        });
+
+
+        vapiInstance.on('error', (error) => {
+            console.error('Vapi error:', error);
+        });
+
+        return () => {
+            vapiInstance?.stop();
+        };
+    }, []);
 
     // ✅ FIX: Reset position description whenever a new position is selected
     useEffect(() => {
@@ -86,48 +127,47 @@ const Interview = () => {
         };
     }, [fetchPositions]);
 
-    const ensureVapi = useCallback(() => {
-        if (!VAPI_PUBLIC_KEY) {
-            toast.error("Vapi public key not configured");
-            return null;
-        }
+    function cleanAssistantPayload(raw) {
+        const forbidden = ["id", "orgId", "createdAt", "updatedAt", "isServerUrlSecretSet"];
 
-        if (!vapiRef.current) {
-            vapiRef.current = new Vapi(VAPI_PUBLIC_KEY);
-
-            vapiRef.current.on("error", (err) => {
-                console.error("Vapi error:", err);
-                toast.error(err?.errorMsg || "Voice engine error");
-                try {
-                    vapiRef.current?.stop();
-                } catch (e) {
-                    console.warn("Failed to stop vapi on error:", e);
-                }
-                setInterviewActive(false);
-            });
-
-            try {
-                vapiRef.current.on("ended", () => {
-                    setInterviewActive(false);
-                    setInterviewCompleted(true);
-                });
-            } catch (e) {
-                console.log(e);
+        const cleaned = {};
+        for (const key in raw) {
+            if (!forbidden.includes(key)) {
+                cleaned[key] = raw[key];
             }
         }
+        return cleaned;
+    }
 
-        return vapiRef.current;
-    }, []);
+    const ASSISTANT_MAP = {
+        hospitality: {
+            english: API_ENDPOINTS.VAPI_ASSISTANT_HOSPITALITY_EN_KEY,
+            spanish: API_ENDPOINTS.VAPI_ASSISTANT_HOSPITALITY_ES_KEY,
+        },
+        legal: {
+            english: API_ENDPOINTS.VAPI_ASSISTANT_LEGAL_EN_KEY,
+            spanish: API_ENDPOINTS.VAPI_ASSISTANT_LEGAL_ES_KEY,
+        },
+    };
 
+    const getAssistant = (category, language) => {
+        const cat = (category || "").toLowerCase();
+        const lang = (language || "en").toLowerCase();
+
+
+        if (!ASSISTANT_MAP[cat]) return null;
+        return ASSISTANT_MAP[cat][lang] || null;
+    };
+
+
+    // handleBeginInterview updated
     const handleBeginInterview = async () => {
-        // ✅ FIX: Always reset ref before starting interview
         positionDescriptionRef.current = "";
 
         if (!selectedPosition) {
             toast.error("Please select a position first");
             return;
         }
-
         if (!userId) {
             toast.error("User not authenticated");
             return;
@@ -136,24 +176,31 @@ const Interview = () => {
         setLoading(true);
 
         try {
-            const checkRes = await getReq(
-                `${API_ENDPOINTS.INTERVIEW_CHECK}?candidateId=${userId}&positionId=${selectedPosition}`
-            );
-            if (checkRes?.message) {
-                toast.error(checkRes.message);
-                setSelectedPosition("");
-                return;
-            }
 
             const found = positions.find(
                 (p) => p._id === selectedPosition || p.id === selectedPosition
             );
             if (!found) {
-                toast.error("Selected position not found. Refresh and try again.");
+                toast.error("Selected position not found");
+                return;
+            }
+            setSendReportData(found)
+            const checkRes = await getReq(
+                `${API_ENDPOINTS.INTERVIEW_CHECK}?candidateId=${userId}&jobName=${found.name}`
+            );
+            if (checkRes.alreadyApplied) {
+                toast.warn(checkRes.message)
+                setSelectedPosition("");
+                return
+            }
+
+            const assistantId = getAssistant(found.category, selectedLanguage);
+
+            if (!assistantId) {
+                toast.error("No assistant configured for this category/language");
                 return;
             }
 
-            // ✅ FIX: Update description for the selected position only
             positionDescriptionRef.current =
                 found.positionDescription || found.description || "";
 
@@ -164,44 +211,43 @@ const Interview = () => {
                 positionId: found._id || found.id,
                 positionName: found.name,
                 positionDescription: positionDescriptionRef.current,
+                category: found.category,
                 companyName: found.company?.name || "",
+                redFlag: found.redFlag || "",
+                assistantId,
+                language: selectedLanguage,
             };
 
-            const webhookRes = await fetch(WEBHOOK_URL, {
+            const webhookRes = await fetch(API_ENDPOINTS.WEBHOOK_URL, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(payload),
             });
 
+
             const text = await webhookRes.text();
             let webhookJson = null;
-            try {
-                webhookJson = text ? JSON.parse(text) : null;
-            } catch (e) {
-                console.warn("Webhook returned non-json:", e);
-            }
+            webhookJson = text ? JSON.parse(text) : null;
 
             if (!webhookRes.ok || !webhookJson) {
-                console.error("Webhook failed:", webhookRes.status, text);
-                toast.error("Interview setup failed (webhook error)");
+                toast.error("Interview setup failed");
                 return;
             }
-
-            const vapi = ensureVapi();
-            if (!vapi) return;
 
             if (interviewActive) {
                 toast.info("Interview already active");
                 return;
             }
 
+
             try {
-                vapi.start(webhookJson);
+                const cleanPayload = cleanAssistantPayload(webhookJson[0]);
+                await vapi.start(assistantId, cleanPayload);
+
                 setInterviewActive(true);
                 setInterviewCompleted(false);
                 toast.success("Interview started");
             } catch (err) {
-                console.error("Failed to start vapi:", err);
                 toast.error("Failed to start voice session");
             }
         } catch (err) {
@@ -212,62 +258,44 @@ const Interview = () => {
     };
 
     const handleStopInterview = async () => {
-        if (!vapiRef.current) return;
-
-        try {
-            vapiRef.current.stop();
-        } catch (err) {
-            console.warn("vapi stop error:", err);
-        }
-
+        vapi.stop()
         setInterviewActive(false);
         setInterviewCompleted(true);
         setSelectedPosition("");
+        setLoading(true)
 
+        const payload = {
+            transcript: transcript?.slice(1),
+            jobDescription: positionDescriptionRef.current,
+            jobCategory: sendReportData?.category,
+            candidateId: userId,
+            redFlag: sendReportData?.redFlag,
+            jobName: sendReportData.name
+        }
         try {
-            const response = await fetch(API_ENDPOINTS.VAPI_REPORT);
-            const text = await response.text();
-            const data = text ? JSON.parse(text) : null;
+            const webhookReport = await fetch(API_ENDPOINTS.WEBHOOK_REPORT_URL, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(payload)
+            });
 
-            if (!data || !data.report) {
-                console.warn("No report returned from VAPI_REPORT:", data);
-                return;
+            const text = await webhookReport.text()
+            const webhookReportData = text ? JSON.parse(text) : null;
+
+            if (webhookReportData) {
+                webhookReportData.summary = JSON.parse(webhookReportData.summary);
+                webhookReportData.redFlags = JSON.parse(webhookReportData.redFlags);
+                webhookReportData.transcript = JSON.parse(webhookReportData.transcript);
             }
 
-            const body = {
-                position: data.report.positionId,
-                candidateId: data.report.candidateId,
-                name: name || "",
-                email: data.report.candidateEmail || email || "",
-                interviewID: data.report.interviewID,
-                positionDescription: positionDescriptionRef.current,
-                positionId: data.report.positionId,
-                summary: data.report.interviewSummary,
-                transcript: data.report.interviewTranscript,
-                status: data.status || "completed",
-            };
-            await postReq(API_ENDPOINTS.INTERVIEW, body);
-
-            setIsApplied(true);
+            await postReq(API_ENDPOINTS.INTERVIEW, webhookReportData)
+            setLoading(false)
             fetchPositions();
         } catch (err) {
             console.error("Error fetching/saving report:", err);
             toast.error("Interview ended but saving failed");
         }
     };
-
-    useEffect(() => {
-        return () => {
-            try {
-                if (vapiRef.current) {
-                    vapiRef.current.stop?.();
-                    vapiRef.current = null;
-                }
-            } catch (e) {
-                console.warn("Cleanup error:", e);
-            }
-        };
-    }, []);
 
     return (
         <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-50 via-white to-blue-50 p-6">
@@ -315,7 +343,7 @@ const Interview = () => {
                                     transition={{ duration: 0.4 }}
                                 >
                                     <div className="flex flex-col items-center space-y-6">
-                                        <div className="flex justify-between items-center px-4 w-full pb-4">
+                                        <div className="flex justify-between items-center px-4 w-full pb-4 gap-4 flex-col sm:flex-row">
                                             <div className="w-full max-w-sm">
                                                 <label className="block text-sm font-medium text-gray-700 mb-2">
                                                     Select a Position
@@ -328,7 +356,7 @@ const Interview = () => {
                                                         <SelectValue
                                                             placeholder={
                                                                 loading
-                                                                    ? "Loading positions..."
+                                                                    ? "Loading interview..."
                                                                     : "Choose a position"
                                                             }
                                                         />
@@ -379,7 +407,7 @@ const Interview = () => {
                                             <motion.button
                                                 whileTap={{ scale: 0.95 }}
                                                 onClick={handleBeginInterview}
-                                                disabled={loading || isApplied}
+                                                disabled={loading}
                                                 className="relative h-24 w-24 flex items-center justify-center rounded-full bg-gradient-to-br from-blue-600 to-blue-700 text-white shadow-lg hover:shadow-blue-300/50 transition-all"
                                             >
                                                 {loading ? (
@@ -392,9 +420,14 @@ const Interview = () => {
                                             <motion.button
                                                 whileTap={{ scale: 0.95 }}
                                                 onClick={handleStopInterview}
+                                                disabled={loading}
                                                 className="relative h-24 w-24 flex items-center justify-center rounded-full bg-gradient-to-br from-red-600 to-red-700 text-white shadow-lg hover:shadow-red-300/50 transition-all animate-pulse"
                                             >
-                                                <StopCircle className="h-10 w-10" />
+                                                {loading ? (
+                                                    <Loader2 className="h-8 w-8 animate-spin" />
+                                                ) : (
+                                                    <StopCircle className="h-10 w-10" />
+                                                )}
                                             </motion.button>
                                         )}
 

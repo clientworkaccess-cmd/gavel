@@ -3,61 +3,76 @@ import Position from "../models/position.js";
 import { User } from "../models/user.js";
 import dbConnection from "../utils/db.js";
 
-// ✅ Create new interview (after AI completes or starts)
 export const createInterview = async (req, res) => {
   try {
     const {
-      position,
-      name,
+      candidate,
       candidateId,
-      email,
-      interviewID,
-      positionDescription,
-      positionId,
+      jobDescription,
       summary,
       transcript,
-      status,
+      jobName,
+      category,
+      scores,
+      recommendation,
+      expectedSalary,
+      keyInsights1,
+      keyInsights2,
+      keyInsights3,
+      keyInsights4,
+      redFlags
     } = req.body;
 
-    if (!position || !candidateId || !email || !interviewID || !positionId) {
-      return res
-        .status(400)
-        .json({ success: false, message: "Missing required fields" });
+    if (!candidate || !candidateId || !jobName || !category || !scores) {
+      return res.status(400).json({
+        success: false,
+        message: "Missing required fields: candidate, candidateId, jobName, category, scores"
+      });
     }
 
-    const newInterview = new Interview({
-      position,
+    const newInterview = await Interview.create({
+      candidate,
       candidateId,
-      name,
-      email,
-      interviewID,
-      positionDescription,
-      positionId,
+      jobDescription,
       summary,
       transcript,
-      status: status || "completed",
+      jobName,
+      category,
+      scores,
+      recommendation,
+      expectedSalary,
+      keyInsights1,
+      keyInsights2,
+      keyInsights3,
+      keyInsights4,
+      redFlags
     });
 
-    await newInterview.save();
+    await User.findByIdAndUpdate(candidateId, {
+      $push: { interviews: newInterview._id },
+    });
 
-    // Auto link to position
-    await Position.findByIdAndUpdate(position, { $push: { interview: newInterview._id } });
-    await User.findByIdAndUpdate(candidateId, { $push: { interviews: newInterview._id } });
+    return res.status(201).json({
+      success: true,
+      message: "Interview created successfully",
+      interview: newInterview
+    });
 
-    res.status(201).json({ success: true, interview: newInterview });
   } catch (error) {
-    console.error("Create Interview Error:", error);
-    res
-      .status(500)
-      .json({ success: false, message: "Server Error", error: error.message });
+    console.error("Interview Create Error:", error);
+    return res.status(500).json({
+      success: false,
+      message: "Internal server error",
+      error: error.message
+    });
   }
 };
+
 
 // ✅ Get all interviews (for admin)
 export const getAllInterviews = async (req, res) => {
   try {
     const interviews = await Interview.find()
-      .populate("position")
       .populate("candidateId")
       .sort({ createdAt: -1 });
 
@@ -73,7 +88,6 @@ export const getCandidateInterviews = async (req, res) => {
 
     const { candidateId } = req.params;
     const interviews = await Interview.find({ candidateId })
-      .populate("position")
       .sort({ createdAt: -1 });
 
     res.status(200).json({ success: true, interviews });
@@ -82,27 +96,31 @@ export const getCandidateInterviews = async (req, res) => {
   }
 };
 
-// ✅ Check if candidate already applied for a position
+// ✅ Check if candidate already applied for a role/category
 export const checkCandidateApplied = async (req, res) => {
   try {
-    const { candidateId, positionId } = req.query;
+    const { candidateId, jobName} = req.query;
 
     // Validate input
-    if (!candidateId || !positionId) {
+    if (!candidateId || (!jobName && !category)) {
       return res.status(400).json({
         success: false,
-        message: "Candidate ID and Position ID are required.",
+        message: "Candidate ID and Position are required.",
       });
     }
 
+    // Build query dynamically
+    const query = { candidateId };
+    if (jobName) query.jobName = jobName;
+
     // Check for existing interview/application
-    const existing = await Interview.findOne({ candidateId, positionId });
+    const existing = await Interview.findOne(query);
 
     if (existing) {
       return res.status(200).json({
         success: true,
         alreadyApplied: true,
-        message: "Already applied for this position.",
+        message: "Already applied for this Position.",
         interview: existing,
       });
     }
@@ -120,6 +138,7 @@ export const checkCandidateApplied = async (req, res) => {
     });
   }
 };
+
 
 // ✅ Update review status (Admin Review)
 export const updateReviewStatus = async (req, res) => {
@@ -152,6 +171,7 @@ export const deleteInterview = async (req, res) => {
 
     // Remove from company's interviews array
     await Position.findByIdAndUpdate(interview.position, { $pull: { interview: interview._id } });
+    await User.findByIdAndUpdate(interview.candidateId, { $pull: { interview: interview._id } });
 
     res.status(200).json({ message: "interview deleted successfully" });
   } catch (error) {

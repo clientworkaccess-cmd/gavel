@@ -20,6 +20,7 @@ import {
 import { getReq, postReq, putReq } from "@/axios/axios";
 import API_ENDPOINTS from "@/config/api";
 import { useEffect, useState } from "react";
+import { Textarea } from "../ui/textarea";
 
 const Modal = ({ type, show, setShow, data, variant }) => {
     const [companies, setCompanies] = useState([]);
@@ -112,7 +113,7 @@ const Modal = ({ type, show, setShow, data, variant }) => {
                     </div>
                     <div>
                         <Label>Position Description</Label>
-                        <Input {...register("positionDescription")} />
+                        <Textarea className="max-h-30" {...register("positionDescription")} />
                     </div>
                     <div>
                         <Label>Company </Label>
@@ -144,7 +145,7 @@ const Modal = ({ type, show, setShow, data, variant }) => {
                             <SelectContent>
                                 <SelectItem value="Legal">Legal</SelectItem>
                                 <SelectItem value="Hospitality">Hospitality</SelectItem>
-                                <SelectItem value="Professional Services">Professional Services</SelectItem>
+                                {/* <SelectItem value="Professional Services">Professional Services</SelectItem> */}
                             </SelectContent>
                         </Select>
                     </div>

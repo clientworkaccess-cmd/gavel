@@ -58,7 +58,7 @@ const Profile = () => {
         );
 
     return (
-        <div className="max-w-4xl mx-auto mt-10 p-6 bg-white shadow-lg rounded-2xl border border-gray-200">
+        <div className="max-w-4xl mx-auto mt-10 p-6 bg-white shadow-lg rounded-2xl border border-gray-200 ml-8 lg:ml-auto">
             <ToastContainer position="top-right" autoClose={3000} />
             <h2 className="text-3xl font-bold mb-6 text-gray-800">
                 {user?.name} Profile
@@ -152,25 +152,27 @@ const Profile = () => {
                 </div>
 
                 {/* Skills */}
-                { role === "candidate" && <> 
-                <div>
-                    <Label>Skills (comma separated)</Label>
-                    <Input
-                        {...register("skills", {
-                            pattern: {
-                                value: /^\s*\w+(\s*\w+)*\s*,\s*\w+(\s*\w+)*(?:\s*,\s*\w+(\s*\w+)*)*\s*$/,
-                                message: "Enter skills separated by commas (e.g. React, Node.js, MongoDB)",
-                            },
-                        })}
-                        onChange={handleSkills}
-                        placeholder="e.g. React, Node.js, MongoDB"
-                    />
-                    {errors.skills && (
-                        <p className="text-sm text-red-500">{errors.skills.message}</p>
-                    )}
-                </div>
+                {role === "candidate" && <>
+                    <div>
+                        <Label>Skills (comma separated)</Label>
+                        <Input
+                            {...register("skills", {
+                                pattern: {
+                                    value: /^\s*\w+(\s*\w+)*\s*,\s*\w+(\s*\w+)*(?:\s*,\s*\w+(\s*\w+)*)*\s*$/,
+                                    message: "Enter skills separated by commas (e.g. React, Node.js, MongoDB)",
+                                },
+                            })}
+                            onChange={handleSkills}
+                            placeholder="e.g. React, Node.js, MongoDB"
+                        />
+                        {errors.skills && (
+                            <p className="text-sm text-red-500">{errors.skills.message}</p>
+                        )}
+                    </div>
                     <div className="flex gap-2 flex-wrap">
-                        {skills.length > 0 && skills.map((item, ind) => <p key={ind} className="p-1 px-4 bg-secondary/20 rounded-full">{item}</p>)}
+                        {skills.length > 0 && skills.map((item, ind) => {
+                            return item.trim() && <p key={ind} className="p-1 px-4 bg-secondary/20 rounded-full">{item}</p>
+                        })}
                     </div> </>}
                 {/* Password Update */}
                 <div className="border-t pt-4 mt-6">

@@ -11,6 +11,7 @@ const app = express();
 // ✅ CORS Configuration — move this *before* routes
 const allowedOrigins = [
   "http://localhost:5173",
+  "https://s43t94b4-5173.asse.devtunnels.ms",
   "https://joingavel.com",
   "https://www.joingavel.com",
   "https://evolvegov.com",

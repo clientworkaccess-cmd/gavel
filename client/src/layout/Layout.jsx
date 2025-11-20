@@ -27,9 +27,7 @@ const Layout = () => {
                     </main>
                 </div>
             ) : (
-                <div className="relative h-screen overflow-auto inset-0 bg-secondary/10 bg-[radial-gradient(circle_at_center,_#ffff,_transparent_60%)] md:px-16">
-                    <div className="fixed -top-20 -left-20 w-72 h-72 bg-secondary/15 blur-3xl rounded-full"></div>
-                    <div className="fixed bottom-0 right-0 w-80 h-80 bg-secondary/15 blur-3xl rounded-full"></div>
+                <div className="relative h-screen overflow-auto inset-0 bg-secondary/8 bg-[radial-gradient(circle_at_center,_#ffff,_transparent_60%)] md:px-16">
                     {/* Public Navbar */}
                     <Navbar />
                     <Outlet />

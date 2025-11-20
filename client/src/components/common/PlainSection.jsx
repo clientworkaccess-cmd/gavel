@@ -74,7 +74,7 @@ const PricingTier = ({
             </span>
             {showDollarSign && (
               <span className="text-gray-500 ml-1 text-sm font-medium">
-                /month
+                /month per seat
               </span>
             )}
           </div>
@@ -129,7 +129,7 @@ const pricingTiers = [
   },
   {
     title: "Professional",
-    price: 9999,
+    price: 249,
     description: "Ideal for growing teams",
     features: [
       "Up to 150 AI phone interviews per month",
