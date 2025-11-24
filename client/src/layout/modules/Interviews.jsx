@@ -29,7 +29,6 @@ import {
     SelectValue,
 } from "@/components/ui/select";
 import { FaGavel } from "react-icons/fa";
-import VapiWidget from "@/components/common/VoiceInterviewSection";
 
 
 const Interview = () => {
@@ -57,23 +56,19 @@ const Interview = () => {
         setVapi(vapiInstance);
 
         vapiInstance.on('call-start', () => {
-            console.log('Call started');
             setIsConnected(true);
         });
 
         vapiInstance.on('call-end', () => {
-            console.log('Call ended');
             setIsConnected(false);
             setIsSpeaking(false);
         });
 
         vapiInstance.on('speech-start', () => {
-            console.log('Assistant started speaking');
             setIsSpeaking(true);
         });
 
         vapiInstance.on('speech-end', () => {
-            console.log('Assistant stopped speaking');
             setIsSpeaking(false);
         });
 
@@ -281,35 +276,36 @@ const Interview = () => {
 
             const text = await webhookReport.text()
             const webhookReportData = text ? JSON.parse(text) : null;
-
+            
             if (webhookReportData) {
-                webhookReportData.summary = JSON.parse(webhookReportData.summary);
-                webhookReportData.redFlags = JSON.parse(webhookReportData.redFlags);
-                webhookReportData.transcript = JSON.parse(webhookReportData.transcript);
+                webhookReportData[0].summary = JSON.parse(webhookReportData[0].summary);
+                webhookReportData[0].transcript = JSON.parse(webhookReportData[0].transcript);
             }
+            console.log(webhookReportData[0]);
 
-            await postReq(API_ENDPOINTS.INTERVIEW, webhookReportData)
+            await postReq(API_ENDPOINTS.INTERVIEW, webhookReportData[0])
             setLoading(false)
             fetchPositions();
         } catch (err) {
             console.error("Error fetching/saving report:", err);
             toast.error("Interview ended but saving failed");
+            setLoading(false)
         }
     };
 
     return (
-        <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-50 via-white to-blue-50 p-6">
+        <div className="min-h-screen flex items-center justify-center p-6">
             <ToastContainer position="top-right" autoClose={3000} />
-            <Card className="w-full max-w-4xl backdrop-blur-xl bg-white/80 border border-gray-200 shadow-2xl rounded-3xl overflow-hidden">
-                <CardHeader className="text-center py-8 border-b border-gray-100">
+            <Card className="w-full max-w-4xl backdrop-blur-xl bg-transprent border border-foreground/60 pb-0 shadow-2xl rounded-3xl overflow-hidden">
+                <CardHeader className="text-center py-8 border-b border-foreground">
                     <div className="flex flex-col items-center space-y-3">
-                        <div className="h-16 w-16 rounded-full bg-blue-100 flex items-center justify-center">
-                            <FaGavel className="h-8 w-8 text-blue-600" />
+                        <div className="h-16 w-16 rounded-full bg-foreground/70 flex items-center justify-center">
+                            <FaGavel className="h-8 w-8 text-secondary" />
                         </div>
-                        <CardTitle className="text-3xl font-semibold text-gray-800">
+                        <CardTitle className="text-3xl font-semibold text-foreground/90">
                             Gavel AI Interview
                         </CardTitle>
-                        <p className="text-sm text-gray-500">
+                        <p className="text-sm text-foreground/50">
                             Hello, {name || "Candidate"} 👋 — Get ready for your smart
                             interview powered by AI
                         </p>
@@ -318,16 +314,16 @@ const Interview = () => {
 
                 <CardContent className="px-6 py-8">
                     <Tabs value={activeTab} onValueChange={setActiveTab}>
-                        <TabsList className="grid grid-cols-2 mb-6 bg-gray-100 rounded-full p-1 w-full">
+                        <TabsList className="grid grid-cols-2 mb-6 bg-transparent rounded-full p-1 w-full border border-foreground/60">
                             <TabsTrigger
                                 value="interview"
-                                className="data-[state=active]:bg-white data-[state=active]:text-blue-600 rounded-full transition-all"
+                                className="data-[state=active]:bg-foreground/80 data-[state=active]:text-secondary rounded-full transition-all"
                             >
                                 Interview
                             </TabsTrigger>
                             <TabsTrigger
                                 value="instructions"
-                                className="data-[state=active]:bg-white data-[state=active]:text-blue-600 rounded-full transition-all"
+                                className="data-[state=active]:bg-foreground/80 data-[state=active]:text-secondary rounded-full transition-all"
                             >
                                 Instructions
                             </TabsTrigger>
@@ -345,14 +341,14 @@ const Interview = () => {
                                     <div className="flex flex-col items-center space-y-6">
                                         <div className="flex justify-between items-center px-4 w-full pb-4 gap-4 flex-col sm:flex-row">
                                             <div className="w-full max-w-sm">
-                                                <label className="block text-sm font-medium text-gray-700 mb-2">
+                                                <label className="block text-sm font-medium text-foreground/50 mb-2">
                                                     Select a Position
                                                 </label>
                                                 <Select
                                                     value={selectedPosition}
                                                     onValueChange={setSelectedPosition}
                                                 >
-                                                    <SelectTrigger className="w-full border-gray-300 bg-white/60 backdrop-blur-sm">
+                                                    <SelectTrigger className="w-full border-foreground/60 backdrop-blur-sm">
                                                         <SelectValue
                                                             placeholder={
                                                                 loading
@@ -361,7 +357,7 @@ const Interview = () => {
                                                             }
                                                         />
                                                     </SelectTrigger>
-                                                    <SelectContent>
+                                                    <SelectContent className="max-w-95 max-h-40">
                                                         {positions?.length > 0 ? (
                                                             positions.map((pos) =>
                                                                 pos.status === "open" ? (
@@ -382,17 +378,17 @@ const Interview = () => {
                                                 </Select>
                                             </div>
                                             <div className="w-full max-w-sm">
-                                                <label className="block text-sm font-medium text-gray-700 mb-2">
+                                                <label className="block text-sm font-medium text-foreground/50 mb-2">
                                                     Select a Language
                                                 </label>
                                                 <Select
                                                     value={selectedLanguage}
                                                     onValueChange={setSelectedLanguage}
                                                 >
-                                                    <SelectTrigger className="w-full border-gray-300 bg-white/60 backdrop-blur-sm">
+                                                    <SelectTrigger className="w-full border-foreground/60 backdrop-blur-sm">
                                                         <SelectValue placeholder="Choose a language" />
                                                     </SelectTrigger>
-                                                    <SelectContent>
+                                                    <SelectContent className="max-w-95 max-h-40">
                                                         <SelectItem value="english">
                                                             English
                                                         </SelectItem>
@@ -408,7 +404,7 @@ const Interview = () => {
                                                 whileTap={{ scale: 0.95 }}
                                                 onClick={handleBeginInterview}
                                                 disabled={loading}
-                                                className="relative h-24 w-24 flex items-center justify-center rounded-full bg-gradient-to-br from-blue-600 to-blue-700 text-white shadow-lg hover:shadow-blue-300/50 transition-all"
+                                                className="relative h-24 w-24 flex items-center justify-center rounded-full bg-gradient-to-br from-secondary to-blue-700 text-white shadow-lg hover:shadow-blue-300/50 transition-all"
                                             >
                                                 {loading ? (
                                                     <Loader2 className="h-8 w-8 animate-spin" />
@@ -432,7 +428,7 @@ const Interview = () => {
                                         )}
 
                                         {interviewActive && (
-                                            <Alert className="border-blue-200 bg-blue-50 text-blue-800">
+                                            <Alert className="border-foreground/60 bg-secondary/10 text-secondary">
                                                 <Info className="h-4 w-4" />
                                                 <AlertTitle>Interview in Progress</AlertTitle>
                                                 <AlertDescription>
@@ -443,7 +439,7 @@ const Interview = () => {
                                         )}
 
                                         {interviewCompleted && (
-                                            <Alert className="border-green-200 bg-green-50 text-green-800">
+                                            <Alert className="border-green-200 text-green-800">
                                                 <CheckCircle2 className="h-4 w-4" />
                                                 <AlertTitle>Interview Completed</AlertTitle>
                                                 <AlertDescription>
@@ -462,8 +458,8 @@ const Interview = () => {
                                     exit={{ opacity: 0, y: -10 }}
                                     transition={{ duration: 0.4 }}
                                 >
-                                    <div className="space-y-4 text-sm text-gray-700 leading-relaxed">
-                                        <Alert className="bg-blue-50 border-blue-200 text-blue-700">
+                                    <div className="space-y-4 text-sm text-foreground/50 leading-relaxed">
+                                        <Alert className="bg-secondary/10 border-foreground/60 text-secondary">
                                             <Info className="h-4 w-4" />
                                             <AlertTitle>Before You Start</AlertTitle>
                                             <AlertDescription>
@@ -477,7 +473,7 @@ const Interview = () => {
                                             <li>Click the red button when you wish to end.</li>
                                             <li>Interview duration: ~3-5 minutes.</li>
                                         </ul>
-                                        <div className="p-4 rounded-xl bg-gray-50 border text-xs text-gray-600">
+                                        <div className="p-4 rounded-xl border border-foreground/60 text-xs text-foreground/50">
                                             <p className="font-medium mb-1">
                                                 Technical Requirements:
                                             </p>
@@ -495,9 +491,9 @@ const Interview = () => {
                     </Tabs>
                 </CardContent>
 
-                <CardFooter className="text-xs text-gray-500 border-t border-gray-100 py-4 text-center bg-white/60 backdrop-blur-md">
+                <CardFooter className="text-xs text-foreground/40 border-t border-foreground py-4 text-center bg-secondary backdrop-blur-md">
                     Powered by{" "}
-                    <span className="text-blue-600 font-semibold">&nbsp;Gavel AI</span> •
+                    <span className="font-semibold">&nbsp;Gavel AI</span> •
                     Voice Intelligence by Vapi
                 </CardFooter>
             </Card>

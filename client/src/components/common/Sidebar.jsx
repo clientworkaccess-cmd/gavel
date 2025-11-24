@@ -99,8 +99,8 @@ const Sidebar = ({ collapsed, setCollapsed }) => {
         to={link.to}
         onClick={() => isMobile && setCollapsed(true)}
         className={`flex items-center gap-3 px-4 py-2 rounded-md text-sm font-medium transition-colors ${isActive
-          ? "bg-blue-100 text-blue-700"
-          : "text-gray-700 hover:bg-gray-100 hover:text-blue-600"
+          ? "bg-foreground/90 text-secondary"
+          : "text-foreground hover:bg-foreground hover:text-blue-600"
           }`}
       >
         <Icon className="w-5 h-5" />
@@ -110,11 +110,11 @@ const Sidebar = ({ collapsed, setCollapsed }) => {
   };
 
   const sidebarContent = (
-    <div className="min-h-screen flex flex-col h-full bg-white border-r border-gray-200 overflow-y-auto">
+    <div className="min-h-screen flex flex-col h-full text-foreground border-r border-foreground/20 overflow-y-auto">
       {/* Header */}
-      <div className="flex items-center justify-between px-4 py-3 border-b border-gray-100">
+      <div className="flex items-center justify-between px-4 py-3 border-b border-foreground/20">
         {!collapsed && (
-          <h2 className="text-lg font-bold text-blue-700">
+          <h2 className="text-lg font-bold text-secondary">
             {role === "admin" ? "Admin Portal" : role === "candidate" ? "Candidate Portal" : "Client Portal"}
           </h2>
         )}
@@ -130,15 +130,15 @@ const Sidebar = ({ collapsed, setCollapsed }) => {
       {/* Links */}
       <ScrollArea className="flex-1 px-2 py-4 space-y-2">
         {links.map(renderLink)}
-        <div className="border-t border-gray-100 my-3" />
+        <div className="border-t my-3" />
         {settingsLinks.map(renderLink)}
       </ScrollArea>
 
       {/* Logout */}
-      <div className="p-4 border-t border-gray-100">
+      <div className="p-4 border-t border-foreground/20">
         <Button
           variant="outline"
-          className="w-full flex items-center gap-2 text-red-600 border-red-200 hover:bg-red-50"
+          className="w-full flex items-center gap-2 text-red-600 border-red-200 hover:bg-red-700"
           onClick={() => setShowLogout(true)}
         >
           <LogOut className="w-5 h-5" />
@@ -150,7 +150,7 @@ const Sidebar = ({ collapsed, setCollapsed }) => {
 
   return (
     <aside
-      className={`min-h-screen overflow-y-auto fixed top-0 left-0 bg-white transition-all duration-300 ${collapsed ? "w-20" : "w-64"
+      className={`min-h-screen overflow-y-auto fixed top-0 left-0 transition-all duration-300 ${collapsed ? "w-20" : "w-64"
         }`}
     >
       {sidebarContent}
@@ -160,7 +160,7 @@ const Sidebar = ({ collapsed, setCollapsed }) => {
           <DialogHeader>
             <DialogTitle>Confirm Logout</DialogTitle>
           </DialogHeader>
-          <p className="text-sm text-gray-600">
+          <p className="text-sm text-foreground/50">
             Are you sure you want to log out?
           </p>
           <DialogFooter className="flex justify-end gap-2 mt-4">

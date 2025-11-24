@@ -58,18 +58,19 @@ const Profile = () => {
         );
 
     return (
-        <div className="max-w-4xl mx-auto mt-10 p-6 bg-white shadow-lg rounded-2xl border border-gray-200 ml-8 lg:ml-auto">
+        <div className="max-w-4xl mx-auto mt-10 py-6 shadow-lg rounded-2xl border border-foreground/60 ml-8 lg:ml-auto">
             <ToastContainer position="top-right" autoClose={3000} />
-            <h2 className="text-3xl font-bold mb-6 text-gray-800">
+            <h2 className="text-3xl font-bold mb-8 p-4 border-b border-foreground/60 text-foreground text-center">
                 {user?.name} Profile
             </h2>
 
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
                 {/* Personal Info */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 px-6">
                     <div>
                         <Label>Name</Label>
                         <Input
+                        className="border-foreground/60 text-foreground/40"
                             {...register("name", { required: "Name is required" })}
                         />
                         {errors.name && (
@@ -80,6 +81,7 @@ const Profile = () => {
                     <div>
                         <Label>Email</Label>
                         <Input
+                        className="border-foreground/60 text-foreground/40"
                             type="email"
                             {...register("email", {
                                 required: "Email is required",
@@ -97,6 +99,7 @@ const Profile = () => {
                     <div>
                         <Label>Phone Number</Label>
                         <Input
+                        className="border-foreground/60 text-foreground/40"
                             type="text"
                             {...register("phoneNumber", {
                                 pattern: {
@@ -117,6 +120,7 @@ const Profile = () => {
                         <div>
                             <Label>Address</Label>
                             <Input
+                            className="border-foreground/60 text-foreground/40"
                                 {...register("address")}
                                 placeholder="e.g. 123 Main St, City"
                             />
@@ -125,6 +129,7 @@ const Profile = () => {
                         <div>
                             <Label>LinkedIn Profile</Label>
                             <Input
+                            className="border-foreground/60 text-foreground/40"
                                 {...register("linkedinProfile", {
                                     pattern: {
                                         value:
@@ -144,6 +149,7 @@ const Profile = () => {
                         <div>
                             <Label>Qualification</Label>
                             <Input
+                            className="border-foreground/60 text-foreground/40"
                                 {...register("qualification")}
                                 placeholder="e.g. BSc Computer Science"
                             />
@@ -152,10 +158,11 @@ const Profile = () => {
                 </div>
 
                 {/* Skills */}
-                {role === "candidate" && <>
-                    <div>
+                {role === "candidate" && <div className="px-6 space-y-6">
+                    <div >
                         <Label>Skills (comma separated)</Label>
                         <Input
+                        className="border-foreground/60 text-foreground/40"
                             {...register("skills", {
                                 pattern: {
                                     value: /^\s*\w+(\s*\w+)*\s*,\s*\w+(\s*\w+)*(?:\s*,\s*\w+(\s*\w+)*)*\s*$/,
@@ -173,16 +180,17 @@ const Profile = () => {
                         {skills.length > 0 && skills.map((item, ind) => {
                             return item.trim() && <p key={ind} className="p-1 px-4 bg-secondary/20 rounded-full">{item}</p>
                         })}
-                    </div> </>}
+                    </div> </div>}
                 {/* Password Update */}
-                <div className="border-t pt-4 mt-6">
-                    <h3 className="font-semibold mb-2 text-gray-700">
+                <div className="border-t p-6">
+                    <h3 className="font-semibold pb-8 text-foreground text-center">
                         Change Password
                     </h3>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div>
                             <Label>New Password</Label>
                             <Input
+                            className="border-foreground/60 text-foreground/40"
                                 type="password"
                                 {...register("newPassword", {
                                     minLength: {
@@ -202,6 +210,7 @@ const Profile = () => {
                         <div>
                             <Label>Confirm Password</Label>
                             <Input
+                            className="border-foreground/60 text-foreground/40"
                                 type="password"
                                 {...register("confirmPassword", {
                                     validate: (value) =>
@@ -220,7 +229,7 @@ const Profile = () => {
                 </div>
 
                 {/* Submit Button */}
-                <div className="pt-4">
+                <div className="p-6">
                     <Button
                         type="submit"
                         disabled={isSubmitting}

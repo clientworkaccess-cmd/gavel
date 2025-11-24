@@ -15,7 +15,7 @@ import {
   Tooltip,
   Legend,
 } from "chart.js";
-import { Users, Briefcase, Building2, UserCheck, UserCog, TrendingUp } from "lucide-react";
+import { Users, Briefcase, Building2, UserCheck} from "lucide-react";
 import API_ENDPOINTS from "../../config/api";
 import { getReq } from "../../axios/axios";
 
@@ -23,7 +23,7 @@ ChartJS.register(CategoryScale, LinearScale, BarElement, LineElement, ArcElement
 
 /* Helper Components */
 const StatCard = ({ title, value, Icon, color }) => (
-  <Card className="p-4 flex items-center gap-4 hover:shadow-md transition">
+  <Card className="p-4 flex items-center gap-4 hover:shadow-md transition bg-transparent border-foreground/60">
     <div
       className={`w-12 h-12 rounded-full flex items-center justify-center`}
       style={{ backgroundColor: `${color}15`, color }}
@@ -32,7 +32,7 @@ const StatCard = ({ title, value, Icon, color }) => (
     </div>
     <div>
       <p className="text-sm text-muted-foreground">{title}</p>
-      <h3 className="text-2xl font-bold">{value}</h3>
+      <h3 className="text-2xl font-bold text-center">{value}</h3>
     </div>
   </Card>
 );
@@ -80,8 +80,10 @@ const AdminDashboard = () => {
   const [companies, setCompanies] = useState([]);
   const [positions, setPositions] = useState([]);
   const [interviews, setInterviews] = useState([]);
+  const [loading , setLoading] = useState(true)
 
   useEffect(() => {
+    setLoading(true)
     const fetchAll = async () => {
       const [uRes, cRes, pRes, iRes] = await Promise.all([
         getReq(API_ENDPOINTS.USERS),
@@ -95,6 +97,7 @@ const AdminDashboard = () => {
       setCompanies(cRes?.companies || cRes || []);
       setPositions(pRes?.positions || pRes || []);
       setInterviews(iRes?.interviews || iRes || []);
+      setLoading(false)
     };
     fetchAll();
   }, []);
@@ -123,9 +126,12 @@ const AdminDashboard = () => {
     labels: uniqueRoles.map(item => item.role) ,
     datasets: [{ data: roleDist, backgroundColor: ["#6366f1", "#06b6d4", "#22c55e"] }],
   };
-
-  console.log(users);
   
+  if (loading) {
+    return <div className="h-screen flex justify-center items-center">
+      <div className="loader"></div>
+    </div>
+  }
 
   return (
     <div className=" p-6 space-y-8">
@@ -145,7 +151,7 @@ const AdminDashboard = () => {
 
       {/* Charts */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <Card>
+        <Card className="bg-transparent border-foreground/60">
           <CardHeader>
             <div className="flex justify-between items-center">
               <h3 className="font-semibold text-lg">Monthly New Candidates</h3>
@@ -157,7 +163,7 @@ const AdminDashboard = () => {
           </CardContent>
         </Card>
 
-        <Card>
+        <Card className="bg-transparent border-foreground/60">
           <CardHeader>
             <div className="flex justify-between items-center">
               <h3 className="font-semibold text-lg">Interview Trend</h3>
@@ -171,7 +177,7 @@ const AdminDashboard = () => {
       </div>
 
       {/* Role distribution */}
-      <Card>
+      <Card className="bg-transparent border-foreground/60">
         <CardHeader>
           <h3 className="font-semibold text-lg">Roles Distribution</h3>
         </CardHeader>

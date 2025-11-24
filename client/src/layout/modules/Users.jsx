@@ -203,28 +203,28 @@ const Data = () => {
   return (
     <div className="p-6 ">
       <ToastContainer position="top-right" autoClose={3000} />
-      <div className="bg-white border rounded-2xl shadow-sm p-6">
+      <div className="border rounded-2xl shadow-sm p-6">
         {/* Header */}
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-4">
           <div>
             <h2 className="text-2xl font-semibold capitalize">{entity} Management</h2>
-            <p className="text-sm text-gray-500">Manage {entity} — add, edit, view, or delete records.</p>
+            <p className="text-sm text-foreground/50">Manage {entity} — add, edit, view, or delete records.</p>
           </div>
 
           <div className="flex items-center gap-2 flex-wrap justify-between">
             <div className="relative max-lg:w-full w-64">
-              <Search className="absolute left-3 top-2.5 w-4 h-4 text-gray-500" />
+              <Search className="absolute left-3 top-2.5 w-4 h-4 text-foreground/50" />
               <Input
                 placeholder={`Search ${entity}...`}
                 value={globalFilter}
                 onChange={(e) => setGlobalFilter(e.target.value)}
-                className="pl-8 "
+                className="pl-8 border-foreground/60"
               />
             </div>
 
             <DropdownMenu>
               <DropdownMenuTrigger asChild className="">
-                <Button variant="outline" className="flex items-center gap-2">
+                <Button variant="outline" className="flex items-center gap-2 border-foreground/60 bg-transparent">
                   <Columns className="w-4 h-4" /> Columns
                 </Button>
               </DropdownMenuTrigger>
@@ -242,7 +242,7 @@ const Data = () => {
             </DropdownMenu>
 
             {pathname !== "/admin/candidates" && (
-              <Button onClick={() => { reset(); setAddOpen(true); }} className="">
+              <Button onClick={() => { reset(); setAddOpen(true); }} variant="secondary">
                 <Plus className="w-4 h-4 mr-2" /> Add
               </Button>
             )}
@@ -258,7 +258,7 @@ const Data = () => {
               {table.getHeaderGroups().map((hg) => (
                 <TableRow key={hg.id}>
                   {hg.headers.map((header) => (
-                    <TableHead key={header.id} className="bg-gray-100 text-gray-700 text-center">
+                    <TableHead key={header.id} className="text-foreground text-center font-extrabold">
                       {flexRender(header.column.columnDef.header, header.getContext())}
                     </TableHead>
                   ))}
@@ -273,7 +273,7 @@ const Data = () => {
                 </TableRow>
               ) : table.getRowModel().rows.length === 0 ? (
                 <TableRow>
-                  <TableCell colSpan={columns.length} className="text-center py-6 text-gray-500">No records found.</TableCell>
+                  <TableCell colSpan={columns.length} className="text-center py-6 text-foreground/50">No records found.</TableCell>
                 </TableRow>
               ) : (
                 table.getRowModel().rows.map((row) => (
@@ -300,8 +300,8 @@ const Data = () => {
               <ChevronLeft className="w-4 h-4 mr-1" /> Prev
             </Button>
 
-            <span className="text-sm text-gray-700">
-              Page <Badge>{Number(pageIndex) + 1}</Badge> of <Badge>{totalPages}</Badge>
+            <span className="text-sm text-foreground/60">
+              Page <Badge variant="outline">{Number(pageIndex) + 1}</Badge> of <Badge variant="outline">{totalPages}</Badge>
             </span>
 
             <Button
@@ -343,7 +343,7 @@ const Data = () => {
       {/* ========================= MODALS ========================= */}
 
       {/* Add Modal */}
-      <Modal type="add" show={addOpen} setShow={setAddOpen} variant="user" />
+      <Modal type="add" show={addOpen} setShow={setAddOpen} variant="user" entity={entity}/>
 
       {/* Edit Modal */}
       <Modal type="edit" show={editOpen} setShow={setEditOpen} variant="user" data={editData} />

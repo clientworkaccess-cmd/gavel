@@ -20,8 +20,8 @@ export default function Navbar() {
   ];
 
   return (
-    <header className="sticky top-5 z-50 mx-auto " >
-      <div className="mx-auto bg-linear-to-r from-secondary/30 to-gray-200 backdrop-blur-md border-b border-gray-200 rounded-full flex items-center justify-between px-6 py-3">
+    <header className="sticky top-0 z-50 bg-background w-full md:px-16" >
+      <div className="flex items-center justify-between px-6 py-3">
         {/* Logo */}
         <Link to="/" className="flex items-center gap-2">
           <FaGavel className="text-secondary text-3xl" />
@@ -37,7 +37,7 @@ export default function Navbar() {
                 to={link.path}
                 className={`font-medium text-lg transition-colors ${location.pathname === link.path
                   ? "text-secondary"
-                  : "text-gray-700 hover:text-secondary"
+                  : "text-foreground hover:text-secondary"
                   }`}
               >
                 {link.name}
@@ -47,12 +47,12 @@ export default function Navbar() {
         </nav>
         <div className="hidden lg:flex gap-2 items-center ">
           <Link to="/login">
-            <Button variant="ghost" className="text-lg p-6 rounded-full border border-white">
+            <Button variant="ghost" className="text-lg p-6 py-3 rounded-full border border-secondary">
               Login
             </Button>
           </Link>
           <Link to="/signup">
-            <Button variant="outline" className="text-lg p-6 rounded-full border text-white bg-secondary/80 hover:bg-secondary/60 hover:text-white">
+            <Button variant="outline" className="text-lg p-6 py-3 rounded-full border text-foreground bg-secondary/80 hover:bg-secondary/60 hover:text-foreground">
               Signup
             </Button>
           </Link>
@@ -66,7 +66,7 @@ export default function Navbar() {
                 <path strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" d="M3 6h18M3 12h18M3 18h18" />
               </svg>
             </SheetTrigger>
-            <SheetContent side="left" className="bg-white w-64">
+            <SheetContent side="left" className="w-64">
               <div className="flex flex-col gap-5 mt-8 px-4">
                 {links.map((link) => (
                   <Link
@@ -75,7 +75,7 @@ export default function Navbar() {
                     onClick={() => setIsOpen(false)}
                     className={`text-lg font-medium transition-colors ${location.pathname === link.path
                       ? "text-secondary"
-                      : "text-gray-700 hover:text-secondary"
+                      : "text-foreground hover:text-secondary"
                       }`}
                   >
                     {link.name}

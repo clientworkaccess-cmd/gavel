@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import { motion } from "framer-motion";
 import {
   Accordion,
@@ -6,7 +5,6 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import { Card, CardContent } from "@/components/ui/card";
 
 const FAQSection = ({ pricing }) => {
   const faqs = [
@@ -77,6 +75,22 @@ const FAQSection = ({ pricing }) => {
 
   const data = pricing ? faqs : commonFaqs;
 
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: { staggerChildren: 0.08, delayChildren: 0.2 },
+    },
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.5, ease: "easeOut" },
+    },
+  };
   return (
     <section className="py-20 px-4">
       <motion.div
@@ -86,10 +100,10 @@ const FAQSection = ({ pricing }) => {
         transition={{ duration: 0.6, ease: "easeOut" }}
         viewport={{ once: true }}
       >
-        <h2 className="text-4xl md:text-5xl font-bold mb-4 text-secondary">
+        <h2 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
           Frequently Asked Questions
         </h2>
-        <p className="text-lg text-gray-500">
+        <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
           {pricing
             ? "Find answers to common questions about our pricing plans."
             : "Everything you need to know about how Gavel works."}
@@ -97,38 +111,29 @@ const FAQSection = ({ pricing }) => {
       </motion.div>
 
       <motion.div
-        initial={{ opacity: 0, y: 30 }}
+        className=""
+        initial={{ opacity: 0, y: 40 }}
         whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, delay: 0.1 }}
+        variants={containerVariants}
         viewport={{ once: true }}
       >
-        <Card className="border border-gray-200 shadow-sm rounded-2xl bg-white/70 backdrop-blur-sm">
-          <CardContent className="px-4 md:px-8">
-            <Accordion type="single" collapsible className="w-full space-y-2">
-              {data.map((faq, index) => (
-                <motion.div
-                  key={index}
-                  initial={{ opacity: 0, y: 15 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.4, delay: index * 0.05 }}
-                  viewport={{ once: true }}
-                >
-                  <AccordionItem
-                    value={`faq-${index}`}
-                    className="rounded-lg border border-gray-100 bg-white hover:bg-gray-50 transition-colors"
-                  >
-                    <AccordionTrigger className="text-left text-lg font-medium text-gray-800 px-4 py-3">
-                      {faq.question}
-                    </AccordionTrigger>
-                    <AccordionContent className="text-gray-600 px-4 pb-4 leading-relaxed">
-                      {faq.answer}
-                    </AccordionContent>
-                  </AccordionItem>
-                </motion.div>
-              ))}
-            </Accordion>
-          </CardContent>
-        </Card>
+        <Accordion type="single" collapsible className="w-full space-y-3">
+          {data.map((faq, index) => (
+            <motion.div key={index} variants={itemVariants}>
+              <AccordionItem
+                value={`faq-${index}`}
+                className="rounded-lg border bg-card/50 backdrop-blur hover:bg-muted/50 transition-colors"
+              >
+                <AccordionTrigger className="text-left text-base md:text-lg font-medium text-foreground px-6 py-4">
+                  {faq.question}
+                </AccordionTrigger>
+                <AccordionContent className="text-muted-foreground px-6 pb-4 leading-relaxed">
+                  {faq.answer}
+                </AccordionContent>
+              </AccordionItem>
+            </motion.div>
+          ))}
+        </Accordion>
       </motion.div>
     </section>
   );

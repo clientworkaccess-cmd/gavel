@@ -1,8 +1,7 @@
-/* eslint-disable no-unused-vars */
-import React from "react";
 import { Check } from "lucide-react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
+
 import {
   Card,
   CardHeader,
@@ -32,9 +31,8 @@ const PricingTier = ({
   popular = false,
   index,
 }) => {
-  const showDollarSign =
-    typeof price === "number" ||
-    (!isNaN(Number(price)) && price !== "Free Trial" && price !== "Contact Sales");
+  const isNumericPrice = typeof price === 'number';
+  const linkDestination = title === "Starter" ? "/login" : "/contact";
 
   return (
     <motion.div
@@ -45,9 +43,9 @@ const PricingTier = ({
       custom={index}
     >
       <Card
-        className={`relative flex flex-col h-full border rounded-2xl transition-all duration-300 ${popular
-            ? "border-secondary shadow-lg scale-[1.02] bg-blue-50/30"
-            : "border-gray-200 hover:shadow-md hover:bg-blue-50"
+        className={`relative flex flex-col h-full border rounded-2xl transition-all duration-300 bg-transparent ${popular
+            ? "border-secondary shadow-lg shadow-secondary/20 scale-[1.02] hover:scale-[1.04]"
+            : "border-border hover:border-secondary/50 hover:shadow-md hover:scale-[1.02]"
           }`}
       >
         {/* Most Popular Badge */}
@@ -57,28 +55,29 @@ const PricingTier = ({
             whileInView={{ opacity: 1, scale: 1 }}
             transition={{ delay: 0.2 }}
             className="absolute -top-3 right-4"
+            viewport={{ once: true }}
           >
-            <span className="inline-block bg-secondary text-white text-xs font-semibold py-1 px-3 rounded-full shadow-sm">
+            <span className="inline-block bg-secondary text-foreground/80 text-xs font-semibold py-1 px-3 rounded-full shadow-sm">
               Most Popular
             </span>
           </motion.div>
         )}
 
-        <CardHeader className="pb-4 text-center md:text-left">
-          <CardTitle className="text-2xl font-bold text-gray-900">
+        <CardHeader className="pb-4">
+          <CardTitle className="text-2xl font-bold text-foreground">
             {title}
           </CardTitle>
-          <div className="mt-2 mb-1 flex items-end justify-center md:justify-start">
-            <span className="text-4xl font-extrabold text-gray-900">
-              {showDollarSign ? `$${price}` : price}
+          <div className="mt-2 mb-1 flex items-baseline">
+            <span className="text-4xl font-extrabold text-foreground">
+              {isNumericPrice ? `$${price}` : price}
             </span>
-            {showDollarSign && (
-              <span className="text-gray-500 ml-1 text-sm font-medium">
+            {isNumericPrice && (
+              <span className="text-muted-foreground ml-1.5 text-sm font-medium">
                 /month per seat
               </span>
             )}
           </div>
-          <CardDescription className="text-gray-600 text-base">
+          <CardDescription className="text-muted-foreground text-base">
             {description}
           </CardDescription>
         </CardHeader>
@@ -87,8 +86,8 @@ const PricingTier = ({
           <ul className="space-y-3">
             {features?.map((feature, idx) => (
               <li key={idx} className="flex items-start">
-                <Check className="h-5 w-5 text-secondary mr-2 shrink-0 mt-0.5" />
-                <span className="text-gray-700 text-sm">{feature}</span>
+                <Check className="h-5 w-5 text-primary mr-3 shrink-0 mt-0.5" />
+                <span className="text-muted-foreground text-sm">{feature}</span>
               </li>
             ))}
           </ul>
@@ -100,11 +99,11 @@ const PricingTier = ({
               asChild
               variant={buttonVariant}
               className={`w-full font-semibold py-2.5 ${popular
-                  ? "bg-secondary hover:bg-blue-700 text-white"
-                  : "border-secondary text-secondary hover:bg-blue-50"
+                  ? "bg-secondary hover:bg-secondary/90 text-foreground"
+                  : "border-secondary text-foreground hover:bg-secondary/10 bg-transparent"
                 }`}
             >
-              <Link to={price === "Free Trial" ? "/login" : "/contact"}>{buttonText}</Link>
+              <Link to={linkDestination}>{buttonText}</Link>
             </Button>
           </motion.div>
         </CardFooter>
@@ -171,11 +170,11 @@ const PricingSection = () => {
         viewport={{ once: true }}
         className="py-20 text-center px-6"
       >
-        <h1 className="text-4xl md:text-5xl font-bold mb-4 text-secondary">Transparent Pricing Plans</h1>
-        <p className="text-gray-600 mb-2 text-lg">
+        <h1 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">Transparent Pricing Plans</h1>
+        <p className="text-muted-foreground mb-2 text-lg max-w-2xl mx-auto">
           Choose the perfect plan for your recruitment needs
         </p>
-        <p className="text-gray-500 mb-0">
+        <p className="text-muted-foreground/80 mb-0">
           All plans include a 14-day free trial — no credit card required
         </p>
       </motion.section>

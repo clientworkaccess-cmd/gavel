@@ -199,32 +199,32 @@ const Position = () => {
   const totalPages = table.getPageCount();
 
   return (
-    <div className="flex-1 p-4 sm:p-6 bg-gray-50 min-h-screen">
+    <div className="flex-1 p-4 sm:p-6 min-h-screen">
       <ToastContainer position="top-right" autoClose={3000} />
 
-      <div className="bg-white border rounded-2xl shadow-sm p-6">
+      <div className="border rounded-2xl shadow-sm p-6">
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-4">
           <div>
             <h2 className="text-2xl font-semibold">Position Management</h2>
-            <p className="text-sm text-gray-500">
+            <p className="text-sm text-foreground/50">
               Manage position — add, edit, or view records.
             </p>
           </div>
 
           <div className="flex flex-wrap items-center gap-2 justify-between">
             <div className="relative max-lg:w-full w-64">
-              <Search className="absolute left-3 top-2.5 w-4 h-4 text-gray-500" />
+              <Search className="absolute left-3 top-2.5 w-4 h-4 text-foreground/50" />
               <Input
                 placeholder="Search position..."
                 value={globalFilter}
                 onChange={(e) => setGlobalFilter(e.target.value)}
-                className="pl-8"
+                className="pl-8 border-foreground/60"
               />
             </div>
 
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="outline" className="flex items-center gap-2">
+                <Button variant="outline" className="flex items-center gap-2 border-foreground/60 bg-transparent">
                   <Columns className="w-4 h-4" /> Columns
                 </Button>
               </DropdownMenuTrigger>
@@ -241,7 +241,7 @@ const Position = () => {
               </DropdownMenuContent>
             </DropdownMenu>
 
-            <Button onClick={() => setShowAdd(true)}>
+            <Button variant="secondary" onClick={() => setShowAdd(true)}>
               <Plus className="w-4 h-4 mr-2" /> Add
             </Button>
           </div>
@@ -256,7 +256,7 @@ const Position = () => {
                   {hg.headers.map((header) => (
                     <TableHead
                       key={header.id}
-                      className="bg-gray-100 text-gray-700 text-center"
+                      className="text-foreground text-center font-extrabold"
                     >
                       {flexRender(
                         header.column.columnDef.header,
@@ -279,7 +279,7 @@ const Position = () => {
                 <TableRow>
                   <TableCell
                     colSpan={columns.length}
-                    className="text-center py-6 text-gray-500"
+                    className="text-center py-6 text-foreground/50"
                   >
                     No records found.
                   </TableCell>
@@ -312,7 +312,7 @@ const Position = () => {
             </Button>
 
             <span className="text-sm text-gray-700">
-              Page <Badge>{Number(pageIndex) + 1}</Badge> of <Badge>{totalPages}</Badge>
+              Page <Badge variant="outline">{Number(pageIndex) + 1}</Badge> of <Badge variant="outline">{totalPages}</Badge>
             </span>
 
             <Button

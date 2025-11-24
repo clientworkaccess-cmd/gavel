@@ -1,6 +1,7 @@
 import bcrypt from "bcryptjs";
 import { User } from "../models/user.js";
 import dbConnection from "../utils/db.js";
+import Company from "../models/company.js";
 
 const getAllUsers = async (req, res) => {
     try {
@@ -56,6 +57,7 @@ const updateUser = async (req, res) => {
             skills,
             qualification,
             overAllFitScore,
+            company,
         } = req.body;
 
         // 1️⃣ Find existing user
@@ -87,9 +89,15 @@ const updateUser = async (req, res) => {
         if (skills) user.skills = skills
         if (qualification) user.qualification = qualification
         if (overAllFitScore) user.overAllFitScore = overAllFitScore
+        if (company) user.company = company
+
 
         // 4️⃣ Save updated user
         const updatedUser = await user.save();
+
+        await Company.findByIdAndUpdate(company, {
+            $push: { members: user._id },
+        });
 
         res.status(200).json({
             success: true,

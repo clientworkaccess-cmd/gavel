@@ -1,5 +1,4 @@
 import { useRoutes } from "react-router-dom";
-
 import EmailVerification from "../layout/auth/EmailVerification";
 import ForgotPassword from "../layout/auth/ForgotPassword";
 import LoginForm from "../layout/auth/Login";

@@ -1,24 +1,21 @@
-/* eslint-disable no-unused-vars */
 import { motion } from "framer-motion";
 import { Star, TrendingUp, Wallet } from "lucide-react";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
-import { Link } from "react-router-dom";
-import { Button } from "../ui/button";
-import { FaPhoneAlt } from "react-icons/fa";
+
 
 const stats = [
   {
-    icon: TrendingUp,
+    icon: <TrendingUp className="w-12 h-12 text-primary" />,
     value: "70%",
     label: "Faster to Shortlist",
   },
   {
-    icon: Wallet,
+    icon: <Wallet className="w-12 h-12 text-primary" />,
     value: "60%",
     label: "Lower Recruiter Spend",
   },
   {
-    icon: Star,
+    icon: <Star className="w-12 h-12 text-primary" />,
     value: "4.8 / 5",
     label: "Candidate Experience",
   },
@@ -26,101 +23,66 @@ const stats = [
 
 const SocialProofSection = () => {
   return (
-    <>
-      <section className="py-20 px-6 text-center">
-        {/* Section Heading */}
-        <motion.h2
-          initial={{ opacity: 0, y: 30 }}
+    <section className="py-20 ">
+      <div className="container mx-auto px-4">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          className="text-4xl font-bold text-secondary mb-10"
+          transition={{ duration: 0.5 }}
+          viewport={{ once: true }}
+          className="text-center mb-12"
         >
-          Social <span className="text-blue-600">Proof</span>
-        </motion.h2>
+          <h2 className="text-3xl md:text-4xl font-bold tracking-tight mb-4 bg-gradient-to-r from-foreground to-secondary bg-clip-text text-transparent">
+            Trusted by Leading Firms
+          </h2>
+          <p className="text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto">
+            Companies that use Gavel hire faster, reduce costs, and provide a better candidate experience.
+          </p>
+        </motion.div>
 
-        {/* Stats Section */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 mb-16">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
           {stats.map((stat, index) => (
             <motion.div
               key={index}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: index * 0.2 }}
-              className="p-8 bg-white shadow-md rounded-2xl hover:shadow-xl transition-all duration-300"
+              initial={{ opacity: 0, y: 50, scale: 0.9 }}
+              whileInView={{ opacity: 1, y: 0, scale: 1 }}
+              transition={{ duration: 0.5, delay: index * 0.1 }}
+              viewport={{ once: true }}
             >
-              <div className="flex justify-center items-center w-14 h-14 mx-auto mb-4 bg-blue-100 rounded-full">
-                <stat.icon className="w-6 h-6 text-blue-600" />
+              <div className="text-center p-6 bg-card/50 backdrop-blur border border-border/50 rounded-lg h-full">
+                <div className="inline-block my-3">
+                  {stat.icon}
+                </div>
+                <h3 className="text-4xl font-bold text-foreground mb-2">{stat.value}</h3>
+                <p className="text-muted-foreground">{stat.label}</p>
               </div>
-              <h3 className="text-3xl font-bold text-gray-900 mb-2">{stat.value}</h3>
-              <p className="text-gray-600">{stat.label}</p>
             </motion.div>
           ))}
         </div>
 
-        {/* Testimonial */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
+          initial={{ opacity: 0, scale: 0.95 }}
+          whileInView={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.6, delay: 0.4 }}
-          className="max-w-3xl mx-auto bg-white p-10 rounded-2xl shadow-md hover:shadow-lg transition-all"
+          viewport={{ once: true }}
+          className="relative max-w-4xl mx-auto bg-card/70 backdrop-blur-lg border border-border/60 rounded-xl p-8 md:p-12 text-center"
         >
-          <p className="text-xl text-gray-800 italic mb-6">
-            “Gavel cut our early hiring steps from weeks to days.”
+          <p className="text-xl md:text-2xl font-medium text-foreground italic mb-6">
+            “Gavel cut our early hiring steps from weeks to days. It's an essential tool for any modern law firm.”
           </p>
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <Avatar className="w-16 h-16">
-              <AvatarImage src="/images/testimonial-avatar.jpg" alt="Client" />
-              <AvatarFallback>GF</AvatarFallback>
+          <div className="flex items-center justify-center gap-4">
+            <Avatar className="w-16 h-16 border-2 border-primary/50">
+              <AvatarImage src="/assets/images/Liza.jpeg" alt="Jordan Patel" />
+              <AvatarFallback>JP</AvatarFallback>
             </Avatar>
             <div>
-              <h4 className="font-semibold text-gray-900">Jordan Patel</h4>
-              <p className="text-gray-600 text-sm">Managing Partner, LexPoint Legal</p>
+              <h4 className="font-semibold text-foreground text-lg">Jordan Patel</h4>
+              <p className="text-muted-foreground">Managing Partner, LexPoint Legal</p>
             </div>
           </div>
         </motion.div>
-      </section>
-      <section className="relative bg-linear-to-r from-secondary to-secondary/65 text-white py-20 px-6 overflow-hidden ">
-        {/* Subtle background overlay */}
-        <div className="absolute inset-0 bg-[url('/images/ai-pattern.svg')] opacity-10 bg-cover"></div>
-
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          className="relative z-10 max-w-4xl mx-auto text-center"
-        >
-          <h2 className="text-4xl md:text-5xl font-bold mb-6">
-            Let <span className="text-yellow-300">Gavel</span> interview for you.
-          </h2>
-          <p className="text-lg text-blue-100 max-w-2xl mx-auto mb-10">
-            Experience AI-driven recruitment that saves time, reduces bias, and delivers top talent faster.
-          </p>
-
-          <div className="flex flex-col sm:flex-row justify-center items-center gap-4">
-            {/* Primary CTA */}
-            <Link to="/login">
-              <Button
-                size="lg"
-                className="bg-white text-secondary hover:bg-gray-100 flex items-center gap-2 font-semibold"
-              >
-                <FaPhoneAlt /> Try the Interview
-              </Button>
-            </Link>
-
-            {/* Secondary CTA */}
-            <Link to="/login">
-              <Button
-                size="lg"
-                variant="outline"
-                className="bg-white text-secondary hover:bg-gray-100 flex items-center gap-2 font-semibold"
-              >
-                Book a Demo
-              </Button>
-            </Link>
-          </div>
-        </motion.div>
-      </section>
-    </>
+      </div>
+    </section>
   );
 };
 

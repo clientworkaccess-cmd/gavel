@@ -5,7 +5,7 @@ import { BsLightningChargeFill } from "react-icons/bs";
 
 const AboutSection = () => {
   return (
-    <section className="py-24 px-6 md:px-12 text-gray-800 w-full">
+    <section className="py-24 px-6 md:px-12 w-full">
       <div className="grid lg:grid-cols-[1fr_auto_1.5fr] gap-10 items-center">
         {/* LEFT SIDE – Title */}
         <motion.div
@@ -17,7 +17,7 @@ const AboutSection = () => {
           <h2 className="text-5xl md:text-6xl font-extrabold text-secondary mb-6 leading-tight">
             About Gavel
           </h2>
-          <p className="text-gray-500 text-lg">
+          <p className="text-foreground/40 text-lg">
             Redefining recruitment through  automation and AI precision.
           </p>
         </motion.div>
@@ -37,14 +37,14 @@ const AboutSection = () => {
           transition={{ duration: 0.7 }}
           className="text-left"
         >
-          <p className="text-lg text-gray-700 leading-relaxed mb-6">
+          <p className="text-lg text-foreground/60 leading-relaxed mb-6">
             Founded in 2023, <span className="font-semibold text-secondary">Gavel</span> is transforming
             how organizations hire. Our AI-powered voice interview system evaluates
             candidates in real-time, scoring communication, skill relevance, and cultural fit —
             so teams spend less time screening and more time hiring the right people.
           </p>
 
-          <p className="text-lg text-gray-700 leading-relaxed mb-8">
+          <p className="text-lg text-foreground/60 leading-relaxed mb-8">
             Built by AI engineers and hiring experts, Gavel replaces manual calls with
             automated, unbiased, and data-backed interviews that ensure smarter, faster,
             and fairer recruitment.
@@ -52,7 +52,7 @@ const AboutSection = () => {
 
           <div className="mt-8">
             <h3 className="text-2xl font-bold mb-4 text-secondary">Our Mission</h3>
-            <p className="text-gray-600 mb-8">
+            <p className="text-foreground/60 mb-8">
               Empowering businesses to discover top talent through AI automation that’s
               intelligent, consistent, and human-friendly.
             </p>
@@ -84,13 +84,13 @@ const AboutSection = () => {
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: i * 0.15 }}
-            className="bg-gray-50 rounded-2xl p-8 text-center shadow-md hover:shadow-lg hover:bg-blue-50 transition-all duration-300"
+            className="rounded-2xl p-8 text-center border hover:scale-105 shadow-lg shadow-secondary/40 transition-all duration-300 cursor-pointer"
           >
             <div className="flex items-center justify-center w-14 h-14 bg-blue-100 rounded-full mx-auto mb-6">
               {card.icon}
             </div>
             <h4 className="text-xl font-semibold mb-2">{card.title}</h4>
-            <p className="text-gray-600">{card.desc}</p>
+            <p className="text-foreground/40">{card.desc}</p>
           </motion.div>
         ))}
       </div>

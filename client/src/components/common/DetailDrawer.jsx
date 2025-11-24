@@ -13,8 +13,8 @@ export default function DetailDrawer({ open, setOpen, data, type }) {
     // Reusable field renderer
     const DetailItem = ({ label, value }) => (
         <div className="flex flex-col space-y-1">
-            <span className="text-sm font-medium text-gray-500">{label}</span>
-            <span className="text-gray-900">{value || "—"}</span>
+            <span className="text-sm font-medium text-foreground">{label}</span>
+            <span className="text-foreground/50">{value || "—"}</span>
         </div>
     );
 
@@ -22,10 +22,10 @@ export default function DetailDrawer({ open, setOpen, data, type }) {
         <Sheet open={open} onOpenChange={setOpen}>
             <SheetContent
                 side="right"
-                className="w-[340px] sm:w-[600px] bg-white border-l border-gray-200 shadow-xl overflow-y-auto min-h-screen"
+                className="w-[340px] sm:w-[600px] border-l border-foreground/60 overflow-y-auto min-h-screen"
             >
-                <SheetHeader className="border-b pb-3 mb-4">
-                    <SheetTitle className="text-2xl font-semibold text-gray-900 tracking-tight">
+                <SheetHeader className="border-b pb-3 mb-4 border-foreground/60">
+                    <SheetTitle className="text-2xl font-semibold text-foreground tracking-tight">
                         {type === "company"
                             ? "Company Details"
                             : type === "position"
@@ -46,10 +46,10 @@ export default function DetailDrawer({ open, setOpen, data, type }) {
 
                             {data?.members?.length > 0 && (
                                 <>
-                                    <div className="text-sm font-medium text-gray-500">Members</div>
-                                    <div className="overflow-hidden border border-gray-200 rounded-lg">
+                                    <div className="text-sm font-medium text-foreground">Members</div>
+                                    <div className="overflow-hidden border border-foreground/60 rounded-lg">
                                         <Table className="min-w-full text-sm">
-                                            <TableHeader className="bg-gray-50">
+                                            <TableHeader className="">
                                                 <TableRow>
                                                     <TableHead className="py-2 px-3 text-left font-semibold">Name</TableHead>
                                                     <TableHead className="py-2 px-3 text-left font-semibold">Role</TableHead>
@@ -61,10 +61,10 @@ export default function DetailDrawer({ open, setOpen, data, type }) {
                                                 {data.members.map((member) => (
                                                     <TableRow
                                                         key={member._id}
-                                                        className="border-t hover:bg-gray-50 transition-colors"
+                                                        className="border-t transition-colors"
                                                     >
                                                         <TableCell className="py-2 px-3">{member.name}</TableCell>
-                                                        <TableCell className="py-2 px-3 text-gray-700">{member.role}</TableCell>
+                                                        <TableCell className="py-2 px-3 text-foreground/40">{member.role}</TableCell>
                                                     </TableRow>
                                                 ))}
                                             </TableBody>
@@ -74,10 +74,10 @@ export default function DetailDrawer({ open, setOpen, data, type }) {
                             )}
                             {data?.positions?.length > 0 && (
                                 <>
-                                <div className="text-sm font-medium text-gray-500">Positions</div>
-                                <div className="overflow-hidden border border-gray-200 rounded-lg">
+                                <div className="text-sm font-medium text-foreground">Positions</div>
+                                <div className="overflow-hidden border border-foreground/60 rounded-lg">
                                     <Table className="min-w-full text-sm">
-                                        <TableHeader className="bg-gray-50">
+                                        <TableHeader className="">
                                             <TableRow>
                                                 <TableHead className="py-2 px-3 text-left font-semibold">Name</TableHead>
                                                 <TableHead className="py-2 px-3 text-left font-semibold">Status</TableHead>
@@ -88,10 +88,10 @@ export default function DetailDrawer({ open, setOpen, data, type }) {
                                             {data.positions.map((position) => (
                                                 <TableRow
                                                     key={position._id}
-                                                    className="border-t hover:bg-gray-50 transition-colors"
+                                                    className="border-t transition-colors"
                                                 >
                                                     <TableCell className="py-2 px-3">{position.name}</TableCell>
-                                                    <TableCell className="py-2 px-3 text-gray-700">{position.status}</TableCell>
+                                                    <TableCell className="py-2 px-3 text-foreground/40">{position.status}</TableCell>
                                                 </TableRow>
                                             ))}
                                         </TableBody>
@@ -116,13 +116,12 @@ export default function DetailDrawer({ open, setOpen, data, type }) {
                             {data?.company && <DetailItem label="Company Name" value={data.company.name} />}
                             {data.interview.length > 0 &&
                                 <>
-                                    <div className="text-sm font-medium text-gray-500 mb-3">Interviews</div>
-                                    <div className="overflow-hidden border border-gray-200 rounded-lg">
+                                    <div className="text-sm font-medium text-foreground/50 mb-3">Interviews</div>
+                                    <div className="overflow-hidden border border-foreground/60 rounded-lg">
                                         <Table className="min-w-full text-sm">
-                                            <TableHeader className="bg-gray-50">
+                                            <TableHeader className="">
                                                 <TableRow>
-                                                    <TableHead className="py-2 px-3 text-left font-semibold">InterviewId</TableHead>
-                                                    <TableHead className="py-2 px-3 text-left font-semibold">Name</TableHead>
+                                                    <TableHead className="py-2 px-3 text-left font-semibold">Candidate</TableHead>
                                                     <TableHead className="py-2 px-3 text-left font-semibold">Review Status</TableHead>
                                                 </TableRow>
                                             </TableHeader>
@@ -132,11 +131,10 @@ export default function DetailDrawer({ open, setOpen, data, type }) {
                                                 {data.interview.map((interview) => (
                                                     <TableRow
                                                         key={interview._id}
-                                                        className="border-t hover:bg-gray-50 transition-colors"
+                                                        className="border-t transition-colors"
                                                     >
-                                                        <TableCell className="py-2 px-3">{interview.interviewID}</TableCell>
-                                                        <TableCell className="py-2 px-3 text-gray-700">{interview.name}</TableCell>
-                                                        <TableCell className="py-2 px-3 text-gray-700">{interview.reviewStatus}</TableCell>
+                                                        <TableCell className="py-2 px-3 text-foreground/50">{interview.candidate}</TableCell>
+                                                        <TableCell className="py-2 px-3 text-foreground/50">{interview.reviewStatus}</TableCell>
                                                     </TableRow>
                                                 ))}
                                             </TableBody>

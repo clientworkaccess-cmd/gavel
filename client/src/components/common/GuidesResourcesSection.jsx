@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import { motion } from "framer-motion";
 import {
   Card,
@@ -37,6 +36,22 @@ const GuidesResourcesSection = () => {
     },
   ];
 
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: { staggerChildren: 0.1, delayChildren: 0.2 },
+    },
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.5, ease: "easeOut" },
+    },
+  };
   return (
     <section
       id="guides"
@@ -45,51 +60,48 @@ const GuidesResourcesSection = () => {
       {/* Section Heading */}
       <motion.div
         className="text-center mb-14"
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6 }}
-        viewport={{ once: true }}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, amount: 0.2 }}
+        variants={containerVariants}
       >
-        <h2 className="text-3xl md:text-4xl font-bold mb-3 text-secondary">
+        <motion.h2 variants={itemVariants} className="text-3xl md:text-4xl font-bold mb-3 bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
           Guides & Resources
-        </h2>
-        <p className="text-gray-600 max-w-2xl mx-auto">
+        </motion.h2>
+        <motion.p variants={itemVariants} className="text-muted-foreground max-w-2xl mx-auto">
           Explore helpful resources to make the most of your Gavel experience.
-        </p>
+        </motion.p>
       </motion.div>
 
       {/* Cards Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+      <motion.div
+        className="grid grid-cols-1 md:grid-cols-2 gap-8"
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, amount: 0.2 }}
+        variants={containerVariants}
+      >
         {resources.map((resource, index) => (
-          <motion.div
-            key={index}
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.4, delay: index * 0.1 }}
-            viewport={{ once: true }}
-          >
-            <Card className="bg-white border hover:bg-blue-50 border-gray-200 hover:border-secondary hover:shadow-lg transition-all duration-300 rounded-2xl">
+          <motion.div key={index} variants={itemVariants}>
+            <Card className="h-full bg-transparent backdrop-blur border border-border/50 hover:border-primary/50 hover:shadow-2xl transition-all duration-800 rounded-2xl hover:scale-102">
               <CardHeader>
-                <CardTitle className="text-xl font-semibold text-gray-900">
+                <CardTitle className="text-xl font-semibold text-foreground">
                   {resource.title}
                 </CardTitle>
-                <CardDescription className="text-gray-600 mt-2 leading-relaxed">
+                <CardDescription className="text-muted-foreground mt-2 leading-relaxed">
                   {resource.description}
                 </CardDescription>
               </CardHeader>
 
               <CardContent>
-                <Button
-                  variant="outline"
-                  className="mt-4 border-secondary text-secondary hover:bg-secondary hover:text-white transition-all duration-200"
-                >
+                <Button variant="outline" className="mt-4 border-primary text-foreground hover:bg-secondary/80 transition-all duration-200">
                   {resource.buttonText}
                 </Button>
               </CardContent>
             </Card>
           </motion.div>
         ))}
-      </div>
+      </motion.div>
     </section>
   );
 };

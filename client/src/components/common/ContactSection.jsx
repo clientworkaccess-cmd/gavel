@@ -3,7 +3,6 @@ import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { postReq } from "../../axios/axios";
 import API_ENDPOINTS from "../../config/api";
-
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -35,9 +34,8 @@ const ContactSection = () => {
   };
 
   return (
-    <section className="py-20 px-4 max-w-7xl mx-auto">
-      <div className="max-w-2xl mx-auto">
-        <Card className="shadow-md border border-gray-200 ">
+    <section className="py-20 px-4 max-w-4xl mx-auto">
+        <Card className="shadow-md border border-gray-200 bg-transparent">
           <CardHeader>
             <CardTitle className="text-3xl font-bold text-center text-primary">
               Contact Us
@@ -53,6 +51,7 @@ const ContactSection = () => {
               <div className="space-y-1">
                 <Label htmlFor="name">Your Name</Label>
                 <Input
+                className="border-foreground/60"
                   id="name"
                   placeholder="John Doe"
                   {...register("name", { required: "Name is required" })}
@@ -66,6 +65,7 @@ const ContactSection = () => {
               <div className="space-y-1">
                 <Label htmlFor="email">Your Email</Label>
                 <Input
+                className="border-foreground/60"
                   id="email"
                   type="email"
                   placeholder="john@example.com"
@@ -86,6 +86,7 @@ const ContactSection = () => {
               <div className="space-y-1">
                 <Label htmlFor="phone">Phone Number</Label>
                 <Input
+                className="border-foreground/60"
                   id="phone"
                   placeholder="+1234567890"
                   {...register("phone", {
@@ -105,6 +106,7 @@ const ContactSection = () => {
               <div className="space-y-1">
                 <Label htmlFor="details">Message</Label>
                 <Textarea
+                className="border-foreground/60 max-h-60"
                   id="details"
                   rows={5}
                   placeholder="Write your message here..."
@@ -130,8 +132,6 @@ const ContactSection = () => {
             </form>
           </CardContent>
         </Card>
-      </div>
-
       <ToastContainer position="top-right" autoClose={3000} />
     </section>
   );

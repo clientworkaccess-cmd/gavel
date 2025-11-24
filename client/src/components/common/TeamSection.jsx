@@ -1,103 +1,121 @@
-/* eslint-disable no-unused-vars */
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
-import Slider from "react-slick";
 import { motion } from "framer-motion";
-import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
+import { CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import Nick from "/assets/images/Nick.jpeg";
 import Liza from "/assets/images/Liza.jpeg";
 
 const leadershipData = [
   {
+    image: Nick,
     name: "Nick Lysett",
     title: "CEO & Co-Founder",
-    description:
-      "Former head of talent acquisition with 15+ years of experience leading recruitment transformations for global firms.",
-    image: Nick,
+    description: "Former head of talent acquisition with 15+ years of experience leading recruitment transformations for global firms.",
   },
   {
+    image: Liza,
     name: "Liza Yakimchuk",
     title: "COO & Co-Founder",
-    description:
-      "AI researcher and engineer specializing in natural language processing and machine learning-driven recruitment.",
-    image: Liza,
+    description: "AI researcher and engineer specializing in natural language processing and machine learning-driven recruitment.",
   },
 ];
 
-const TeamSection = () => {
-  const settings = {
-    dots: true,
-    infinite: true,
-    arrows: false,
-    speed: 700,
-    slidesToShow: 2,
-    slidesToScroll: 1,
-    autoplay: true,
-    autoplaySpeed: 5000,
-    pauseOnHover: true,
-    responsive: [
-      {
-        breakpoint: 970,
-        settings: { slidesToShow: 1 },
-      },
-    ],
-  };
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: { staggerChildren: 0.2, delayChildren: 0.1 },
+  },
+};
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 30 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.7, ease: "easeOut" },
+  },
+};
+
+const LeadershipMember = ({ member, reverse = false }) => {
+  const { name, title, description, image } = member;
+
+  const textContent = (
+    <motion.div
+      variants={itemVariants}
+      className="text-center lg:text-left"
+    >
+      <CardHeader className="p-0 mb-3">
+        <CardTitle className="text-3xl md:text-4xl font-bold text-foreground">
+          {name}
+        </CardTitle>
+      </CardHeader>
+      <CardContent className="p-0 space-y-2">
+        <p className="text-secondary text-sm font-semibold tracking-wide uppercase">
+          {title}
+        </p>
+        <p className="text-muted-foreground text-lg leading-relaxed">
+          {description}
+        </p>
+      </CardContent>
+    </motion.div>
+  );
+
+  const imageContent = (
+    <motion.div
+      variants={itemVariants}
+      className="overflow-hidden shadow-lg"
+    >
+      <img
+        src={image}
+        alt={name}
+        className="w-150 h-150 object-cover transition-transform duration-500 ease-in-out hover:scale-105"
+      />
+    </motion.div>
+  );
 
   return (
+    <div className="grid lg:grid-cols-[2fr_auto_3fr] gap-10 lg:gap-12 items-center">
+      {reverse ? imageContent : textContent}
+      <motion.div
+        initial={{ opacity: 0, scaleY: 0 }}
+        whileInView={{ opacity: 1, scaleY: 1 }}
+        transition={{ duration: 0.6, delay: 0.4 }}
+        viewport={{ once: true }}
+        className="h-0.5 w-3/4 lg:h-64 lg:w-0.5 bg-gradient-to-b from-border/10 via-border to-border/10 rounded-full mx-auto"
+      />
+      {reverse ? textContent : imageContent}
+    </div>
+  );
+};
+
+const TeamSection = () => {
+  return (
     <section className="py-20 px-6 md:px-12">
-      <div className="text-center mb-16">
-        <motion.h2
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          className="text-4xl md:text-5xl font-bold text-secondary mb-4"
-        >
+      <motion.div
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, amount: 0.5 }}
+        variants={containerVariants}
+        className="text-center mb-20"
+      >
+        <motion.h2 variants={itemVariants} className="text-4xl md:text-5xl font-bold text-secondary mb-4">
           Our Leadership
         </motion.h2>
-        <motion.p
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.1 }}
-          className="text-gray-600 text-lg "
-        >
+        <motion.p variants={itemVariants} className="text-muted-foreground text-lg max-w-2xl mx-auto">
           Meet the visionaries building the future of AI-powered hiring.
         </motion.p>
-      </div>
+      </motion.div>
 
-      <Slider {...settings}>
-        {leadershipData.map((leader, index) => (
-          <motion.div
-            key={index}
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: index * 0.2 }}
-            className="flex justify-center px-2 "
-          >
-            <Card className="p-6 md:p-8 flex flex-col md:flex-row items-center hover:bg-blue-50 md:items-start gap-6 bg-white border border-gray-100 shadow-sm hover:shadow-xl transition-all duration-300 rounded-2xl">
-              <img
-                src={leader.image}
-                alt={leader.name}
-                className="w-40 h-40 rounded-xl object-cover shadow-md border border-gray-100"
-              />
-              <div className="flex flex-col justify-center text-center md:text-left">
-                <CardHeader className="p-0 mb-2">
-                  <CardTitle className="text-2xl font-semibold text-gray-900">
-                    {leader.name}
-                  </CardTitle>
-                </CardHeader>
-                <CardContent className="p-0 space-y-2">
-                  <p className="text-secondary text-sm font-semibold tracking-wide uppercase">
-                    {leader.title}
-                  </p>
-                  <p className="text-gray-600 text-sm leading-relaxed max-w-md">
-                    {leader.description}
-                  </p>
-                </CardContent>
-              </div>
-            </Card>
-          </motion.div>
+      <motion.div
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, amount: 0.2 }}
+        variants={containerVariants}
+        className="space-y-20"
+      >
+        {leadershipData.map((member, index) => (
+          <LeadershipMember key={member.name} member={member} reverse={index % 2 !== 0} />
         ))}
-      </Slider>
+      </motion.div>
     </section>
   );
 };

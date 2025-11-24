@@ -25,10 +25,8 @@ const interviewSchema = new mongoose.Schema({
   scores: { type: ScoresSchema, required: true },
   recommendation: { type: String, default: "" },
   expectedSalary: { type: String, default: "" },
-  keyInsights1: { type: String, default: "" },
-  keyInsights2: { type: String, default: "" },
-  keyInsights3: { type: String, default: "" },
-  keyInsights4: { type: String, default: "" },
+  goodkeyInsights: { type: Array, default: [] },
+  badkeyInsights: { type: Array, default: [] },
   redFlags: [{ type: String }],
   evaluatedAt: { type: Date, default: Date.now },
   reviewStatus: { type: String, default: 'pending' }

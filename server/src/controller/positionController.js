@@ -64,10 +64,10 @@ export const getPositions = async (req, res) => {
     try {
         await dbConnection();
         const positions = await Position.find()
-        .populate("company")
-        .populate("interview")
-        .populate("user")
-        .sort({ createdAt: -1 });
+            .populate("company")
+            .populate("interview")
+            .populate("user")
+            .sort({ createdAt: -1 });
         res.status(200).json(positions);
     } catch (error) {
         res.status(500).json({ message: error.message });
@@ -79,10 +79,10 @@ export const getPositionById = async (req, res) => {
     try {
         await dbConnection();
         const position = await Position.findById(req.params.id)
-        .populate("company")
-        .populate("interview")
-        .populate("user")
-        .sort({createdAt: -1});
+            .populate("company")
+            .populate("interview")
+            .populate("user")
+            .sort({ createdAt: -1 });
         if (!position) return res.status(404).json({ message: "Position not found" });
         res.status(200).json(position);
     } catch (error) {
@@ -95,6 +95,9 @@ export const updatePosition = async (req, res) => {
     try {
         await dbConnection();
         const position = await Position.findByIdAndUpdate(req.params.id, req.body, { new: true });
+        await Company.findByIdAndUpdate(req.body.company, {
+            $push: { positions: position._id },
+        });
         if (!position) return res.status(404).json({ message: "Position not found" });
         res.status(200).json(position);
     } catch (error) {

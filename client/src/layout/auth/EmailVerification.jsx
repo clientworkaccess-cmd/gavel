@@ -3,7 +3,6 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { ToastContainer } from "react-toastify";
 import { postReq } from "../../axios/axios";
-
 import "react-toastify/dist/ReactToastify.css";
 import API_ENDPOINTS from "../../config/api";
 
@@ -39,9 +38,9 @@ const EmailVerification = () => {
 
     return (
         <div>
-            <div className="min-h-screen flex items-center justify-center bg-gray-50">
-                <div className="w-full max-w-md p-6 bg-white rounded-lg shadow-md">
-                    <h2 className="text-2xl font-bold text-center text-blue-600 mb-6">
+            <div className="min-h-screen flex items-center justify-center">
+                <div className="w-full max-w-md p-8 rounded-lg border border-foreground/60">
+                    <h2 className="text-2xl font-bold text-center text-secondary mb-6">
                         Verify Your Email
                     </h2>
 
@@ -50,7 +49,7 @@ const EmailVerification = () => {
                     <form onSubmit={handleSubmit(onSubmit)}>
                         {/* OTP Input */}
                         <div className="mb-4">
-                            <label className="block text-sm font-medium text-gray-700 mb-1">
+                            <label className="block text-sm font-medium text-foreground/40 mb-1">
                                 Enter OTP Code
                             </label>
                             <input
@@ -72,7 +71,7 @@ const EmailVerification = () => {
                         <button
                             type="submit"
                             disabled={loading}
-                            className="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 transition disabled:opacity-50"
+                            className="w-full bg-secondary text-white py-2 rounded-md hover:bg-blue-700 transition disabled:opacity-50"
                         >
                             {loading ? "Verifying..." : "Verify Email"}
                         </button>
@@ -84,7 +83,7 @@ const EmailVerification = () => {
                         <button
                             onClick={handleResend}
                             disabled={resending}
-                            className="text-blue-600 font-medium mt-2 hover:underline disabled:text-gray-400"
+                            className="text-secondary font-medium mt-2 hover:underline disabled:text-gray-400"
                         >
                             {resending ? "Resending..." : "Resend Code"}
                         </button>

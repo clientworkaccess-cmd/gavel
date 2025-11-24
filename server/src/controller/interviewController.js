@@ -16,10 +16,8 @@ export const createInterview = async (req, res) => {
       scores,
       recommendation,
       expectedSalary,
-      keyInsights1,
-      keyInsights2,
-      keyInsights3,
-      keyInsights4,
+      goodkeyInsights,
+      badkeyInsights,
       redFlags
     } = req.body;
 
@@ -41,15 +39,18 @@ export const createInterview = async (req, res) => {
       scores,
       recommendation,
       expectedSalary,
-      keyInsights1,
-      keyInsights2,
-      keyInsights3,
-      keyInsights4,
+      goodkeyInsights,
+      badkeyInsights,
       redFlags
     });
 
     await User.findByIdAndUpdate(candidateId, {
       $push: { interviews: newInterview._id },
+    });
+    const position = await Position.findOne({name: jobName})
+    
+    await Position.findByIdAndUpdate(position._id, {
+      $push: { interview: newInterview._id },
     });
 
     return res.status(201).json({
@@ -78,7 +79,7 @@ export const getAllInterviews = async (req, res) => {
 
     res.status(200).json({ success: true, interviews });
   } catch (error) {
-    res.status(500).json({ success: false, message: "Server Error" });
+    res.status(500).json({ success: false, message: error.message });
   }
 };
 
@@ -88,18 +89,19 @@ export const getCandidateInterviews = async (req, res) => {
 
     const { candidateId } = req.params;
     const interviews = await Interview.find({ candidateId })
+      .populate("candidateId")
       .sort({ createdAt: -1 });
 
     res.status(200).json({ success: true, interviews });
   } catch (error) {
-    res.status(500).json({ success: false, message: "Server Error" });
+    res.status(500).json({ success: false, message:error.message});
   }
 };
 
 // ✅ Check if candidate already applied for a role/category
 export const checkCandidateApplied = async (req, res) => {
   try {
-    const { candidateId, jobName} = req.query;
+    const { candidateId, jobName } = req.query;
 
     // Validate input
     if (!candidateId || (!jobName && !category)) {

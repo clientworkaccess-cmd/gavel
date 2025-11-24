@@ -49,7 +49,6 @@ const SignupForm = () => {
       };
 
       const res = await postReq(API_ENDPOINTS.SIGNUP, payload);
-      console.log(res);
 
       // Redirect to verification page
       navigate(res.redirectUrl || "/");
@@ -63,14 +62,14 @@ const SignupForm = () => {
   };
 
   return (
-    <div className="px-4 bg-secondary/10 bg-[radial-gradient(circle_at_center,_#ffff,_transparent_60%)]">
+    <div className="px-4 bg-background bg-[radial-gradient(circle_at_top_center,_#0B1138,_transparent_70%)]">
       <ToastContainer />
       <Link to="/" className="flex items-center space-x-2 pt-8">
         <FaGavel className="text-blue-600 text-3xl" />
         <span className="text-2xl font-bold text-blue-600">Gavel</span>
       </Link>
       <div className="min-h-screen flex items-center justify-center py-10">
-        <div className="w-full max-w-md p-6 bg-white rounded-lg shadow-md">
+        <div className="w-full max-w-md p-6 border border-foreground/60 rounded-lg shadow-md">
           <h2 className="text-2xl font-bold text-center text-blue-600 mb-6">
             Candidate Sign Up
           </h2>

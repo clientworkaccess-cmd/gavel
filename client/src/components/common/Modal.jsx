@@ -22,7 +22,7 @@ import API_ENDPOINTS from "@/config/api";
 import { useEffect, useState } from "react";
 import { Textarea } from "../ui/textarea";
 
-const Modal = ({ type, show, setShow, data, variant }) => {
+const Modal = ({ type, show, setShow, data, variant, entity }) => {
     const [companies, setCompanies] = useState([]);
     const {
         register,
@@ -78,15 +78,15 @@ const Modal = ({ type, show, setShow, data, variant }) => {
                 <>
                     <div>
                         <Label>Name </Label>
-                        <Input {...register("name", { required: true })} />
+                        <Input className="border-foreground/60 text-foreground/50" {...register("name", { required: true })} />
                     </div>
                     <div>
                         <Label>Address</Label>
-                        <Input {...register("address")} />
+                        <Input className="border-foreground/60 text-foreground/50" {...register("address")} />
                     </div>
                     <div>
                         <Label>Website</Label>
-                        <Input
+                        <Input className="border-foreground/60 text-foreground/50"
                             {...register("website", {
                                 pattern: {
                                     value: /^(https?:\/\/)?(www\.)?[a-zA-Z0-9-]+\.[a-zA-Z]{2,}(\S*)?$/,
@@ -100,7 +100,7 @@ const Modal = ({ type, show, setShow, data, variant }) => {
                     </div>
                     <div>
                         <Label>Industry</Label>
-                        <Input {...register("industry")} />
+                        <Input className="border-foreground/60 text-foreground/50" {...register("industry")} />
                     </div>
                 </>
             );
@@ -109,11 +109,11 @@ const Modal = ({ type, show, setShow, data, variant }) => {
                 <>
                     <div>
                         <Label>Name </Label>
-                        <Input {...register("name", { required: true })} />
+                        <Input className="border-foreground/60 text-foreground/50" {...register("name", { required: true })} />
                     </div>
                     <div>
                         <Label>Position Description</Label>
-                        <Textarea className="max-h-30" {...register("positionDescription")} />
+                        <Textarea className="max-h-30 border-foreground/60 text-foreground/50" {...register("positionDescription")} />
                     </div>
                     <div>
                         <Label>Company </Label>
@@ -121,7 +121,7 @@ const Modal = ({ type, show, setShow, data, variant }) => {
                             onValueChange={(val) => setValue("company", val)}
                             defaultValue={data?.company?._id || ""}
                         >
-                            <SelectTrigger className="w-full">
+                            <SelectTrigger className="w-full border-foreground/60 text-foreground/50">
                                 <SelectValue placeholder="Select company" />
                             </SelectTrigger>
                             <SelectContent>
@@ -166,7 +166,7 @@ const Modal = ({ type, show, setShow, data, variant }) => {
                     </div>}
                     <div>
                         <Label>Red Flag</Label>
-                        <Input {...register("redFlag")} />
+                        <Input className="border-foreground/60 text-foreground/50" {...register("redFlag")} />
                     </div>
                 </>
             );
@@ -175,21 +175,21 @@ const Modal = ({ type, show, setShow, data, variant }) => {
                 <>
                     <div>
                         <Label>Name </Label>
-                        <Input {...register("name", { required: true })} />
+                        <Input className="border-foreground/60 text-foreground/50" {...register("name", { required: true })} />
                     </div>
                     <div>
                         <Label>Email </Label>
-                        <Input type="email" {...register("email", { required: true })} />
+                        <Input className="border-foreground/60 text-foreground/50" type="email" {...register("email", { required: true })} />
                     </div>
                     {type === "add" && (
                         <div>
                             <Label>Password </Label>
-                            <Input type="password" {...register("password", { required: true })} />
+                            <Input className="border-foreground/60 text-foreground/50" type="password" {...register("password", { required: true })} />
                         </div>
                     )}
                     <div>
                         <Label>Phone Number</Label>
-                        <Input
+                        <Input className="border-foreground/60 text-foreground/50"
                             type="text"
                             {...register("phoneNumber", {
                                 pattern: {
@@ -204,9 +204,9 @@ const Modal = ({ type, show, setShow, data, variant }) => {
                     </div>
                     <div>
                         <Label>Role</Label>
-                        <Input {...register("role")} />
+                        <Input className="border-foreground/60 text-foreground/50" {...register("role")} />
                     </div>
-                    <div>
+                    {entity !== "admins" && data?.role !== "admin" && <div>
                         <Label>Company</Label>
                         <Select
                             onValueChange={(val) => setValue("company", [val])}
@@ -223,7 +223,7 @@ const Modal = ({ type, show, setShow, data, variant }) => {
                                 ))}
                             </SelectContent>
                         </Select>
-                    </div>
+                    </div>}
                 </>
             );
         }
@@ -233,7 +233,7 @@ const Modal = ({ type, show, setShow, data, variant }) => {
         <Dialog open={show} onOpenChange={(open) => !open && setShow(false)}>
             <DialogContent>
                 <DialogHeader>
-                    <DialogTitle>
+                    <DialogTitle className="text-center">
                         {type === "add" ? `Add ${variant}` : `Edit ${variant}`}
                     </DialogTitle>
                 </DialogHeader>
@@ -243,7 +243,7 @@ const Modal = ({ type, show, setShow, data, variant }) => {
                 >
                     {renderFields()}
                     <DialogFooter>
-                        <Button type="submit" disabled={isSubmitting}>
+                        <Button type="submit" disabled={isSubmitting} variant="secondary">
                             {isSubmitting ? "Saving..." : type === "add" ? "Add" : "Update"}
                         </Button>
                     </DialogFooter>

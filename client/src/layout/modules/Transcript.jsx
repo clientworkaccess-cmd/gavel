@@ -19,7 +19,7 @@ import { Input } from "@/components/ui/input";
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 
 const Transcript = () => {
-    const { userId, user, role } = useAuth();
+    const { userId, role } = useAuth();
     const [dataRows, setDataRows] = useState([])
     const [filterdData, setFilteredData] = useState([])
     const [searchValue, setSearchValue] = useState("")
@@ -42,11 +42,10 @@ const Transcript = () => {
                 }
             } else {
                 const res = await getReq(API_ENDPOINTS.INTERVIEW);
-
-                if (res) {
-                    const interview = res.interviews.filter(item => item.position.company === user.company[0])
-                    setDataRows(interview);
-                }
+                const comp = await getReq(API_ENDPOINTS.COMPANY)
+                const companyPos = comp.find((item) => item.members.some((m) => m.role === role));
+                const found = companyPos.positions.map(p => p.name)
+                setDataRows(res.interviews.filter(i => found.includes(i.jobName)) || [])
             }
         } catch (error) {
             console.error(error);
@@ -91,15 +90,15 @@ const Transcript = () => {
 
 
     return (
-        <div className="p-8 pt-4 bg-gray-50 min-h-screen space-y-8">
+        <div className="p-8 pt-4 min-h-screen space-y-8">
             <ToastContainer />
             {/* Table Section */}
-            <Card className="mt-6">
+            <Card className="mt-6 bg-transparent">
                 <CardHeader className="flex flex-wrap justify-between gap-4 items-center w-full">
                     <h3 className="text-xl font-semibold">
                         {role === "candidate" ? "All Applications" : "All Interviews"}
                     </h3>
-                    <Input className="w-60" placeholder="Search something...." value={searchValue} onChange={(e) => setSearchValue(e.target.value)}></Input>
+                    <Input className="w-60 border-foreground/60" placeholder="Search something...." value={searchValue} onChange={(e) => setSearchValue(e.target.value)}></Input>
                 </CardHeader>
                 <CardContent>
                     <div className="overflow-auto">
@@ -107,9 +106,9 @@ const Transcript = () => {
                             <TableHeader>
                                 <TableRow >
                                     {columns.map((col, ind) => (
-                                        <TableHead key={ind} >{col}</TableHead>
+                                        <TableHead key={ind} className="text-foreground font-extrabold">{col}</TableHead>
                                     ))}
-                                    <TableHead className={role === "admin" && "text-center"}>Action</TableHead>
+                                    <TableHead className={role === "admin" && "text-center text-foreground font-extrabold"}>Action</TableHead>
                                 </TableRow>
                             </TableHeader>
                             <TableBody>
@@ -142,7 +141,7 @@ const Transcript = () => {
                                 ) : (
                                     dataRows?.map((row, idx) => (
                                         <TableRow key={idx}>
-                                             <TableCell>{row?.candidate}</TableCell>
+                                            <TableCell>{row?.candidate}</TableCell>
                                             <TableCell>{row?.jobName}</TableCell>
                                             <TableCell>{new Date(row?.createdAt).toLocaleString()}</TableCell>
                                             <TableCell>{row?.reviewStatus}</TableCell>
