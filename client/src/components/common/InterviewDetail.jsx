@@ -7,12 +7,12 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { ToastContainer } from "react-toastify";
-import { Mail, MapPin, MoveLeft, Phone, Linkedin, ChevronRight, CheckCircle2, XCircle, HelpCircle, Clock, FileText } from "lucide-react";
+import { Mail, MapPin, MoveLeft, Phone, Linkedin, ChevronRight, CheckCircle2, XCircle, HelpCircle, Clock, FileText, BriefcaseBusiness, FileTextIcon, FolderKanban } from "lucide-react";
 import { useAuth } from "@/layout/context/AuthContext";
 import { motion } from "framer-motion";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 
-const InterviewDetail = () => {
+const InterviewDetail = ({ dummyData }) => {
     const { id } = useParams();
     const { role } = useAuth();
     const [interview, setInterview] = useState(null);
@@ -24,13 +24,16 @@ const InterviewDetail = () => {
         if (role === "admin") navigate("/admin/transcripts");
         else if (role === "candidate") navigate("/candidate/transcript");
         else navigate("/client/transcript");
+        if (dummyData) {
+            navigate('/');
+        }
     };
 
     const fetchData = async () => {
         try {
             const res = await getReq(API_ENDPOINTS.INTERVIEW);
             const found = res?.interviews?.find((item) => item._id === id);
-            setInterview(found || null);
+            setInterview(found || dummyData || null);
         } catch (err) {
             console.error(err);
         } finally {
@@ -98,7 +101,7 @@ const InterviewDetail = () => {
     const tabList = role !== "candidate" ? ['overview', 'scores', 'insights', 'transcript'] : ['overview', 'transcript'];
 
     return (
-        <div className="min-h-screen text-foreground px-4">
+        <div className="min-h-screen text-foreground px-4 overflow-y-auto">
             <ToastContainer theme="dark" />
             <header className="sticky top-0 z-40 backdrop-blur-lg border-b border-border ">
                 <div className="container mx-auto px-4 h-16 flex items-center justify-between">
@@ -114,13 +117,14 @@ const InterviewDetail = () => {
                 </div>
             </header>
 
-            <div className="container mx-auto px-4 py-8">
+            <div className={`container mx-auto px-4 py-8 ${dummyData && "py-4"}`}>
                 <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
                     {/* Left Sidebar */}
                     <motion.div
                         initial={{ opacity: 0, x: -20 }}
                         animate={{ opacity: 1, x: 0 }}
                         transition={{ duration: 0.5 }}
+                        className="space-y-4"
                     >
                         <Card className="pt-0 bg-transparent max-w-200">
                             <CardHeader className={`h-3 ${statusConfig.color} rounded-t-2xl`}>
@@ -145,6 +149,30 @@ const InterviewDetail = () => {
                                 <div className="flex items-center"><Phone className="w-4 h-4 mr-3 text-muted-foreground" /> {interview.candidateId.phoneNumber}</div>
                                 <div className="flex items-center"><MapPin className="w-4 h-4 mr-3 text-muted-foreground" /> {interview.candidateId.address || "Not specified"}</div>
                                 <div className="flex items-center"><Linkedin className="w-4 h-4 mr-3 text-muted-foreground" /> <a href={interview.candidateId.linkedinProfile} className="text-primary hover:underline">{interview.candidateId.linkedinProfile ? "LinkedIn Profile" : "Not specified"}</a></div>
+                            </CardContent>
+                        </Card>
+                        <Card className="pt-0 bg-transparent max-w-200">
+                            <CardContent className="p-6 pb-2">
+                                <h2 className="text-2xl font-bold pb-4">Job Details</h2>
+                                <p className="text-muted-foreground flex gap-2 items-center"><BriefcaseBusiness className="w-4 h-4" /> {interview.jobName}</p>
+                            </CardContent>
+                            <Separator />
+                            <CardContent className="px-6 text-sm flex gap-2">
+                                <FolderKanban className="w-4 h-4" />
+                                {interview.category}
+                            </CardContent>
+                            <CardContent className="p-6 pt-2 text-sm flex gap-2">
+                                <p>
+                                    <FileTextIcon className="w-4 h-4" />
+                                </p>
+                                <div className="relative max-h-32 overflow-y-auto pr-2">
+                                    <p className="text-sm whitespace-pre-wrap">
+                                        {interview.jobDescription}
+                                    </p>
+
+                                    {/* Fade Effect at Bottom */}
+                                    <div className="pointer-events-none absolute bottom-0 left-0 right-0 h-6 bg-gradient-to-t from-background to-transparent"></div>
+                                </div>
                             </CardContent>
                         </Card>
 
@@ -198,10 +226,16 @@ const InterviewDetail = () => {
                                             <p className="text-muted-foreground">Based on Interview analysis.</p>
                                         </CardContent>
                                     </Card>
-                                    <Card className="bg-transparent">
+                                    {interview.candidateId.skills.length > 0 && <Card className="bg-transparent">
                                         <CardHeader><CardTitle>Candidate Skills</CardTitle></CardHeader>
                                         <CardContent className="flex flex-wrap gap-2">
                                             {interview.candidateId.skills.map(skill => <Badge key={skill} variant="secondary">{skill}</Badge>)}
+                                        </CardContent>
+                                    </Card>}
+                                    <Card className="bg-transparent">
+                                        <CardHeader><CardTitle>Expected Salary</CardTitle></CardHeader>
+                                        <CardContent className="text-green-600">
+                                            {interview.expectedSalary}
                                         </CardContent>
                                     </Card>
                                 </motion.div>
@@ -261,7 +295,7 @@ const InterviewDetail = () => {
                                 <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
                                     <Card className="pb-0 bg-transparent">
                                         <CardHeader className="border-b"><CardTitle>Interview Transcript</CardTitle></CardHeader>
-                                        <CardContent className="space-y-6 max-h-[60vh] overflow-y-auto p-4 rounded-lg">
+                                        <CardContent className="space-y-6 max-h-178 overflow-y-auto p-4 rounded-lg">
                                             {interview.transcript.map((msg, idx) => (
                                                 msg.content && msg.role !== 'tool' && <div key={idx} className={`flex gap-4 ${msg.role === 'user' ? 'justify-end' : ''}`}>
                                                     {msg.role !== 'user' && <Avatar><AvatarFallback>AI</AvatarFallback></Avatar>}

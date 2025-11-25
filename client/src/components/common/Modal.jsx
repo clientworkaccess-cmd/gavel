@@ -21,9 +21,12 @@ import { getReq, postReq, putReq } from "@/axios/axios";
 import API_ENDPOINTS from "@/config/api";
 import { useEffect, useState } from "react";
 import { Textarea } from "../ui/textarea";
+import PhoneInput, { isValidPhoneNumber } from "react-phone-number-input";
+import "react-phone-number-input/style.css";
 
 const Modal = ({ type, show, setShow, data, variant, entity }) => {
     const [companies, setCompanies] = useState([]);
+    const [value, setValu] = useState("");
     const {
         register,
         handleSubmit,
@@ -33,6 +36,14 @@ const Modal = ({ type, show, setShow, data, variant, entity }) => {
     } = useForm();
 
     useEffect(() => {
+        if (data?.phoneNumber) {
+            let phone = String(data?.phoneNumber);
+            if (!phone.startsWith("+")) {
+                phone = "+" + phone;
+            }
+            setValu(phone);
+            setValue("phoneNumber", phone);
+        }
         if (data) reset(data);
     }, [data]);
 
@@ -189,18 +200,32 @@ const Modal = ({ type, show, setShow, data, variant, entity }) => {
                     )}
                     <div>
                         <Label>Phone Number</Label>
-                        <Input className="border-foreground/60 text-foreground/50"
-                            type="text"
+                        <PhoneInput
+                            international
+                            defaultCountry="US"
+                            value={value}
+                            onChange={(val) => {
+                                setValu(val);
+                                setValue("phoneNumber", val, { shouldValidate: true });
+                            }}
+                            className="text-foreground bg-transparent border border-foreground/60 rounded-md w-full px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            placeholder="Enter phone number"
+                        />
+
+                        {errors.phoneNumber && (
+                            <p className="text-red-500 text-sm">
+                                {errors.phoneNumber.message}
+                            </p>
+                        )}
+
+                        <Input
+                            type="hidden"
                             {...register("phoneNumber", {
-                                pattern: {
-                                    value: /^[0-9]{11}$/,
-                                    message: "Enter valid 11-digit number",
-                                },
+                                required: "Phone number is required",
+                                validate: (val) =>
+                                    isValidPhoneNumber(val) || "Invalid phone number",
                             })}
                         />
-                        {errors.phoneNumber && (
-                            <p className="text-sm text-red-500">{errors.phoneNumber.message}</p>
-                        )}
                     </div>
                     <div>
                         <Label>Role</Label>
