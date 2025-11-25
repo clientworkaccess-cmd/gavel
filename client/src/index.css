@@ -9,6 +9,10 @@
 body {
     font-family: "Montserrat", sans-serif;
 }
+.PhoneInputCountrySelect {
+ background: #010520ef !important;    /* light gray */
+    border-color: var(--color-foreground) !important; /* dark gray */
+}
 
 
 .loader {

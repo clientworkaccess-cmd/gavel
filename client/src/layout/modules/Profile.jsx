@@ -8,47 +8,56 @@ import { ToastContainer } from "react-toastify";
 import { getReq, putReq } from "@/axios/axios";
 import API_ENDPOINTS from "@/config/api";
 import { useAuth } from "../context/AuthContext";
+import PhoneInput, { isValidPhoneNumber } from "react-phone-number-input";
+import "react-phone-number-input/style.css";
 
 const Profile = () => {
-    const [user, setUser] = useState(null);
-    const [skills, setSkills] = useState([])
-    const { userId, role } = useAuth();
+    const [skills, setSkills] = useState([]);
+    const { userId, role, user } = useAuth();
+    const [value, setValu] = useState("");
 
     const {
         register,
         handleSubmit,
         reset,
+        setValue,
         watch,
         formState: { isSubmitting, errors },
     } = useForm();
 
     const newPassword = watch("newPassword");
 
-    // Fetch user data
+
     useEffect(() => {
         const fetchData = async () => {
             const res = await getReq(`${API_ENDPOINTS.USERS}/${userId}`);
-            setUser(res.user);
-            setSkills(res.user.skills)
+            setSkills(res.user.skills);
             reset(res.user);
+
+            if (res?.user?.phoneNumber) {
+                let phone = String(res.user.phoneNumber);
+                if (!phone.startsWith("+")) {
+                    phone = "+" + phone;
+                }
+                setValu(phone);
+                setValue("phoneNumber", phone);
+            }
         };
+
         fetchData();
     }, [userId]);
 
-    // Submit handler
     const onSubmit = async (formData) => {
         await putReq(`${API_ENDPOINTS.USERS}/${userId}`, {
             ...formData,
-            skills: skills
+            skills: skills,
         });
     };
 
     const handleSkills = (e) => {
-        const skills = e.target.value
-        if (skills.trim()) {
-            setSkills(skills.split(","))
-        }
-    }
+        const skills = e.target.value;
+        setSkills(skills.split(","));
+    };
 
     if (!user)
         return (
@@ -70,7 +79,7 @@ const Profile = () => {
                     <div>
                         <Label>Name</Label>
                         <Input
-                        className="border-foreground/60 text-foreground/40"
+                            className="border-foreground/60 text-foreground/70"
                             {...register("name", { required: "Name is required" })}
                         />
                         {errors.name && (
@@ -81,12 +90,13 @@ const Profile = () => {
                     <div>
                         <Label>Email</Label>
                         <Input
-                        className="border-foreground/60 text-foreground/40"
+                            className="border-foreground/60 text-foreground/70"
                             type="email"
                             {...register("email", {
                                 required: "Email is required",
                                 pattern: {
-                                    value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+                                    value:
+                                        /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
                                     message: "Enter a valid email address",
                                 },
                             })}
@@ -98,99 +108,130 @@ const Profile = () => {
 
                     <div>
                         <Label>Phone Number</Label>
-                        <Input
-                        className="border-foreground/60 text-foreground/40"
-                            type="text"
-                            {...register("phoneNumber", {
-                                pattern: {
-                                    value: /^(?:\+92|0)?3[0-9]{9}$/,
-                                    message:
-                                        "Enter a valid Pakistani phone number (e.g., 03XXXXXXXXX or +923XXXXXXXXX)",
-                                },
-                            })}
+
+                        <PhoneInput
+                            international
+                            defaultCountry="US"
+                            value={value}
+                            onChange={(val) => {
+                                setValu(val);
+                                setValue("phoneNumber", val, { shouldValidate: true });
+                            }}
+                            className="text-foreground bg-transparent border border-foreground/60 rounded-md w-full px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            placeholder="Enter phone number"
                         />
+
                         {errors.phoneNumber && (
-                            <p className="text-sm text-red-500">
+                            <p className="text-red-500 text-sm">
                                 {errors.phoneNumber.message}
                             </p>
                         )}
+
+                        <Input
+                            type="hidden"
+                            {...register("phoneNumber", {
+                                required: "Phone number is required",
+                                validate: (val) =>
+                                    isValidPhoneNumber(val) || "Invalid phone number",
+                            })}
+                        />
                     </div>
 
-                    {role === "candidate" && <>
-                        <div>
-                            <Label>Address</Label>
-                            <Input
-                            className="border-foreground/60 text-foreground/40"
-                                {...register("address")}
-                                placeholder="e.g. 123 Main St, City"
-                            />
-                        </div>
+                    {role === "candidate" && (
+                        <>
+                            <div>
+                                <Label>Address</Label>
+                                <Input
+                                    className="border-foreground/60 text-foreground/70"
+                                    {...register("address")}
+                                    placeholder="e.g. 123 Main St, City"
+                                />
+                            </div>
 
+                            <div>
+                                <Label>LinkedIn Profile</Label>
+                                <Input
+                                    className="border-foreground/60 text-foreground/70"
+                                    {...register("linkedinProfile", {
+                                        pattern: {
+                                            value:
+                                                /^(https?:\/\/)?(www\.)?linkedin\.com\/(in|pub)\/[a-zA-Z0-9_-]+\/?$/,
+                                            message:
+                                                "Enter a valid LinkedIn profile URL",
+                                        },
+                                    })}
+                                    placeholder="https://linkedin.com/in/username"
+                                />
+                                {errors.linkedinProfile && (
+                                    <p className="text-sm text-red-500">
+                                        {errors.linkedinProfile.message}
+                                    </p>
+                                )}
+                            </div>
+
+                            <div>
+                                <Label>Qualification</Label>
+                                <Input
+                                    className="border-foreground/60 text-foreground/70"
+                                    {...register("qualification")}
+                                    placeholder="e.g. BSc Computer Science"
+                                />
+                            </div>
+                        </>
+                    )}
+                </div>
+
+                {role === "candidate" && (
+                    <div className="px-6 space-y-6">
                         <div>
-                            <Label>LinkedIn Profile</Label>
+                            <Label>Skills (comma separated)</Label>
                             <Input
-                            className="border-foreground/60 text-foreground/40"
-                                {...register("linkedinProfile", {
+                                className="border-foreground/60 text-foreground/70"
+                                {...register("skills", {
                                     pattern: {
                                         value:
-                                            /^(https?:\/\/)?(www\.)?linkedin\.com\/(in|pub)\/[a-zA-Z0-9_-]+\/?$/,
-                                        message: "Enter a valid LinkedIn profile URL",
+                                            /^\s*\w+(\s*\w+)*\s*,\s*\w+(\s*\w+)*(?:\s*,\s*\w+(\s*\w+)*)*\s*$/,
+                                        message:
+                                            "Enter skills separated by commas (e.g. React, Node.js, MongoDB)",
                                     },
                                 })}
-                                placeholder="https://linkedin.com/in/username"
+                                onChange={handleSkills}
+                                placeholder="e.g. React, Node.js, MongoDB"
                             />
-                            {errors.linkedinProfile && (
+                            {errors.skills && (
                                 <p className="text-sm text-red-500">
-                                    {errors.linkedinProfile.message}
+                                    {errors.skills.message}
                                 </p>
                             )}
                         </div>
 
-                        <div>
-                            <Label>Qualification</Label>
-                            <Input
-                            className="border-foreground/60 text-foreground/40"
-                                {...register("qualification")}
-                                placeholder="e.g. BSc Computer Science"
-                            />
+                        <div className="flex gap-2 flex-wrap">
+                            {skills.length > 0 &&
+                                skills.map(
+                                    (item, ind) =>
+                                        item.trim() && (
+                                            <p
+                                                key={ind}
+                                                className="p-1 px-4 bg-secondary/20 rounded-full"
+                                            >
+                                                {item}
+                                            </p>
+                                        )
+                                )}
                         </div>
-                    </>}
-                </div>
-
-                {/* Skills */}
-                {role === "candidate" && <div className="px-6 space-y-6">
-                    <div >
-                        <Label>Skills (comma separated)</Label>
-                        <Input
-                        className="border-foreground/60 text-foreground/40"
-                            {...register("skills", {
-                                pattern: {
-                                    value: /^\s*\w+(\s*\w+)*\s*,\s*\w+(\s*\w+)*(?:\s*,\s*\w+(\s*\w+)*)*\s*$/,
-                                    message: "Enter skills separated by commas (e.g. React, Node.js, MongoDB)",
-                                },
-                            })}
-                            onChange={handleSkills}
-                            placeholder="e.g. React, Node.js, MongoDB"
-                        />
-                        {errors.skills && (
-                            <p className="text-sm text-red-500">{errors.skills.message}</p>
-                        )}
                     </div>
-                    <div className="flex gap-2 flex-wrap">
-                        {skills.length > 0 && skills.map((item, ind) => {
-                            return item.trim() && <p key={ind} className="p-1 px-4 bg-secondary/20 rounded-full">{item}</p>
-                        })}
-                    </div> </div>}
-                {/* Password Update */}
+                )}
+
                 <div className="border-t p-6">
                     <h3 className="font-semibold pb-8 text-foreground text-center">
                         Change Password
                     </h3>
+
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div>
                             <Label>New Password</Label>
                             <Input
-                            className="border-foreground/60 text-foreground/40"
+                                className="border-foreground/60 text-foreground/70"
                                 type="password"
                                 {...register("newPassword", {
                                     minLength: {
@@ -210,7 +251,7 @@ const Profile = () => {
                         <div>
                             <Label>Confirm Password</Label>
                             <Input
-                            className="border-foreground/60 text-foreground/40"
+                                className="border-foreground/60 text-foreground/70"
                                 type="password"
                                 {...register("confirmPassword", {
                                     validate: (value) =>
@@ -228,7 +269,7 @@ const Profile = () => {
                     </div>
                 </div>
 
-                {/* Submit Button */}
+                {/* Submit */}
                 <div className="p-6">
                     <Button
                         type="submit"

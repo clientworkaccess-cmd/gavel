@@ -8,6 +8,9 @@ import "react-toastify/dist/ReactToastify.css";
 import { getReq, postReq } from "../../axios/axios";
 import { FaGavel } from "react-icons/fa";
 import ReCAPTCHA from "react-google-recaptcha";
+import PhoneInput, { isValidPhoneNumber } from 'react-phone-number-input'
+import 'react-phone-number-input/style.css';
+import { Input } from "@/components/ui/input";
 
 const SignupForm = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -29,6 +32,7 @@ const SignupForm = () => {
   const {
     register,
     handleSubmit,
+    setValue,
     formState: { errors, isSubmitting },
     reset,
   } = useForm();
@@ -38,7 +42,7 @@ const SignupForm = () => {
       toast.warn("Please complete catcha")
       return
     }
-    
+
     try {
       const payload = {
         name: `${data.firstName} ${data.lastName}`,
@@ -136,21 +140,27 @@ const SignupForm = () => {
               <label className="block text-sm font-medium text-gray-700 mb-1">
                 Phone Number
               </label>
-              <input
-                type="tel"
+              <PhoneInput
+                international
+                defaultCountry="US"
+                className="text-foreground bg-transparent border border-foreground/60 rounded-md w-full px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                onChange={(value) => setValue("phoneNumber", value)}
+                placeholder="Enter phone number"
+              />
+
+              {errors.phoneNumber && (
+                <p className="text-red-500 text-sm">{errors.phoneNumber.message}</p>
+              )}
+
+              <Input
+                className="border-foreground/60 text-foreground/40"
+                type="hidden"
                 {...register("phoneNumber", {
                   required: "Phone number is required",
-                  pattern: {
-                    value: /^[0-9+\s-]{7,15}$/,
-                    message: "Enter a valid 11-digit number",
-                  },
+                  validate: (value) =>
+                    isValidPhoneNumber(value) || "Invalid phone number",
                 })}
-                placeholder="03XXXXXXXXX"
-                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500"
               />
-              {errors.phoneNumber && (
-                <p className="text-red-500 text-sm mt-1">{errors.phoneNumber.message}</p>
-              )}
             </div>
 
             {/* Password */}
