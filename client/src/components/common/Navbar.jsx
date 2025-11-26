@@ -20,7 +20,7 @@ export default function Navbar() {
   ];
 
   return (
-    <header className="sticky top-0 z-50 bg-background w-full md:px-16" >
+    <header className="sticky top-1 z-50 w-full md:px-16 backdrop-blur-xl shadow-md" >
       <div className="flex items-center justify-between px-6 py-3">
         {/* Logo */}
         <Link to="/" className="flex items-center gap-2">

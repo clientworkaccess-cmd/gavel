@@ -43,7 +43,7 @@ const demoInterview = {
         "updatedAt": "2025-11-25T13:25:05.062Z",
         "__v": 2
     },
-    "jobDescription": "About the Opportunity Evolve Workforce Solutions is proud to partner with a prominent law firm seeking an experienced Commercial Real Estate Attorney...",
+    "jobDescription": "About the Role \n The Cook will take charge of preparing large quantities of food for private events and banquets.You’ll manage one or more prep or line stations, coordinate with chefs and assistants, ensure timeliness and quality, and help deliver a memorable dining experience for event guests. \n key Responsibilities \n Oversee and execute preparation of menu items for banquets and private events. Ability to follow recipes and maintain consistency in taste, portion, and presentation. Manage specific stations(grill, sauté, roast, etc.), ensuring consistency and high presentation quality. Coordinate with banquet manager, sous chef, and kitchen team to ensure food is delivered on schedule. Portion control, plating, and quality checks before service.",
     "summary": [
         "Candidate demonstrated strong communication skills during the interview.",
         "Exhibited solid knowledge of commercial real estate leasing and contract drafting.",
@@ -102,7 +102,7 @@ const demoInterview = {
         "_id": "69247e1945f6633479998293"
     },
     "recommendation": "🟢 Strong Fit",
-    "expectedSalary": "120000 USD per year",
+    "expectedSalary": "$120000 per year",
     "goodkeyInsights": [
         "Candidate has 5 years of relevant commercial real estate experience.",
         "Strong understanding of lease negotiation and contract drafting.",

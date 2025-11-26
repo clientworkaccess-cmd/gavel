@@ -127,7 +127,18 @@ const Transcript = () => {
                                             <TableCell>{row?.candidate}</TableCell>
                                             <TableCell>{row?.jobName}</TableCell>
                                             <TableCell>{new Date(row?.createdAt).toLocaleString()}</TableCell>
-                                            <TableCell>{row?.reviewStatus}</TableCell>
+                                            <TableCell>
+                                                <span
+                                                    className={`capitalize font-medium ${row.reviewStatus === "approved"
+                                                        ? "text-green-600"
+                                                        : row.reviewStatus === "pending" || row.reviewStatus === "maybe"
+                                                            ? "text-yellow-600"
+                                                            : "text-red-600"
+                                                        }`}
+                                                >
+                                                    {row.reviewStatus}
+                                                </span>
+                                            </TableCell>
                                             <TableCell className={role === "admin" && "flex gap-2 items-center justify-center"}>
                                                 <Button variant="outline" onClick={() => navigate(role === "candidate" ? `/candidate/interview-detail/${row._id}` : role === "admin" ? `/admin/interview-detail/${row._id}` : `/client/interview-detail/${row._id}`)}>
                                                     View Details

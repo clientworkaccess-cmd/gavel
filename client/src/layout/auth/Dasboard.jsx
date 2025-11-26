@@ -193,7 +193,7 @@ const Dashboard = () => {
                           <span
                             className={`capitalize font-medium ${row.reviewStatus === "approved"
                               ? "text-green-600"
-                              : row.reviewStatus === "pending"
+                              : row.reviewStatus === "pending" || row.reviewStatus === "maybe"
                                 ? "text-yellow-600"
                                 : "text-red-600"
                               }`}
