@@ -19,7 +19,8 @@ import { useNavigate } from "react-router-dom";
 import Interview from "../modules/Interviews";
 
 const Dashboard = () => {
-  const { userId, user, role, loading } = useAuth();
+  const { userId, user, role } = useAuth();
+  const [loading, setLoading] = useState(true);
   const [dataRows, setDataRows] = useState([]);
   const [stats, setStats] = useState({
     completed: 0,
@@ -32,6 +33,7 @@ const Dashboard = () => {
 
   // 🔹 Fetch Dashboard Data
   const fetchDashboardData = async () => {
+    setLoading(true);
     let res;
     let comp;
 
@@ -63,11 +65,11 @@ const Dashboard = () => {
     const reject = interviews.filter((i) => i.reviewStatus === "reject").length;
 
     setStats({ total, completed, pending, reject });
-
+    setLoading(false);
   };
 
   useEffect(() => {
-    if (!loading && role && userId) fetchDashboardData();
+    if (loading && role && userId) fetchDashboardData();
   }, [loading, role, userId]);
 
   const columns = ["Candidate", "Position", "Interview Date & Time", "Status", "Action"];
@@ -224,6 +226,8 @@ const Dashboard = () => {
       </Card>
     </div>
   );
-};
+}
+
+
 
 export default Dashboard;
