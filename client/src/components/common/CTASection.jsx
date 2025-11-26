@@ -2,6 +2,8 @@ import { HelpCircle } from "lucide-react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
+import BookingModal from "./BookingModal";
+import { useState } from "react";
 
 const containerVariants = {
   hidden: { opacity: 0, y: 40 },
@@ -18,6 +20,9 @@ const itemVariants = {
 };
 
 const CTASection = () => {
+
+  const [show, setShow] = useState(false);
+
   return (
     <section className="py-20 px-6 md:px-10">
       <motion.div
@@ -43,14 +48,13 @@ const CTASection = () => {
           <Button asChild size="lg" className="bg-secondary/60 text-primary hover:bg-secondary/50 font-semibold text-lg px-8 py-6 rounded-xl shadow-md transition-all duration-700 hover:scale-105">
             <Link to="/contact">Contact Sales</Link>
           </Button>
-          <Button asChild size="lg" variant="outline" className="bg-transparent border-white text-white hover:bg-white/10 hover:text-white font-semibold text-lg px-8 py-6 rounded-xl transition-colors">
-            <Link to="/contact">
-              <HelpCircle className="h-5 w-5 mr-2" />
-              Schedule a Demo
-            </Link>
+          <Button asChild size="lg" variant="outline" onClick={() => setShow(true)} className="bg-transparent border-white text-white hover:bg-white/10 hover:text-white font-semibold text-lg px-8 py-6 rounded-xl transition-colors">
+            <p><HelpCircle className="h-5 w-5 mr-2" />
+              Schedule a Demo</p>
           </Button>
         </motion.div>
       </motion.div>
+      <BookingModal show={show} setShow={setShow} />
     </section>
   );
 };

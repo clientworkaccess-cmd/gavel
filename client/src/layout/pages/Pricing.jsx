@@ -26,7 +26,7 @@ const Pricing = () => {
       </Helmet>
 
       {/* ✅ Page Sections */}
-      <div className="">
+      <div className="px-4">
         <PlainSection />
         <FAQSection pricing />
         <CTASection />

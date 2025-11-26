@@ -11,38 +11,8 @@ const demoInterview = {
         "company": ["Evolve Workforce Solutions", "Global Realty Partners"],
         "role": "candidate",
         "skills": ["Commercial Real Estate", "Lease Negotiation", "Contract Drafting"],
-        "position": [
-            {
-                "title": "Commercial Real Estate Associate",
-                "company": "Global Realty Partners",
-                "startDate": "2020-01-15",
-                "endDate": "2023-06-30"
-            },
-            {
-                "title": "Senior Real Estate Attorney",
-                "company": "Evolve Workforce Solutions",
-                "startDate": "2023-07-01",
-                "endDate": "Present"
-            }
-        ],
-        "interviews": [
-            "692469c1619a20f97d81dd7f",
-            "6924739dfb01fe8690cb1697",
-            "692474bf5ef880d9c53ef39c",
-            "6924750a64b019f8f23d6868",
-            "692475575e8e582d776a057e",
-            "6924764ab9986918a367f096",
-            "692477f845f6633479998124",
-            "69247aab45f6633479998201",
-            "69247b9945f663347999822b",
-            "69247e1945f6633479998291"
-        ],
-        "emailVerified": true,
-        "createdAt": "2025-11-24T13:28:56.972Z",
-        "updatedAt": "2025-11-25T13:25:05.062Z",
-        "__v": 2
     },
-    "jobDescription": "About the Role \n The Cook will take charge of preparing large quantities of food for private events and banquets.You’ll manage one or more prep or line stations, coordinate with chefs and assistants, ensure timeliness and quality, and help deliver a memorable dining experience for event guests. \n key Responsibilities \n Oversee and execute preparation of menu items for banquets and private events. Ability to follow recipes and maintain consistency in taste, portion, and presentation. Manage specific stations(grill, sauté, roast, etc.), ensuring consistency and high presentation quality. Coordinate with banquet manager, sous chef, and kitchen team to ensure food is delivered on schedule. Portion control, plating, and quality checks before service.",
+    "jobDescription": "About the Opportunity \n Evolve Workforce Solutions is proud to partner with a prominent law firm seeking an experienced Commercial Real Estate Attorney to join their growing real estate practice.This role offers the opportunity to work on sophisticated office and retail leasing transactions across both landlord and tenant representations, while gaining exposure to broader real estate and transactional matters. Ideal candidates will bring at least 3 years of commercial real estate experience, a deep understanding of leasing structures, and excellent drafting and negotiation skills. \n\n This is a fantastic opportunity for an attorney seeking long- term growth, professional development, and a potential partnership track. What’s in It for You Competitive compensation package based on experience Comprehensive benefits including medical, dental, vision, and 401(k) with profit sharing Paid time off, including holidays and parental leave Hybrid work environment with flexible office locations Long - term growth potential within a nationally respected real estate practice Key Responsibilities Draft, review, and negotiate commercial office and retail leases, including related documentation such as amendments, letters of intent, SNDA agreements, consents, estoppel certificates, and commission agreements Support both landlord - side and tenant - side leasing transactions Draft and negotiate commercial transactional documents, including purchase and sale agreements, deeds, assignments, financing instruments, and corporate authority documents Conduct legal due diligence, including lease and contract review, title and survey analysis, and monitoring of contingencies Prepare and review closing documents, conduct closings, and manage post - closing administration Collaborate with senior attorneys, paralegals, and other team members on real estate matters Qualifications J.D.from an accredited law school and licensed to practice in at least one U.S.jurisdiction Minimum 3 years of experience as a practicing attorney in commercial real estate law Demonstrated experience in office and retail leasing transactions Familiarity with purchase sale agreements, title survey review, and real estate due diligence Excellent drafting, negotiation, and communication skills Strong organizational abilities and the capacity to manage multiple deadlines and priorities independently Proficiency in Microsoft Word, Outlook, Excel, and legal document management tools Work Environment & Schedule Hybrid work model with a mix of in -office and remote flexibility Physical presence may be required for closings, client meetings, and in -office collaborations Occasional travel may be necessary for client site visits or industry events Standard business hours with occasional extended hours based on client needs Evolve Workforce Solutions is an equal opportunity employer committed to diversity and inclusion in the workplace. \n We encourage qualified candidates from all backgrounds to apply and join our dynamic team.",
     "summary": [
         "Candidate demonstrated strong communication skills during the interview.",
         "Exhibited solid knowledge of commercial real estate leasing and contract drafting.",
@@ -117,8 +87,8 @@ const demoInterview = {
         }
     ]
     ,
-    "jobName": "Commercial Real Estate Attorney",
-    "category": "legal",
+    "jobName": "Sales Representative",
+    "category": "Legal",
     "scores": {
         "communication": 90,
         "knowledge": 80,

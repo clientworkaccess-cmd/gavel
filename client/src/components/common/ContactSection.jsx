@@ -124,6 +124,7 @@ const ContactSection = () => {
 
               <Button
                 type="submit"
+                variant="outline"
                 disabled={isSubmitting}
                 className="w-full font-semibold py-2"
               >

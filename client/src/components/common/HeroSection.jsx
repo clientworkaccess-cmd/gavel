@@ -1,13 +1,18 @@
 /* eslint-disable no-unused-vars */
 import { FaPhoneAlt } from "react-icons/fa";
-import { Search } from "lucide-react";
+import { HelpCircle, Search } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
 import StatsSection from "./StatsSection";
+import BookingModal from "./BookingModal";
+import { useState } from "react";
 
 const HeroSection = ({ help }) => {
+
+  const [show, setShow] = useState(false);
+
   return (
     <>
       {help ? (
@@ -75,32 +80,32 @@ const HeroSection = ({ help }) => {
       ) : (
         // ✅ Main Landing Hero
         <section className="text-center pb-10 relative overflow-hidden ">
-            <div className="max-w-xl md:max-w-3xl lg:max-w-5xl mx-auto pt-30 pb-10">
-              <h1 className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-semibold text-foreground leading-tight mb-5 px-2">
-                AI HANDLES SOURCING AND <span className="text-secondary">SCREENING CANDIDATES </span>FOR YOUR OPEN ROLES.
-              </h1>
-              <p className="text-foreground/40 text-lg mx-auto mb-10 px-4">
-                Upload a role — Gavel sources and interviews candidates, scores them,
-                and delivers a ranked shortlist in minutes.
-              </p>
-              <div className="flex flex-col sm:flex-row justify-center items-center gap-4 mb-16">
-                <Link to="/login">
-                  <Button className="flex items-center gap-2 bg-secondary text-foreground hover:bg-secondary/70 px-6 py-3 text-lg rounded-xl shadow">
-                    <FaPhoneAlt className="text-foreground" /> Try the Interview
-                  </Button>
-                </Link>
+          <div className="max-w-xl md:max-w-3xl lg:max-w-5xl mx-auto pt-30 pb-10">
+            <h1 className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-semibold text-foreground leading-tight mb-5 px-2">
+              AI HANDLES SOURCING AND <span className="text-secondary">SCREENING CANDIDATES </span>FOR YOUR OPEN ROLES.
+            </h1>
+            <p className="text-foreground/40 text-lg mx-auto mb-10 px-4">
+              Upload a role — Gavel sources and interviews candidates, scores them,
+              and delivers a ranked shortlist in minutes.
+            </p>
+            <div className="flex flex-col sm:flex-row justify-center items-center gap-4 mb-16">
+              <Link to="/login">
+                <Button className="flex items-center gap-2 bg-secondary text-foreground hover:bg-secondary/70 px-6 py-3 text-lg rounded-xl shadow">
+                  <FaPhoneAlt className="text-foreground" /> Try the Interview
+                </Button>
+              </Link>
 
-                <Link to="/login">
-                  <Button
-                    variant="outline"
-                    className="flex items-center gap-2 border-foreground/80 text-foreground/60 hover:bg-foreground hover:text-background px-6 py-3 text-lg rounded-xl"
-                  >
-                    ⚡ Book a Demo
-                  </Button>
-                </Link>
-              </div>
+              <Button
+                variant="outline"
+                className="flex items-center gap-2 border-foreground/80 text-foreground/60 hover:bg-foreground hover:text-background px-6 py-3 text-lg rounded-xl"
+                onClick={() => setShow(true)}
+              >
+                <HelpCircle className="h-5 w-5 mr-2" /> Book a Demo
+              </Button>
             </div>
-            <StatsSection />
+          </div>
+          <StatsSection />
+          <BookingModal show={show} setShow={setShow} />
         </section>
       )}
     </>

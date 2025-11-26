@@ -12,12 +12,22 @@ import { useAuth } from "@/layout/context/AuthContext";
 import { motion } from "framer-motion";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 
+
+const dummyCompany = {
+    name: "Commercial Real Estate Attorney",
+    address: "123 Main St, Springfield, USA",
+    website: "https://www.creattorney.com",
+    industry: "Legal Services",
+}
+
 const InterviewDetail = ({ dummyData }) => {
     const { id } = useParams();
     const { role } = useAuth();
     const [interview, setInterview] = useState(null);
     const [loading, setLoading] = useState(true);
+    const [company, setCompany] = useState()
     const [activeTab, setActiveTab] = useState('overview');
+    const [skillsLength, setSkillsLength] = useState(4);
     const navigate = useNavigate();
 
     const handleNavigate = () => {
@@ -33,7 +43,10 @@ const InterviewDetail = ({ dummyData }) => {
         try {
             const res = await getReq(API_ENDPOINTS.INTERVIEW);
             const found = res?.interviews?.find((item) => item._id === id);
+            const comp = await getReq(API_ENDPOINTS.COMPANY)
+            const singleComp = comp?.find((item) => item.positions.some((p) => p.name === found.jobName))
             setInterview(found || dummyData || null);
+            setCompany(singleComp || dummyCompany);
         } catch (err) {
             console.error(err);
         } finally {
@@ -91,7 +104,7 @@ const InterviewDetail = ({ dummyData }) => {
                     <FileText className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
                     <h2 className="text-2xl font-semibold text-foreground mb-2">Interview Not Found</h2>
                     <p className="text-muted-foreground mb-6">This interview report could not be located.</p>
-                    <Button onClick={handleNavigate}>Return to Dashboard</Button>
+                    <Button variant="outline" onClick={handleNavigate}>Return to Dashboard</Button>
                 </div>
             </div>
         );
@@ -100,6 +113,7 @@ const InterviewDetail = ({ dummyData }) => {
     const StatusIcon = statusConfig.icon;
     const tabList = role !== "candidate" ? ['overview', 'scores', 'insights', 'transcript'] : ['overview', 'transcript'];
 
+
     return (
         <div className="min-h-screen text-foreground px-4 overflow-y-auto">
             <ToastContainer theme="dark" />
@@ -107,7 +121,7 @@ const InterviewDetail = ({ dummyData }) => {
                 <div className="container mx-auto px-4 h-16 flex items-center justify-between">
                     <div className="flex items-center gap-4">
                         <Button variant="ghost" size="icon" onClick={handleNavigate}>
-                            <MoveLeft className="w-5 h-5" />
+                            <MoveLeft className="w-4 h-5" />
                         </Button>
                         <div>
                             <h1 className="text-lg font-semibold">Interview Report</h1>
@@ -152,29 +166,26 @@ const InterviewDetail = ({ dummyData }) => {
                             </CardContent>
                         </Card>
                         <Card className="pt-0 bg-transparent">
-                            <CardContent className="p-6 pb-2">
-                                <h2 className="text-2xl font-bold pb-4">Job Details</h2>
-                                <p className="text-muted-foreground flex gap-2 items-center"><BriefcaseBusiness className="w-4 h-4" /> {interview.jobName}</p>
+                            <CardContent className="p-6 pb-2 space-y-2">
+                                <h2 className="text-2xl font-bold">Job Details</h2>
                             </CardContent>
                             <Separator />
-                            <CardContent className="px-6 text-sm flex gap-2">
-                                <FolderKanban className="w-4 h-4" />
-                                {interview.category}
-                            </CardContent>
-                            <CardContent className="p-6 pt-2 text-sm flex gap-2">
-                                <p>
-                                    <FileTextIcon className="w-4 h-4" />
-                                </p>
-                                <div className="relative max-h-36 overflow-y-auto pr-2 ">
-                                    <p className="text-sm whitespace-pre-wrap">
-                                        {interview.jobDescription}
-                                    </p>
-
-                                    {/* Fade Effect at Bottom */}
-                                    <div className="pointer-events-none absolute bottom-0 left-0 right-0 h-6 bg-gradient-to-t from-background to-transparent"></div>
-                                </div>
+                            <CardContent className="px-6 text-sm space-y-4">
+                                <ul className="space-y-2">
+                                    <li className="text-muted-foreground flex gap-2 items-center">Company: <span className="font-bold">{company.name}</span></li>
+                                    <li className="text-muted-foreground flex gap-2 items-center">Website: <a className="font-bold" href={company.website} target="_blank">{company.website}</a></li>
+                                    <li className="text-muted-foreground flex gap-2 items-center">Industry: <span className="font-bold">{company.industry}</span></li>
+                                    <li className="text-muted-foreground flex gap-2 items-center">Location: <span className="font-bold">{company.address}</span></li>
+                                </ul>
+                                <Separator />
+                                <ul className="space-y-2">
+                                    <li className="text-muted-foreground flex gap-2 items-center">Job Title: <span className="font-bold">{interview.jobName}</span></li>
+                                    <li className="text-muted-foreground flex gap-2 items-center">Job Category: <span className="font-bold ">{interview.category.charAt(0).toUpperCase() + interview.category.slice(1)}</span></li>
+                                </ul>
                             </CardContent>
                         </Card>
+
+                        <p className="text-muted-foreground flex gap-2 items-center text-sm pl-6">Interview Date: {""}{new Date(interview.createdAt).toLocaleDateString()}</p>
 
                         {role === "admin" && (
                             <Card className="bg-transparent">
@@ -218,7 +229,7 @@ const InterviewDetail = ({ dummyData }) => {
 
                         <div className="py-8">
                             {activeTab === 'overview' && (
-                                <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-8">
+                                <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-7">
                                     <Card className="bg-transparent">
                                         <CardHeader><CardTitle>AI Recommendation</CardTitle></CardHeader>
                                         <CardContent>
@@ -226,17 +237,39 @@ const InterviewDetail = ({ dummyData }) => {
                                             <p className="text-muted-foreground">Based on Interview analysis.</p>
                                         </CardContent>
                                     </Card>
-                                    {interview.candidateId.skills.length > 0 && <Card className="bg-transparent">
+                                    <Card className="bg-transparent">
                                         <CardHeader><CardTitle>Candidate Skills</CardTitle></CardHeader>
                                         <CardContent className="flex flex-wrap gap-2">
-                                            {interview.candidateId.skills.map(skill => <Badge key={skill} variant="secondary">{skill}</Badge>)}
+                                            {interview.candidateId.skills.length > 0 ?
+                                                <>
+                                                    {interview.candidateId.skills.slice(0, skillsLength).map(skill => <Badge key={skill} variant="secondary">{skill}</Badge>)}
+                                                    {interview.candidateId.skills.length > 4 && <Badge variant="outline" className="cursor-pointer" onClick={() => setSkillsLength(prev => prev === interview.candidateId.skills.length ? 4 : interview.candidateId.skills.length)}>
+                                                        {skillsLength === interview.candidateId.skills.length ? "Show Less" : "Show More"}
+                                                    </Badge>}
+                                                </>
+                                                : <p className="text-muted-foreground text-sm">No skills specified.</p>
+                                            }
                                         </CardContent>
-                                    </Card>}
+                                    </Card>
                                     <Card className="bg-transparent">
                                         <CardHeader><CardTitle>Expected Salary</CardTitle></CardHeader>
                                         <CardContent className="text-green-600">
                                             {interview.expectedSalary}
                                         </CardContent>
+                                    </Card>
+                                    <Card className="bg-transparent h-[35vh] overflow-hidden">
+                                            <CardContent className="px-6 pb-2">
+                                                <h2 className="text-2xl font-bold">Job Description</h2>
+                                            </CardContent>
+                                            <Separator />
+                                            <div className="relative h-[24.5vh] px-4 ">
+                                                <p className="text-sm whitespace-pre-wrap overflow-y-auto h-[28vh] pr-2">
+                                                    {interview.jobDescription}
+                                                </p>
+
+                                                {/* Fade Effect at Bottom */}
+                                                <div className="pointer-events-none absolute bottom-0 left-0 right-0 h-6 z-10 bg-gradient-to-t from-background to-transparent"></div>
+                                            </div>
                                     </Card>
                                 </motion.div>
                             )}
