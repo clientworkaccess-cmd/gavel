@@ -1,3 +1,6 @@
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
+import Slider from "react-slick";
 import { motion } from "framer-motion";
 import { Star, TrendingUp, Wallet } from "lucide-react";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
@@ -22,6 +25,25 @@ const stats = [
 ];
 
 const SocialProofSection = () => {
+
+  const settings = {
+    dots: true,
+    infinite: true,
+    arrows: false,
+    speed: 700,
+    slidesToShow: 2,
+    slidesToScroll: 1,
+    autoplay: true,
+    autoplaySpeed: 1500,
+    pauseOnHover: true,
+    responsive: [
+      {
+        breakpoint: 970,
+        settings: { slidesToShow: 1 },
+      },
+    ],
+  };
+
   return (
     <section className="py-20 ">
       <div className="container mx-auto px-4">
@@ -59,28 +81,72 @@ const SocialProofSection = () => {
             </motion.div>
           ))}
         </div>
-
-        <motion.div
-          initial={{ opacity: 0, scale: 0.95 }}
-          whileInView={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.6, delay: 0.4 }}
-          viewport={{ once: true }}
-          className="relative max-w-4xl mx-auto bg-card/70 backdrop-blur-lg border border-border/60 rounded-xl p-8 md:p-12 text-center"
-        >
-          <p className="text-xl md:text-2xl font-medium text-foreground italic mb-6">
-            “Gavel cut our early hiring steps from weeks to days. It's an essential tool for any modern law firm.”
-          </p>
-          <div className="flex items-center justify-center gap-4">
-            <Avatar className="w-16 h-16 border-2 border-primary/50">
-              <AvatarImage src="/assets/images/Liza.jpeg" alt="Jordan Patel" />
-              <AvatarFallback>JP</AvatarFallback>
-            </Avatar>
-            <div>
-              <h4 className="font-semibold text-foreground text-lg">Jordan Patel</h4>
-              <p className="text-muted-foreground">Managing Partner, LexPoint Legal</p>
+        <Slider {...settings} className="cursor-pointer space-x-4">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.6, delay: 0.4 }}
+            viewport={{ once: true }}
+            className="relative max-w-4xl mx-auto bg-card/70 backdrop-blur-lg border border-border/60 rounded-xl p-8 md:p-12 text-center "
+          >
+            <p className="text-xl md:text-2xl font-medium text-foreground italic mb-6">
+              “Gavel cut our early hiring steps from weeks to days. It's an essential tool for any modern law firm.”
+            </p>
+            <div className="flex items-center justify-center gap-4">
+              <Avatar className="w-16 h-16 border-2 border-primary/50">
+                <AvatarImage src="" alt="Emily Blunt" />
+                <AvatarFallback>EB</AvatarFallback>
+              </Avatar>
+              <div>
+                <h4 className="font-semibold text-foreground text-lg">Emily Blunt</h4>
+                <p className="text-muted-foreground">Managing Partner, LexPoint Legal</p>
+              </div>
             </div>
-          </div>
-        </motion.div>
+          </motion.div>
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.6, delay: 0.4 }}
+            viewport={{ once: true }}
+            className="relative max-w-4xl mx-auto bg-card/70 backdrop-blur-lg border border-border/60 rounded-xl p-8 md:p-12 text-center"
+          >
+            <p className="text-xl md:text-2xl font-medium text-foreground italic mb-6">
+              “Gavel cut our early hiring steps from weeks to days. It's an essential tool for any modern law firm.”
+            </p>
+            <div className="flex items-center justify-center gap-4">
+              <Avatar className="w-16 h-16 border-2 border-primary/50">
+                <AvatarImage src="" alt="Emily Blunt" />
+                <AvatarFallback>EB</AvatarFallback>
+              </Avatar>
+              <div>
+                <h4 className="font-semibold text-foreground text-lg">Emily Blunt</h4>
+                <p className="text-muted-foreground">Managing Partner, LexPoint Legal</p>
+              </div>
+            </div>
+          </motion.div>
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.6, delay: 0.4 }}
+            viewport={{ once: true }}
+            className="relative max-w-4xl mx-auto bg-card/70 backdrop-blur-lg border border-border/60 rounded-xl p-8 md:p-12 text-center"
+          >
+            <p className="text-xl md:text-2xl font-medium text-foreground italic mb-6">
+              “Gavel cut our early hiring steps from weeks to days. It's an essential tool for any modern law firm.”
+            </p>
+            <div className="flex items-center justify-center gap-4">
+              <Avatar className="w-16 h-16 border-2 border-primary/50">
+                <AvatarImage src="" alt="Emily Blunt" />
+                <AvatarFallback>EB</AvatarFallback>
+              </Avatar>
+              <div>
+                <h4 className="font-semibold text-foreground text-lg">Emily Blunt</h4>
+                <p className="text-muted-foreground">Managing Partner, LexPoint Legal</p>
+              </div>
+            </div>
+          </motion.div>
+
+        </Slider>
       </div>
     </section>
   );

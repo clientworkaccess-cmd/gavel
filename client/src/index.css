@@ -9,11 +9,33 @@
 body {
     font-family: "Montserrat", sans-serif;
 }
+
 .PhoneInputCountrySelect {
- background: #010520ef !important;    /* light gray */
-    border-color: var(--color-foreground) !important; /* dark gray */
+    background: #010520ef !important;
+    /* light gray */
+    border-color: var(--color-foreground) !important;
+    /* dark gray */
 }
 
+::-webkit-scrollbar {
+    width: 8px;
+    background-color: #2b51f93b;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: #2b51f9f2;
+    border-radius: 10px;
+}
+
+.slick-slide {
+    padding: 0 10px;
+    /* left-right gap */
+}
+
+.slick-list {
+    margin: 0 -10px;
+    /* negative margin to fix alignment */
+}
 
 .loader {
     color: #2b51f9f2;

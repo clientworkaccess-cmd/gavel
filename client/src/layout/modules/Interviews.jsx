@@ -44,8 +44,6 @@ const Interview = () => {
     const [selectedLanguage, setSelectedLanguage] = useState("english")
     const [sendReportData, setSendReportData] = useState({})
     const [vapi, setVapi] = useState(null);
-    const [isConnected, setIsConnected] = useState(false);
-    const [isSpeaking, setIsSpeaking] = useState(false);
     const [transcript, setTranscript] = useState([]);
 
     const positionDescriptionRef = useRef("");
@@ -56,20 +54,16 @@ const Interview = () => {
         setVapi(vapiInstance);
 
         vapiInstance.on('call-start', () => {
-            setIsConnected(true);
         });
 
         vapiInstance.on('call-end', () => {
-            setIsConnected(false);
-            setIsSpeaking(false);
+            handleStopInterview();
         });
 
         vapiInstance.on('speech-start', () => {
-            setIsSpeaking(true);
         });
 
         vapiInstance.on('speech-end', () => {
-            setIsSpeaking(false);
         });
 
         vapiInstance.on("message", (message) => {
@@ -276,7 +270,7 @@ const Interview = () => {
 
             const text = await webhookReport.text()
             const webhookReportData = text ? JSON.parse(text) : null;
-            
+
             if (webhookReportData) {
                 webhookReportData[0].summary = JSON.parse(webhookReportData[0].summary);
                 webhookReportData[0].transcript = JSON.parse(webhookReportData[0].transcript);
@@ -292,6 +286,7 @@ const Interview = () => {
             setLoading(false)
         }
     };
+
 
     return (
         <div className="min-h-screen flex items-center justify-center p-6">

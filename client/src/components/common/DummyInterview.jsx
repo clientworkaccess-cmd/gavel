@@ -2,12 +2,11 @@ import InterviewDetail from "./InterviewDetail";
 
 const demoInterview = {
     "_id": "69247e1945f6633479998291",
-    "candidate": "Michael Jackson",
+    "candidate": "Henry Adams",
     "candidateId": {
         "_id": "69245d983484d41ab0b6c4d8",
-        "name": "Micheal Jackson",
-        "email": "asharimran41@gmail.com",
-        "password": "$2b$10$RF4DJg/JTFAHO5AIgFGE7.OADB0Nw.7dTZbKopLrXpVDroSk5y/.m",
+        "name": "Henry Adams",
+        "email": "test@example.com",
         "phoneNumber": 60376767674,
         "company": ["Evolve Workforce Solutions", "Global Realty Partners"],
         "role": "candidate",
@@ -53,52 +52,78 @@ const demoInterview = {
     "transcript": [
         {
             "role": "assistant",
-            "content": "Hi Michael, thank you for joining today. Can you briefly introduce yourself and your experience in commercial real estate?",
-            "_id": "69247e1945f6633479998292"
+            "content": "Hi Henry, thanks for joining the call today. Let's start with a quick introduction — can you tell me a little about yourself and your background in commercial real estate?",
+            "_id": "69247e1945f6633479999101"
         },
         {
             "role": "user",
-            "content": "Hi, I’m Michael Jackson. I’ve been practicing commercial real estate law for 5 years, primarily handling office and retail leasing agreements. I’ve drafted and negotiated multiple high-value leases and purchase agreements for both landlords and tenants.",
-            "_id": "69247e1945f6633479998294"
+            "content": "Sure. I’m Henry Adams, and I’ve been working in commercial real estate law for about 5 years, mostly focusing on office and retail leases.",
+            "_id": "69247e1945f6633479999102"
         },
         {
             "role": "assistant",
-            "content": "Great! Can you walk me through your process when negotiating a commercial lease for a client?",
-            "_id": "69247e1945f6633479998295"
+            "content": "Great. When you're reviewing a lease for a new client, what's the first thing you typically focus on?",
+            "_id": "69247e1945f6633479999103"
         },
         {
             "role": "user",
-            "content": "Sure. I start by reviewing the lease terms in detail and identifying clauses that could impact my client. Then I discuss potential adjustments with the client and the other party, negotiate terms like rent, duration, and exit clauses, and finally ensure all amendments are properly documented.",
-            "_id": "69247e1945f6633479998296"
+            "content": "I look at the key terms — rent structure, duration, liability clauses, and anything that might create risk for the client.",
+            "_id": "69247e1945f6633479999104"
         },
         {
             "role": "assistant",
-            "content": "How do you handle complex due diligence tasks, like reviewing titles and surveys?",
-            "_id": "69247e1945f6633479998297"
+            "content": "Makes sense. Can you describe your general approach when negotiating lease terms with the opposing counsel?",
+            "_id": "69247e1945f6633479999105"
         },
         {
             "role": "user",
-            "content": "I carefully analyze title reports, survey documents, and any existing lease obligations. I highlight risks or discrepancies and advise clients on mitigating them before finalizing transactions.",
-            "_id": "69247e1945f6633479998298"
+            "content": "I keep the discussion straightforward. I highlight the clauses we want adjusted, explain the reasoning, and try to find solutions that work for both sides.",
+            "_id": "69247e1945f6633479999106"
         },
         {
             "role": "assistant",
-            "content": "Excellent. Finally, what motivates you to work in commercial real estate law?",
-            "_id": "69247e1945f6633479998299"
+            "content": "Nice. Let's talk about due diligence. How do you handle reviews of titles, surveys, or potential encumbrances?",
+            "_id": "69247e1945f6633479999107"
         },
         {
             "role": "user",
-            "content": "I enjoy negotiating complex agreements and helping clients achieve their business goals. I find the dynamic nature of real estate law very stimulating and rewarding.",
-            "_id": "69247e1945f6633479998300"
+            "content": "I review everything carefully, flag any easements or issues, and let the client know what might affect the deal before they move forward.",
+            "_id": "69247e1945f6633479999108"
+        },
+        {
+            "role": "assistant",
+            "content": "Good approach. How would you describe your communication style when working with clients or brokers?",
+            "_id": "69247e1945f6633479999109"
+        },
+        {
+            "role": "user",
+            "content": "Clear and direct. I like keeping clients informed without overwhelming them with too much legal detail.",
+            "_id": "69247e1945f6633479999110"
+        },
+        {
+            "role": "assistant",
+            "content": "Understood. One last question — what keeps you motivated to work in commercial real estate law?",
+            "_id": "69247e1945f6633479999111"
+        },
+        {
+            "role": "user",
+            "content": "I enjoy the complexity of deals and helping clients reach their goals. Every transaction feels different.",
+            "_id": "69247e1945f6633479999112"
+        },
+        {
+            "role": "assistant",
+            "content": "Thanks for sharing all of that, Henry. That was the last question on my end. I appreciate your time today. This concludes our interview. Have a great rest of your day!",
+            "_id": "69247e1945f6633479999113"
         }
-    ],
+    ]
+    ,
     "jobName": "Commercial Real Estate Attorney",
     "category": "legal",
     "scores": {
-        "communication": 9,
-        "knowledge": 8,
-        "attitude": 9,
-        "overallFit": 9,
+        "communication": 90,
+        "knowledge": 80,
+        "attitude": 90,
+        "overallFit": 93,
         "_id": "69247e1945f6633479998293"
     },
     "recommendation": "🟢 Strong Fit",
@@ -110,7 +135,6 @@ const demoInterview = {
         "Capable of handling complex due diligence tasks independently."
     ],
     "badkeyInsights": [
-        "None observed during the interview."
     ],
     "redFlags": [],
     "reviewStatus": "approved",

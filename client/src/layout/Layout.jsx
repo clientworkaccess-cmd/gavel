@@ -23,7 +23,7 @@ const Layout = () => {
   return (
     <div>
       {role ? (
-        <div className="bg-background bg-[radial-gradient(circle_at_top_center,#0B1138,transparent_70%)] md:px-16">
+        <div className="bg-background bg-[radial-gradient(circle_at_top_center,#0B1138,transparent_70%)]">
           {/* Sidebar */}
           <Sidebar collapsed={collapsed} setCollapsed={setCollapsed} />
           {/* Main Content */}
@@ -39,7 +39,7 @@ const Layout = () => {
       ) : (
         <div
           ref={mainRef}
-          className="relative h-screen overflow-auto inset-0 bg-background bg-[radial-gradient(circle_at_top_center,#0B1138,transparent_70%)] md:px-16"
+          className="relative h-screen overflow-auto inset-0 bg-background bg-[radial-gradient(circle_at_top_center,#0B1138,transparent_70%)]"
         >
           <Navbar />
           <Outlet />

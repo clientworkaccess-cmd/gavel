@@ -256,7 +256,7 @@ const Modal = ({ type, show, setShow, data, variant, entity }) => {
 
     return (
         <Dialog open={show} onOpenChange={(open) => !open && setShow(false)}>
-            <DialogContent>
+            <DialogContent  onOpenAutoFocus={(e) => e.preventDefault()}>
                 <DialogHeader>
                     <DialogTitle className="text-center">
                         {type === "add" ? `Add ${variant}` : `Edit ${variant}`}

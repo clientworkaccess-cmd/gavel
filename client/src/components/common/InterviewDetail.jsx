@@ -151,7 +151,7 @@ const InterviewDetail = ({ dummyData }) => {
                                 <div className="flex items-center"><Linkedin className="w-4 h-4 mr-3 text-muted-foreground" /> <a href={interview.candidateId.linkedinProfile} className="text-primary hover:underline">{interview.candidateId.linkedinProfile ? "LinkedIn Profile" : "Not specified"}</a></div>
                             </CardContent>
                         </Card>
-                        <Card className="pt-0 bg-transparent max-w-200">
+                        <Card className="pt-0 bg-transparent">
                             <CardContent className="p-6 pb-2">
                                 <h2 className="text-2xl font-bold pb-4">Job Details</h2>
                                 <p className="text-muted-foreground flex gap-2 items-center"><BriefcaseBusiness className="w-4 h-4" /> {interview.jobName}</p>
@@ -165,7 +165,7 @@ const InterviewDetail = ({ dummyData }) => {
                                 <p>
                                     <FileTextIcon className="w-4 h-4" />
                                 </p>
-                                <div className="relative max-h-32 overflow-y-auto pr-2">
+                                <div className="relative max-h-36 overflow-y-auto pr-2 ">
                                     <p className="text-sm whitespace-pre-wrap">
                                         {interview.jobDescription}
                                     </p>
@@ -295,7 +295,7 @@ const InterviewDetail = ({ dummyData }) => {
                                 <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
                                     <Card className="pb-0 bg-transparent">
                                         <CardHeader className="border-b"><CardTitle>Interview Transcript</CardTitle></CardHeader>
-                                        <CardContent className="space-y-6 max-h-178 overflow-y-auto p-4 rounded-lg">
+                                        <CardContent className="space-y-6 max-h-200 overflow-y-auto p-4 rounded-lg">
                                             {interview.transcript.map((msg, idx) => (
                                                 msg.content && msg.role !== 'tool' && <div key={idx} className={`flex gap-4 ${msg.role === 'user' ? 'justify-end' : ''}`}>
                                                     {msg.role !== 'user' && <Avatar><AvatarFallback>AI</AvatarFallback></Avatar>}
