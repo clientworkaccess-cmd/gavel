@@ -247,14 +247,14 @@ const InterviewDetail = ({ dummyData }) => {
                                                         {skillsLength === interview.candidateId.skills.length ? "Show Less" : "Show More"}
                                                     </Badge>}
                                                 </>
-                                                : <p className="text-muted-foreground text-sm">No skills specified.</p>
+                                                : <p className="text-muted-foreground text-sm">Not specified.</p>
                                             }
                                         </CardContent>
                                     </Card>
                                     <Card className="bg-transparent">
                                         <CardHeader><CardTitle>Expected Salary</CardTitle></CardHeader>
                                         <CardContent className="text-green-600">
-                                            {interview.expectedSalary}
+                                            {interview.expectedSalary || "Not specified"}
                                         </CardContent>
                                     </Card>
                                     <Card className="bg-transparent h-[35vh] overflow-hidden">

@@ -44,6 +44,7 @@ const Layout = () => {
           <Navbar />
           <Outlet />
           <Footer />
+            <iframe src="http://localhost:3000/" className="w-[calc(100vw-32px)] h-[600px] max-h-[80vh] sm:w-[380px] sm:h-[650px] fixed bottom-0 right-2"></iframe>
         </div>
       )}
     </div>

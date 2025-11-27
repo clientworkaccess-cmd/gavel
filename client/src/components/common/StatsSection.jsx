@@ -34,7 +34,7 @@ const StatsSection = () => {
               key={stat.label}
               initial={{ opacity: 0, scale: 0.8 }}
               animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.5, delay: 1 + index * 0.1 }}
+              transition={{ duration: 0.5 }}
               whileHover={{ scale: 1.1, y: -10 }}
               className="relative group"
             >

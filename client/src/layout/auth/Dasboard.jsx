@@ -8,6 +8,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { GiSandsOfTime } from "react-icons/gi";
 import { Progress } from "@/components/ui/progress";
 import { CheckCircle, Clock, Briefcase, TrendingUp } from "lucide-react";
 import { toast } from "react-toastify";
@@ -27,6 +28,7 @@ const Dashboard = () => {
     pending: 0,
     total: 0,
     reject: 0,
+    maybe: 0,
   });
 
   const navigate = useNavigate();
@@ -63,8 +65,9 @@ const Dashboard = () => {
     const completed = interviews.filter((i) => i.reviewStatus === "approved").length;
     const pending = interviews.filter((i) => i.reviewStatus === "pending").length;
     const reject = interviews.filter((i) => i.reviewStatus === "reject").length;
+    const maybe = interviews.filter((i) => i.reviewStatus === "maybe").length;
 
-    setStats({ total, completed, pending, reject });
+    setStats({ total, completed, pending, reject , maybe });
     setLoading(false);
   };
 
@@ -88,16 +91,22 @@ const Dashboard = () => {
       color: "from-yellow-400 to-orange-500",
     },
     {
-      title: "Total",
-      value: stats.total,
-      icon: <Briefcase className="w-6 h-6" />,
-      color: "from-indigo-500 to-purple-600",
+      title: "Maybe",
+      value: stats.maybe  ,
+      icon: <GiSandsOfTime className="w-6 h-6" />,
+      color: "from-blue-600 to-blue-800",
     },
     {
       title: "Rejected",
       value: stats.reject,
       icon: <TrendingUp className="w-6 h-6" />,
-      color: "from-red-400 to-pink-500",
+      color: "from-red-600 to-red-700",
+    },
+    {
+      title: "Total",
+      value: stats.total,
+      icon: <Briefcase className="w-6 h-6" />,
+      color: "from-indigo-500 to-purple-600",
     },
   ];
 
@@ -125,7 +134,7 @@ const Dashboard = () => {
       </div>
 
       {/* Stat Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
         {cardData.map((card, i) => (
           <Card
             key={i}

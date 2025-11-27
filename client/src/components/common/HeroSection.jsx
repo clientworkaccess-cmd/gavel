@@ -90,14 +90,14 @@ const HeroSection = ({ help }) => {
             </p>
             <div className="flex flex-col sm:flex-row justify-center items-center gap-4 mb-16">
               <Link to="/login">
-                <Button className="flex items-center gap-2 bg-secondary text-foreground hover:bg-secondary/70 px-6 py-3 text-lg rounded-xl shadow">
+                <Button className="flex items-center gap-2 bg-secondary/60 text-foreground hover:bg-secondary/70 px-6 py-3 text-lg rounded-xl shadow">
                   <FaPhoneAlt className="text-foreground" /> Try the Interview
                 </Button>
               </Link>
 
               <Button
                 variant="outline"
-                className="flex items-center gap-2 border-foreground/80 text-foreground/60 hover:bg-foreground hover:text-background px-6 py-3 text-lg rounded-xl"
+                className="flex items-center gap-2 border-foreground/80 text-foreground/60 hover:bg-foreground   hover:text-background px-6 py-3 text-lg rounded-xl"
                 onClick={() => setShow(true)}
               >
                 <HelpCircle className="h-5 w-5 mr-2" /> Book a Demo

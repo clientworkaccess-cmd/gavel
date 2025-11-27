@@ -1,0 +1,5 @@
+{
+  "name": "Gavel AI Assistant",
+  "description": "A smart, dark-themed chatbot for Gavel, connecting to n8n for dynamic responses.",
+  "requestFramePermissions": []
+}
