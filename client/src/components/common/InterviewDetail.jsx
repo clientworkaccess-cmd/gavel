@@ -115,11 +115,11 @@ const InterviewDetail = ({ dummyData }) => {
 
 
     return (
-        <div className="min-h-screen text-foreground px-4 overflow-y-auto">
+        <div className="min-h-screen text-foreground sm:px-4 overflow-y-auto">
             <ToastContainer theme="dark" />
             <header className="sticky top-0 z-40 backdrop-blur-lg border-b border-border ">
-                <div className="container mx-auto px-4 h-16 flex items-center justify-between">
-                    <div className="flex items-center gap-4">
+                <div className="container mx-auto px-4 h-16 flex items-center  justify-between">
+                    <div className="flex items-center  gap-4">
                         <Button variant="ghost" size="icon" onClick={handleNavigate}>
                             <MoveLeft className="w-4 h-5" />
                         </Button>
@@ -131,7 +131,7 @@ const InterviewDetail = ({ dummyData }) => {
                 </div>
             </header>
 
-            <div className={`container mx-auto px-4 py-8 ${dummyData && "py-4"}`}>
+            <div className={`container mx-auto sm:px-4 py-8 ${dummyData && "py-4"}`}>
                 <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
                     {/* Left Sidebar */}
                     <motion.div
@@ -159,10 +159,10 @@ const InterviewDetail = ({ dummyData }) => {
                             </CardContent>
                             <Separator />
                             <CardContent className="p-6 space-y-4 text-sm">
-                                <div className="flex items-center"><Mail className="w-4 h-4 mr-3 text-muted-foreground" /> {interview.candidateId.email}</div>
-                                <div className="flex items-center"><Phone className="w-4 h-4 mr-3 text-muted-foreground" /> {interview.candidateId.phoneNumber}</div>
-                                <div className="flex items-center"><MapPin className="w-4 h-4 mr-3 text-muted-foreground" /> {interview.candidateId.address || "Not specified"}</div>
-                                <div className="flex items-center"><Linkedin className="w-4 h-4 mr-3 text-muted-foreground" /> <a href={interview.candidateId.linkedinProfile} className="text-primary hover:underline">{interview.candidateId.linkedinProfile ? "LinkedIn Profile" : "Not specified"}</a></div>
+                                <div className="flex items-center "><Mail className="w-4 h-4 mr-3 text-muted-foreground" /> {interview.candidateId.email}</div>
+                                <div className="flex items-center "><Phone className="w-4 h-4 mr-3 text-muted-foreground" /> {interview.candidateId.phoneNumber}</div>
+                                <div className="flex items-center "><MapPin className="w-4 h-4 mr-3 text-muted-foreground" /> {interview.candidateId.address || "Not specified"}</div>
+                                <div className="flex items-center "><Linkedin className="w-4 h-4 mr-3 text-muted-foreground" /> <a href={interview.candidateId.linkedinProfile} className="text-primary hover:underline">{interview.candidateId.linkedinProfile ? "LinkedIn Profile" : "Not specified"}</a></div>
                             </CardContent>
                         </Card>
                         <Card className="pt-0 bg-transparent">
@@ -172,15 +172,15 @@ const InterviewDetail = ({ dummyData }) => {
                             <Separator />
                             <CardContent className="px-6 text-sm space-y-4">
                                 <ul className="space-y-2">
-                                    <li className="text-muted-foreground flex gap-2 items-center">Company: <span className="font-bold">{company.name}</span></li>
-                                    <li className="text-muted-foreground flex gap-2 items-center">Website: <a className="font-bold" href={company.website} target="_blank">{company.website}</a></li>
-                                    <li className="text-muted-foreground flex gap-2 items-center">Industry: <span className="font-bold">{company.industry}</span></li>
-                                    <li className="text-muted-foreground flex gap-2 items-center">Location: <span className="font-bold">{company.address}</span></li>
+                                    <li className="text-muted-foreground flex gap-2 items-center flex-wrap">Company: <span className="font-bold">{company.name}</span></li>
+                                    <li className="text-muted-foreground flex gap-2 items-center flex-wrap">Website: <a className="font-bold" href={company.website} target="_blank">{company.website}</a></li>
+                                    <li className="text-muted-foreground flex gap-2 items-center flex-wrap">Industry: <span className="font-bold">{company.industry}</span></li>
+                                    <li className="text-muted-foreground flex gap-2 items-center flex-wrap">Location: <span className="font-bold">{company.address}</span></li>
                                 </ul>
                                 <Separator />
                                 <ul className="space-y-2">
-                                    <li className="text-muted-foreground flex gap-2 items-center">Job Title: <span className="font-bold">{interview.jobName}</span></li>
-                                    <li className="text-muted-foreground flex gap-2 items-center">Job Category: <span className="font-bold ">{interview.category.charAt(0).toUpperCase() + interview.category.slice(1)}</span></li>
+                                    <li className="text-muted-foreground flex gap-2 items-center flex-wrap">Job Title: <span className="font-bold">{interview.jobName}</span></li>
+                                    <li className="text-muted-foreground flex gap-2 items-center flex-wrap">Job Category: <span className="font-bold ">{interview.category.charAt(0).toUpperCase() + interview.category.slice(1)}</span></li>
                                 </ul>
                             </CardContent>
                         </Card>
@@ -214,7 +214,7 @@ const InterviewDetail = ({ dummyData }) => {
                         transition={{ duration: 0.5, delay: 0.2 }}
                         className="xl:col-span-2"
                     >
-                        <div className="border-b border-border">
+                        <div className="border-b border-border space-y-4">
                             {tabList.map((tab) => (
                                 <button
                                     key={tab}
@@ -328,11 +328,11 @@ const InterviewDetail = ({ dummyData }) => {
                                 <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
                                     <Card className="pb-0 bg-transparent">
                                         <CardHeader className="border-b"><CardTitle>Interview Transcript</CardTitle></CardHeader>
-                                        <CardContent className="space-y-6 max-h-200 overflow-y-auto p-4 rounded-lg">
+                                        <CardContent className="space-y-6 max-h-200 overflow-y-auto px-2 py-4 sm:p-4 rounded-lg">
                                             {interview.transcript.map((msg, idx) => (
                                                 msg.content && msg.role !== 'tool' && <div key={idx} className={`flex gap-4 ${msg.role === 'user' ? 'justify-end' : ''}`}>
                                                     {msg.role !== 'user' && <Avatar><AvatarFallback>AI</AvatarFallback></Avatar>}
-                                                    <div className={`max-w-[70%] p-4 rounded-lg ${msg.role === 'user' ? 'bg-secondary/40 text-primary-foreground' : 'border bg-[#dbcaca18]'}`}>
+                                                    <div className={`max-w-[70%] p-3 sm:p-4 rounded-lg ${msg.role === 'user' ? 'bg-secondary/40 text-primary-foreground' : 'border bg-[#dbcaca18]'}`}>
                                                         {msg.content}
                                                     </div>
                                                     {msg.role === 'user' && <Avatar><AvatarFallback>{interview.candidateId.name.split(' ').map(n => n[0]).join('')}</AvatarFallback></Avatar>}

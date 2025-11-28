@@ -1,7 +1,7 @@
 import { useEffect, useRef } from "react";
 import { animate, useInView } from "framer-motion";
 
-const AnimatedCounter = ({ end, suffix, duration = 1.5 }) => {
+const AnimatedCounter = ({ end, suffix, duration = 2 }) => {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: false });
 
@@ -22,7 +22,7 @@ const AnimatedCounter = ({ end, suffix, duration = 1.5 }) => {
 
   return (
     <span ref={ref}>
-      0{suffix}
+      0 {suffix}
     </span>
   );
 };

@@ -292,7 +292,7 @@ export const ChatWindow: React.FC<ChatWindowProps> = ({ onClose }) => {
           </button>
         </form>
         <div className="flex justify-center mt-3">
-            <a href="https://gavel.io" target="_blank" rel="noreferrer" className="text-[10px] text-slate-500 hover:text-slate-400 transition-colors flex items-center gap-1 opacity-60 hover:opacity-100">
+            <a href="https://joingavel.com" target="_blank" rel="noreferrer" className="text-[10px] text-slate-500 hover:text-slate-400 transition-colors flex items-center gap-1 opacity-60 hover:opacity-100">
                 <span>{currentConfig.poweredBy}</span>
             </a>
         </div>

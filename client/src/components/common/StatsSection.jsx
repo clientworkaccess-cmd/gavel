@@ -22,7 +22,7 @@ const StatsSection = () => {
           initial={{ opacity: 0, y: 50 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.8 }}
-          className="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-5xl mx-auto"
+          className="grid grid-cols-1 min-[400px]:grid-cols-2 md:grid-cols-4 gap-6 max-w-5xl mx-auto"
         >
           {[
             { icon: Mic, end: 50000, suffix: "+", label: "Interviews Conducted" },
@@ -53,7 +53,7 @@ const StatsSection = () => {
                   <stat.icon className="w-8 h-8 text-primary mb-3 mx-auto group-hover:scale-110 transition-transform" />
                 </motion.div>
                 <div className="text-4xl font-bold text-foreground mb-2 bg-gradient-to-r from-primary to-accent bg-clip-text">
-                  <AnimatedCounter end={stat.end} suffix={stat.suffix} duration={2.5} />
+                  <AnimatedCounter end={stat.end} suffix={stat.suffix} duration={3} />
                 </div>
                 <div className="text-sm text-muted-foreground">{stat.label}</div>
                 <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-primary via-accent to-secondary transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500" />
