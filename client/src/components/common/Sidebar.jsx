@@ -26,12 +26,13 @@ import {
 import { useAuth } from "../../layout/context/AuthContext";
 import { postReq } from "../../axios/axios";
 import { API_ENDPOINTS } from "../../config/api";
+import { FaWpforms } from "react-icons/fa";
 
 const Sidebar = ({ collapsed, setCollapsed }) => {
   const [showLogout, setShowLogout] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
-  const { role, setRole , checkSession} = useAuth();
+  const { role, setRole, checkSession } = useAuth();
 
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 900);
 
@@ -68,6 +69,7 @@ const Sidebar = ({ collapsed, setCollapsed }) => {
     links = [
       { to: "/", label: "Dashboard", icon: Home },
       { to: "/client/transcript", label: "Transcript", icon: FileText },
+      { to: "/client/contact-admin", label: "Contact Admin", icon: FaWpforms },
     ];
   }
 

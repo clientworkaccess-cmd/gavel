@@ -21,6 +21,7 @@ import Profile from "@/layout/modules/Profile";
 import Interview from "@/layout/modules/Interviews";
 import Transcript from "@/layout/modules/Transcript";
 import InterviewDetail from "@/components/common/InterviewDetail";
+import ContactAdmin from "@/components/common/ContactAdmin";
 
 
 const AppRoutes = () => {
@@ -65,6 +66,7 @@ const AppRoutes = () => {
                     { path: "/client/transcript", element: <Transcript /> },
                     { path: "/client/interview-detail/:id", element: <InterviewDetail /> },
                     { path: "/candidate/interview-detail/:id", element: <InterviewDetail /> },
+                    { path: "/client/contact-admin", element: <ContactAdmin /> },
                     { path: "/login", element: <LoginForm /> },
                     { path: "/signup", element: <SignupForm /> },
                 ],

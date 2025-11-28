@@ -21,6 +21,7 @@ export const API_ENDPOINTS = {
 
   // ✉️ Utilities
   SEND_EMAIL: `${API_BASE_URL}/api/send-email`,
+  SEND_EMAIL_ADMIN: `${API_BASE_URL}/api/send-email-admin`,
 
   // 🧑‍💼 Admin system
   ADMINS: `${API_BASE_URL}/api/admins`,

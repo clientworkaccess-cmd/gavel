@@ -49,7 +49,7 @@ import {
   updatePosition,
 } from "../controller/positionController.js";
 
-import { sendEmail } from "../controller/emailControler.js";
+import { sendEmail, sendEmailToAdmin } from "../controller/emailControler.js";
 
 
 const router = express.Router();
@@ -100,6 +100,7 @@ router.delete("/api/interview/:id", verifyToken, deleteInterview);
 router.get("/api/dashboard", verifyToken, dashboardController);
 router.get("/api/refresh-token", refreshTokenController);
 router.post("/api/send-email", sendEmail);
+router.post("/api/send-email-admin", sendEmailToAdmin);
 
 
 export default router;

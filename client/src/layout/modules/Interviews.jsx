@@ -489,7 +489,6 @@ const Interview = () => {
                 <CardFooter className="text-xs text-foreground/40 border-t border-foreground py-4 text-center bg-secondary backdrop-blur-md">
                     Powered by{" "}
                     <span className="font-semibold">&nbsp;Gavel AI</span> •
-                    Voice Intelligence by Vapi
                 </CardFooter>
             </Card>
         </div>

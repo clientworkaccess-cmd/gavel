@@ -123,7 +123,7 @@ const Dashboard = () => {
   return (
     <div className="p-8 pt-4 min-h-screen space-y-8">
       {/* Header */}
-      <div className="bg-linear-to-r from-blue-500 via-indigo-600 to-purple-600 text-foreground rounded-xl p-8 shadow">
+      <div className="bg-linear-to-r from-blue-500 via-indigo-600 to-purple-600 text-foreground rounded-xl py-8 px-4 min-[400px]:p-8 shadow">
         <h1 className="text-3xl font-bold">
           Welcome Back, {user?.name} 👋
         </h1>

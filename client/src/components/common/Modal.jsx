@@ -43,6 +43,7 @@ const Modal = ({ type, show, setShow, data, variant, entity }) => {
             }
             setValu(phone);
             setValue("phoneNumber", phone);
+            data.phoneNumber = String(data?.phoneNumber)
         }
         if (data) reset(data);
     }, [data]);
