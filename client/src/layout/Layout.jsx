@@ -73,7 +73,7 @@ const Layout = () => {
             }
                `}>
             <iframe
-              src={`${import.meta.env.VITE_CHATBOT_URL}/${chatOpen}`}
+              src={import.meta.env.VITE_CHATBOT_URL}
               className="w-full h-full"
             />
           </div>
