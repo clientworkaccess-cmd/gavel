@@ -89,11 +89,11 @@ const LeadershipMember = ({ member, reverse = false }) => {
 
 const TeamSection = () => {
   return (
-    <section className="py-20 px-6 md:px-12">
+    <section className="py-20 px-4 md:px-12">
       <motion.div
         initial="hidden"
         whileInView="visible"
-        viewport={{ once: true, amount: 0.5 }}
+        viewport={{ once: true, amount: 0.4 }}
         variants={containerVariants}
         className="text-center mb-20"
       >

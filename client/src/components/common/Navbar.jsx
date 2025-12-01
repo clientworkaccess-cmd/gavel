@@ -21,7 +21,7 @@ export default function Navbar() {
   ];
 
   return (
-    <header className="sticky top-1 z-50 w-full md:px-16 backdrop-blur-xl shadow-md" >
+    <header className="sticky top-1 z-50 w-full px-4 xl:px-16 backdrop-blur-xl shadow-md" >
       <div className="flex items-center justify-between px-6 py-3">
         {/* Logo */}
         <Link to="/" className="flex items-center gap-2">
@@ -30,7 +30,7 @@ export default function Navbar() {
         </Link>
 
         {/* Desktop Links */}
-        <nav className="hidden lg:flex items-center gap-8">
+        <nav className="hidden lg:flex items-center gap-4 xl:gap-8">
           {links.map((link) => {
             return (
               link.name !== "Login" && link.name !== "Signup" && <Link

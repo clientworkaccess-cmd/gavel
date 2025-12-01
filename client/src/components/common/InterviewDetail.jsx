@@ -132,13 +132,13 @@ const InterviewDetail = ({ dummyData }) => {
             </header>
 
             <div className={`container mx-auto sm:px-4 py-8 ${dummyData && "py-4"}`}>
-                <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
+                <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
                     {/* Left Sidebar */}
                     <motion.div
                         initial={{ opacity: 0, x: -20 }}
                         animate={{ opacity: 1, x: 0 }}
                         transition={{ duration: 0.5 }}
-                        className="space-y-4"
+                        className="space-y-7"
                     >
                         <Card className="pt-0 bg-transparent max-w-200">
                             <CardHeader className={`h-3 ${statusConfig.color} rounded-t-2xl`}>
@@ -257,18 +257,17 @@ const InterviewDetail = ({ dummyData }) => {
                                             {interview.expectedSalary || "Not specified"}
                                         </CardContent>
                                     </Card>
-                                    <Card className="bg-transparent h-[35vh] overflow-hidden">
-                                            <CardContent className="px-6 pb-2">
+                                    <Card className="bg-transparent overflow-hidden pb-0 ">
+                                            <CardContent className="px-6 ">
                                                 <h2 className="text-2xl font-bold">Job Description</h2>
                                             </CardContent>
                                             <Separator />
-                                            <div className="relative h-[24.5vh] px-4 ">
-                                                <p className="text-sm whitespace-pre-wrap overflow-y-auto h-[28vh] pr-2">
+                                            <div className="relative h-[24vh] px-4 overflow-y-auto">
+                                                <p className="text-sm whitespace-pre-wrap pr-2">
                                                     {interview.jobDescription}
                                                 </p>
 
-                                                {/* Fade Effect at Bottom */}
-                                                <div className="pointer-events-none absolute bottom-0 left-0 right-0 h-6 z-10 bg-gradient-to-t from-background to-transparent"></div>
+                                                <div className="pointer-events-none sticky bottom-0 left-0 right-0 h-6 z-10 bg-gradient-to-t from-background to-[#000000a6]"></div>
                                             </div>
                                     </Card>
                                 </motion.div>

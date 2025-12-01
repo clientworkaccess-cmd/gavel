@@ -96,9 +96,9 @@ const JoinUsCTA = () => (
       whileInView="visible"
       viewport={{ once: true, amount: 0.5 }}
       variants={containerVariants}
-      className="py-16 px-8 rounded-3xl text-center border"
+      className="py-16 px-2 sm:px-8 rounded-3xl text-center border"
     >
-      <motion.h2 variants={itemVariants} className="text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+      <motion.h2 variants={itemVariants} className="text-3xl sm:text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
         Join Us in Redefining Recruitment
       </motion.h2>
       <motion.p variants={itemVariants} className="mb-10 max-w-xl mx-auto text-primary-foreground/80 text-lg">
