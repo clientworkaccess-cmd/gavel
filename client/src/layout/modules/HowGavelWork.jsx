@@ -1,6 +1,7 @@
 import React from "react";
 import { Terminal, Play, CheckCircle, Users, Mic, FileText, Zap } from "lucide-react";
 import InterviewDetailDemo from "@/components/common/DummyInterview";
+import { Link } from "react-router-dom";
 
 // Default export a React component that renders the "How Gavel Works" page.
 // Tailwind classes are used for styling (assumes Tailwind + shadcn setup).
@@ -86,8 +87,8 @@ export default function HowGavelWorks() {
               </p>
 
               <div className="mt-6 flex flex-wrap gap-3">
-                <button className="rounded-full bg-secondary hover:bg-secandory/80 px-5 py-2 text-sm font-semibold shadow">Get Started</button>
-                <button className="rounded-full border border-slate-700 px-5 py-2 text-sm text-slate-200">See Demo</button>
+                <Link to="/login" className="rounded-full bg-secondary hover:bg-secandory/80 px-5 py-2 text-sm font-semibold shadow">Get Started</Link>
+                <button className="rounded-full border border-slate-700 px-5 py-2 text-sm text-slate-200" ><a href="#interview-detail-demo">See Demo</a> </button>
               </div>
             </div>
 

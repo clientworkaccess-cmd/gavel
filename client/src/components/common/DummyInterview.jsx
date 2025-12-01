@@ -118,7 +118,7 @@ const demoInterview = {
 const InterviewDetailDemo = () => {
 
     return (
-        <div className="container mx-auto px-4 py-10 backdrop-blur border-border/50 hover:border-primary/50 transition-all duration-800 hover:shadow-[0_0_30px_rgba(59,130,246,0.3)] group rounded-2xl hover:scale-103 cursor-pointer">
+        <div id="interview-detail-demo" className="container mx-auto px-4 py-10 backdrop-blur border-border/50 hover:border-primary/50 transition-all duration-800 hover:shadow-[0_0_30px_rgba(59,130,246,0.3)] group rounded-2xl hover:scale-103 cursor-pointer">
             <h1 className="text-3xl font-bold mb-6 text-center bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">Interview Report</h1>
 
             <InterviewDetail dummyData={demoInterview} />
