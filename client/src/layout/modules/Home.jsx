@@ -1,4 +1,4 @@
-import HowItWorksSection from "@/components/common/HowItWorksSection";
+import HowItWorksSection from "@/layout/modules/HowGavelWork";
 import HeroSection from "../../components/common/HeroSection";
 import WhyGavel from "../../components/common/WhyGavelSection";
 import BuiltForSection from "@/components/common/BuiltForSection";
@@ -13,7 +13,6 @@ const Home = () => {
       <HeroSection />
       <WhyGavel />
       <InterviewDetailDemo />
-      <HowItWorksSection />
       <BuiltForSection />
       <ProductSection />
       <SocialProofSection />

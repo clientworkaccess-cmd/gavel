@@ -21,9 +21,12 @@ const AnimatedCounter = ({ end, suffix, duration = 2 }) => {
   }, [isInView, end, duration]);
 
   return (
-    <span ref={ref}>
-      0 {suffix}
-    </span>
+    <>
+      <span ref={ref}>
+        0
+      </span>
+      {suffix}
+    </>
   );
 };
 

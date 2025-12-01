@@ -22,6 +22,7 @@ import Interview from "@/layout/modules/Interviews";
 import Transcript from "@/layout/modules/Transcript";
 import InterviewDetail from "@/components/common/InterviewDetail";
 import ContactAdmin from "@/components/common/ContactAdmin";
+import HowGavelWork from "@/layout/pages/HowGavelWork";
 
 
 const AppRoutes = () => {
@@ -87,6 +88,7 @@ const AppRoutes = () => {
                     { path: "/help", element: <Help /> },
                     { path: "/pricing", element: <Pricing /> },
                     { path: "/contact", element: <Contact /> },
+                    { path: "/how-gavel-work", element: <HowGavelWork /> },
                 ],
             },
             { path: "/login", element: <LoginForm /> },

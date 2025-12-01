@@ -15,6 +15,7 @@ export default function Navbar() {
     { name: "Pricing", path: "/pricing" },
     { name: "Help", path: "/help" },
     { name: "Contact", path: "/contact" },
+    { name: "How Gavel Work", path: "/how-gavel-work" },
     { name: "Login", path: "/login" },
     { name: "Signup", path: "/signup" },
   ];

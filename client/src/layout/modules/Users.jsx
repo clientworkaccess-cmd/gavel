@@ -130,7 +130,7 @@ const Data = () => {
       { accessorKey: "phoneNumber", header: "Phone", cell: (info) => info.getValue() || "—" },
     ];
 
-    if (pathname !== "/admin/candidate") {
+    if (pathname !== "/admin/candidate" || pathname !== "/admin/admins") {
       base.push({
         accessorKey: "company",
         header: "Company",

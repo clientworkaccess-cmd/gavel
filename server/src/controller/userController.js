@@ -47,6 +47,7 @@ const updateUser = async (req, res) => {
         const {
             name,
             email,
+            oldPassword,
             newPassword,
             confirmPassword,
             phoneNumber,
@@ -57,7 +58,6 @@ const updateUser = async (req, res) => {
             skills,
             qualification,
             overAllFitScore,
-            company,
         } = req.body;
 
         // 1️⃣ Find existing user
@@ -66,12 +66,18 @@ const updateUser = async (req, res) => {
             return res.status(404).json({ success: false, message: "User not found" });
         }
 
-        // 2️⃣ Handle password update (optional)
+        const passwordMatch = await bcrypt.compare(oldPassword, user.password);
+
+        if (!passwordMatch) {
+           return res
+                .status(400)
+                .json({ success: false, message: "Old password is incorrect" });
+        }
         if (newPassword || confirmPassword) {
             if (newPassword !== confirmPassword) {
                 return res
                     .status(400)
-                    .json({ success: false, message: "Passwords do not match" });
+                    .json({ success: false, message: "Confirm password does not match" });
             }
 
             const salt = await bcrypt.genSalt(10);
@@ -89,15 +95,10 @@ const updateUser = async (req, res) => {
         if (skills) user.skills = skills
         if (qualification) user.qualification = qualification
         if (overAllFitScore) user.overAllFitScore = overAllFitScore
-        if (company) user.company = company
 
 
         // 4️⃣ Save updated user
         const updatedUser = await user.save();
-
-        await Company.findByIdAndUpdate(company, {
-            $push: { members: user._id },
-        });
 
         res.status(200).json({
             success: true,
@@ -152,6 +153,7 @@ const deleteUserByAdmin = async (req, res) => {
         await dbConnection();
         const userId = req.params.id;
         await User.findByIdAndDelete(userId);
+        await Company.findByIdAndUpdate(userId, { $pull: { members: userId } });
         res.status(200).json({ success: true, message: "User deleted successfully" });
     } catch (error) {
         res.status(500).json({ success: false, message: "Server Error" });

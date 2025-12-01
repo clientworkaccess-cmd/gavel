@@ -49,7 +49,7 @@ const Transcript = () => {
             }
         } catch (error) {
             console.error(error);
-            toast.error("Failed to load dashboard data");
+            toast.error("Failed to load data");
         }
     };
 

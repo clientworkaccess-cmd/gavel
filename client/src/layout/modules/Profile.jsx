@@ -226,7 +226,19 @@ const Profile = () => {
                     <h3 className="font-semibold pb-8 text-foreground text-center">
                         Change Password
                     </h3>
-
+                    <div className="pb-6">
+                        <Label>Old Password</Label>
+                        <Input
+                            className="border-foreground/60 text-foreground/70 "
+                            type="password"
+                            {...register("oldPassword")}
+                        />
+                        {errors.oldPassword && (
+                            <p className="text-sm text-red-500">
+                                {errors.oldPassword.message}
+                            </p>
+                        )}
+                    </div>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div>
                             <Label>New Password</Label>

@@ -23,6 +23,7 @@ import { useEffect, useState } from "react";
 import { Textarea } from "../ui/textarea";
 import PhoneInput, { isValidPhoneNumber } from "react-phone-number-input";
 import "react-phone-number-input/style.css";
+import { toast } from "react-toastify";
 
 const Modal = ({ type, show, setShow, data, variant, entity }) => {
     const [companies, setCompanies] = useState([]);
@@ -36,14 +37,14 @@ const Modal = ({ type, show, setShow, data, variant, entity }) => {
     } = useForm();
 
     useEffect(() => {
-        if (data?.phoneNumber) {
+        if (type === "edit" && data?.phoneNumber) {
             let phone = String(data?.phoneNumber);
             if (!phone.startsWith("+")) {
                 phone = "+" + phone;
             }
             setValu(phone);
             setValue("phoneNumber", phone);
-            data.phoneNumber = String(data?.phoneNumber)
+            data.phoneNumber = phone
         }
         if (data) reset(data);
     }, [data]);
@@ -65,6 +66,13 @@ const Modal = ({ type, show, setShow, data, variant, entity }) => {
         } else if (variant === "position") {
             await postReq(API_ENDPOINTS.POSITION, formData);
         } else if (variant === "user") {
+            if (entity !== "admins" && formData.role === "admin") {
+                toast.error("Cannot add role admin")
+                return
+            }
+            if (entity === "admins") {
+                formData.role = "admin";
+            }
             await postReq(API_ENDPOINTS.SIGNUP, formData);
         }
         setShow(false);
@@ -77,6 +85,10 @@ const Modal = ({ type, show, setShow, data, variant, entity }) => {
         } else if (variant === "position") {
             await putReq(`${API_ENDPOINTS.POSITION}/${data._id}`, formData);
         } else if (variant === "user") {
+            if (entity !== "admins" && formData.role === "admin") {
+                toast.error("Cannot change role to admin")
+                return
+            }
             await putReq(`${API_ENDPOINTS.USERS}/${data._id}`, formData);
         }
         setShow(false);
@@ -229,10 +241,12 @@ const Modal = ({ type, show, setShow, data, variant, entity }) => {
                         />
                     </div>
                     <div>
-                        <Label>Role</Label>
-                        <Input className="border-foreground/60 text-foreground/50" {...register("role")} />
+                        {entity !== "admins" && data?.role !== "admin" && <>
+                            <Label>Role</Label>
+                            <Input className="border-foreground/60 text-foreground/50" {...register("role")} />
+                        </>}
                     </div>
-                    {entity !== "admins" && data?.role !== "admin" && <div>
+                    {entity !== "admins" && data?.role !== "admin" && type === "add" && <div>
                         <Label>Company</Label>
                         <Select
                             onValueChange={(val) => setValue("company", [val])}
@@ -257,7 +271,7 @@ const Modal = ({ type, show, setShow, data, variant, entity }) => {
 
     return (
         <Dialog open={show} onOpenChange={(open) => !open && setShow(false)}>
-            <DialogContent  onOpenAutoFocus={(e) => e.preventDefault()}>
+            <DialogContent onOpenAutoFocus={(e) => e.preventDefault()}>
                 <DialogHeader>
                     <DialogTitle className="text-center">
                         {type === "add" ? `Add ${variant}` : `Edit ${variant}`}

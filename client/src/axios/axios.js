@@ -19,6 +19,7 @@ export const getReq = async (path) => {
     return response?.data;
   } catch (error) {
     console.log(error?.response?.message);
+    return
   }
 };
 
