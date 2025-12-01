@@ -304,15 +304,27 @@ export const logoutController = (req, res) => {
 };
 
 export const refreshTokenController = (req, res) => {
-    const refreshToken = req.cookies?.refreshToken;
+    const oldRefreshToken = req.cookies?.refreshToken;
 
-    if (!refreshToken)
+    if (!oldRefreshToken)
         return res.status(401).json({ success: false, message: "No refresh token provided" });
 
     try {
-        const decoded = jwt.verify(refreshToken, process.env.JWT_REFRESH_SECRET);
+        const decoded = jwt.verify(oldRefreshToken, process.env.JWT_REFRESH_SECRET);
 
-        const accessToken = jwt.sign(
+        // NEW: Create a NEW refresh token
+        const newRefreshToken = jwt.sign(
+            {
+                id: decoded.id,
+                role: decoded.role,
+                email: decoded.email,
+                name: decoded.name,
+            },
+            process.env.JWT_REFRESH_SECRET,
+            { expiresIn: "1d" }
+        );
+
+        const newAccessToken = jwt.sign(
             {
                 id: decoded.id,
                 role: decoded.role,
@@ -323,7 +335,8 @@ export const refreshTokenController = (req, res) => {
             { expiresIn: "15m" }
         );
 
-        res.cookie("accessToken", accessToken, {
+        // SET NEW TOKENS
+        res.cookie("accessToken", newAccessToken, {
             httpOnly: true,
             secure: true,
             sameSite: "none",
@@ -331,9 +344,19 @@ export const refreshTokenController = (req, res) => {
             maxAge: 15 * 60 * 1000,
         });
 
-        return res.json({ success: true, message: "Access token refreshed" });
+        res.cookie("refreshToken", newRefreshToken, {
+            httpOnly: true,
+            secure: true,
+            sameSite: "none",
+            path: "/",
+            maxAge: 1 * 24 * 60 * 60 * 1000,
+        });
+
+        res.json({ success: true, message: "Tokens refreshed" });
+
     } catch (err) {
         console.error("Refresh token error:", err);
         return res.status(403).json({ success: false, message: "Invalid refresh token" });
     }
 };
+
