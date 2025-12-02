@@ -29,7 +29,7 @@ export default function AiRecomandationSection({ score , analysis}) {
     };
 
     return (
-        <Card className="w-full bg-[#050a1a] border-gray-800">
+        <Card className="w-full border-foreground/60 bg-transparent">
             <CardHeader>
                 <CardTitle className="text-white text-lg">
                     AI Recommendation
