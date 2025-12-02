@@ -11,6 +11,7 @@ import { Mail, MapPin, MoveLeft, Phone, Linkedin, ChevronRight, CheckCircle2, XC
 import { useAuth } from "@/layout/context/AuthContext";
 import { motion } from "framer-motion";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
+import AiRecomandationSection from "./AiRecomandationSection";
 
 
 const dummyCompany = {
@@ -230,13 +231,14 @@ const InterviewDetail = ({ dummyData }) => {
                         <div className="py-8">
                             {activeTab === 'overview' && (
                                 <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-7">
-                                    <Card className="bg-transparent">
+                                   {role !== "candidate" && <AiRecomandationSection score={interview.scores.overallFit} analysis={interview.recommendation}/>}
+                                    {/* <Card className="bg-transparent">
                                         <CardHeader><CardTitle>AI Recommendation</CardTitle></CardHeader>
                                         <CardContent>
                                             <p className="text-3xl font-bold text-primary mb-2">{interview.recommendation}</p>
                                             <p className="text-muted-foreground">Based on Interview analysis.</p>
                                         </CardContent>
-                                    </Card>
+                                    </Card> */}
                                     <Card className="bg-transparent">
                                         <CardHeader><CardTitle>Candidate Skills</CardTitle></CardHeader>
                                         <CardContent className="flex flex-wrap gap-2">
@@ -257,12 +259,12 @@ const InterviewDetail = ({ dummyData }) => {
                                             {interview.expectedSalary || "Not specified"}
                                         </CardContent>
                                     </Card>
-                                    <Card className="bg-transparent overflow-hidden pb-0 ">
-                                            <CardContent className="px-6 ">
+                                    <Card className={`bg-transparent overflow-hidden pb-0  ${role === "candidate" && "md:mt-59"}`}>
+                                            <CardContent className="px-6 pb-2">
                                                 <h2 className="text-2xl font-bold">Job Description</h2>
                                             </CardContent>
                                             <Separator />
-                                            <div className="relative h-[24vh] px-4 overflow-y-auto">
+                                            <div className="relative h-[20vh] px-4 overflow-y-auto">
                                                 <p className="text-sm whitespace-pre-wrap pr-2">
                                                     {interview.jobDescription}
                                                 </p>

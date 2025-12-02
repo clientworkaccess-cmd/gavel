@@ -65,7 +65,7 @@ const Layout = () => {
       )
       }
       {role !== "admin" && <div className="fixed bottom-4 right-6">
-        <div className='pointer-events-auto cursor-pointer flex flex-row-reverse items-center group relative'>
+        <div className='pointer-events-auto cursor-pointer flex flex-row-reverse items-center group relative z-100'>
           <div className={`fixed bottom-0 right-2 transition-all duration-800
     ${chatOpen
               ? "w-[calc(100vw-28px)] h-[600px] max-h-[80vh] sm:w-[380px] sm:h-[650px] opacity-100 scale-100 translate-y-0 pointer-events-auto"

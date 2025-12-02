@@ -312,7 +312,6 @@ export const refreshTokenController = (req, res) => {
     try {
         const decoded = jwt.verify(oldRefreshToken, process.env.JWT_REFRESH_SECRET);
 
-        // NEW: Create a NEW refresh token
         const newRefreshToken = jwt.sign(
             {
                 id: decoded.id,
@@ -335,7 +334,6 @@ export const refreshTokenController = (req, res) => {
             { expiresIn: "15m" }
         );
 
-        // SET NEW TOKENS
         res.cookie("accessToken", newAccessToken, {
             httpOnly: true,
             secure: true,
