@@ -57,7 +57,6 @@ const Interview = () => {
         });
 
         vapiInstance.on('call-end', () => {
-            handleStopInterview();
         });
 
         vapiInstance.on('speech-start', () => {
@@ -247,7 +246,7 @@ const Interview = () => {
     };
 
     const handleStopInterview = async () => {
-        vapi.stop()
+        vapi?.stop()
         setInterviewActive(false);
         setInterviewCompleted(true);
         setSelectedPosition("");
@@ -275,7 +274,6 @@ const Interview = () => {
                 webhookReportData[0].summary = JSON.parse(webhookReportData[0].summary);
                 webhookReportData[0].transcript = JSON.parse(webhookReportData[0].transcript);
             }
-            console.log(webhookReportData[0]);
 
             await postReq(API_ENDPOINTS.INTERVIEW, webhookReportData[0])
             setLoading(false)

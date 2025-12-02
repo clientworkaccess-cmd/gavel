@@ -17,6 +17,7 @@ const allowedOrigins = [
   "https://evolvegov.com",
   "https://www.evolvegov.com",
   "https://gavel-frontend.vercel.app",
+  "https://gavel-frontend.postoria.site",
   "https://gavel-frontend-ot269fd8s-clientworkaccess-2804s-projects.vercel.app"
 ];
 

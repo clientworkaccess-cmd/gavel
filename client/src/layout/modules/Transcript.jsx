@@ -20,6 +20,7 @@ import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from "
 
 const Transcript = () => {
     const { userId, role } = useAuth();
+    const [loading, setLoading] = useState(true);
     const [dataRows, setDataRows] = useState([])
     const [filterdData, setFilteredData] = useState([])
     const [searchValue, setSearchValue] = useState("")
@@ -29,6 +30,7 @@ const Transcript = () => {
 
     // 🔹 Fetch Data
     const fetchDashboardData = async () => {
+        setLoading(true);
         try {
             if (role === "admin") {
                 const res = await getReq(API_ENDPOINTS.INTERVIEW);
@@ -50,6 +52,8 @@ const Transcript = () => {
         } catch (error) {
             console.error(error);
             toast.error("Failed to load data");
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -112,7 +116,13 @@ const Transcript = () => {
                                 </TableRow>
                             </TableHeader>
                             <TableBody>
-                                {dataRows.length === 0 ? (
+                                {loading ? (
+                                    <TableRow>
+                                        <TableCell colSpan={columns.length} className="text-center py-6">
+                                            Loading...
+                                        </TableCell>
+                                    </TableRow>
+                                ) : dataRows.length === 0 ? (
                                     <TableRow>
                                         <TableCell
                                             colSpan={columns.length}
@@ -155,7 +165,18 @@ const Transcript = () => {
                                             <TableCell>{row?.candidate}</TableCell>
                                             <TableCell>{row?.jobName}</TableCell>
                                             <TableCell>{new Date(row?.createdAt).toLocaleString()}</TableCell>
-                                            <TableCell>{row?.reviewStatus}</TableCell>
+                                            <TableCell>
+                                                <span
+                                                    className={`capitalize font-medium ${row.reviewStatus === "approved"
+                                                        ? "text-green-600"
+                                                        : row.reviewStatus === "pending" || row.reviewStatus === "maybe"
+                                                            ? "text-yellow-600"
+                                                            : "text-red-600"
+                                                        }`}
+                                                >
+                                                    {row.reviewStatus}
+                                                </span>
+                                            </TableCell>
                                             <TableCell className={role === "admin" && "flex gap-2 items-center justify-center"}>
                                                 <Button variant="outline" onClick={() => navigate(role === "candidate" ? `/candidate/interview-detail/${row._id}` : role === "admin" ? `/admin/interview-detail/${row._id}` : `/client/interview-detail/${row._id}`)}>
                                                     View Details

@@ -9,6 +9,7 @@ export const AuthProvider = ({ children }) => {
     const [userId, setUserId] = useState("")
     const [user, setUser] = useState("")
     const [loading, setLoading] = useState(true);
+    const [interviews, setInterviews] = useState([])
 
     const checkSession = async () => {
         const res = await getReq(API_ENDPOINTS.DASHBOARD);
@@ -24,13 +25,22 @@ export const AuthProvider = ({ children }) => {
             setLoading(false);
         };
     };
+    
+    const getInterviews = async () => {
+        const res = await getReq(API_ENDPOINTS.INTERVIEW)
+        const found = res?.interviews?.find((item) => item.candidateId._id === user._id);
+        setInterviews(found || [])
+    }
 
+    useEffect(() => {
+       getInterviews();
+    }, [interviews]);
     useEffect(() => {
         checkSession();
     }, []);
 
     return (
-        <AuthContext.Provider value={{ role, setRole, userId, setUserId, user, setUser, checkSession }}>
+        <AuthContext.Provider value={{ role, setRole, userId, setUserId, user, setUser, checkSession, interviews }}>
             {loading ?
                 <div className="flex items-center justify-center h-screen">
                     <div className="loader"></div>
