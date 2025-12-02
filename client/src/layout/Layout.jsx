@@ -5,7 +5,6 @@ import Sidebar from "../components/common/Sidebar";
 import { useAuth } from "./context/AuthContext";
 import Footer from "@/components/common/Footer";
 import { FaGavel } from "react-icons/fa";
-import { IoChevronForward } from 'react-icons/io5';
 
 const Layout = () => {
   const { role } = useAuth();
