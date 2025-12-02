@@ -17,9 +17,6 @@ const AboutSection = () => {
           <h2 className="text-5xl md:text-6xl font-extrabold text-secondary mb-6 leading-tight">
             About Gavel
           </h2>
-          <p className="text-foreground/40 text-lg">
-            Redefining recruitment through  automation and AI precision.
-          </p>
         </motion.div>
 
         {/* SEPARATOR */}
@@ -38,23 +35,18 @@ const AboutSection = () => {
           className="text-left"
         >
           <p className="text-lg text-foreground/60 leading-relaxed mb-6">
-            Founded in 2023, <span className="font-semibold text-secondary">Gavel</span> is transforming
-            how organizations hire. Our AI-powered voice interview system evaluates
-            candidates in real-time, scoring communication, skill relevance, and cultural fit —
-            so teams spend less time screening and more time hiring the right people.
+            <strong>Gavel AI </strong> was not built in a tech incubator by people who have never read a resume. It was built by industry veterans who lived the daily challenges of hiring. Nick Lysett and Liza Yakimchuk founded the platform on a shared conviction: that technology shouldn't replace the human element of hiring, it should liberate it.
+
           </p>
 
           <p className="text-lg text-foreground/60 leading-relaxed mb-8">
-            Built by AI engineers and hiring experts, Gavel replaces manual calls with
-            automated, unbiased, and data-backed interviews that ensure smarter, faster,
-            and fairer recruitment.
+            After years of leading Evolve Workforce Solutions, they saw that the biggest barrier to hiring wasn't a lack of talent, but a lack of time. They built Gavel to handle the heavy lifting of sourcing and screening, allowing recruiters to get back to what they do best: building relationships
           </p>
 
           <div className="mt-8">
             <h3 className="text-2xl font-bold mb-4 text-secondary">Our Mission</h3>
             <p className="text-foreground/60 mb-8">
-              Empowering businesses to discover top talent through AI automation that’s
-              intelligent, consistent, and human-friendly.
+              Empowering businesses to discover top talent through AI automation that’s intelligent, consistent, and human-friendly.
             </p>
           </div>
         </motion.div>

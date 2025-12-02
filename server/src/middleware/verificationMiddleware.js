@@ -22,7 +22,7 @@ export const generateTokens = (user) => {
 
 
 export const verifyToken = (req, res, next) => {
-    const token = req.cookies?.accessToken;
+    const token = req.cookies?.accessToken ;
 
     try {
         const decoded = jwt.verify(token, process.env.JWT_SECRET);

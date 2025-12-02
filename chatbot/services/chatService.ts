@@ -30,8 +30,6 @@ export const sendMessageToWebhook = async (
       const data = JSON.parse(text);
       return data;
     } catch (e) {
-      // If parsing fails, assume it's a plain text response from the webhook
-      console.warn("Received non-JSON response:", text);
       return {
         output: text
       };

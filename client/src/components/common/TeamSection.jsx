@@ -8,13 +8,15 @@ const leadershipData = [
     image: Nick,
     name: "Nick Lysett",
     title: "CEO & Co-Founder",
-    description: "Former head of talent acquisition with 15+ years of experience leading recruitment transformations for global firms.",
+    qoute: "“I’ve always believed in the transformative power of layering technology with staffing.”",
+    description: "Nick is a veteran of the executive search and staffing industry who understands the macro challenges of workforce dynamics. Having launched and scaled multiple companies, including Evolve Workforce Solutions, Nick focuses on the strategic vision of Gavel. He ensures our AI isn't just smart, but practically useful for the high-volume demands of modern business.",
   },
   {
     image: Liza,
     name: "Liza Yakimchuk",
     title: "COO & Co-Founder",
-    description: "AI researcher and engineer specializing in natural language processing and machine learning-driven recruitment.",
+    qoute: "“Operational excellence is about removing the friction between talent and opportunity.”",
+    description: "Liza brings a decade of tenacity and operational leadership to Gavel. With a background that includes spearheading international expansions and serving high-profile administrations, she understands the rigorous standards required in top-tier hiring. Liza champions the intelligence side of the platform, ensuring our algorithms are bias-free, precise, and capable of identifying the nuance in every candidate's profile.",
   },
 ];
 
@@ -36,7 +38,7 @@ const itemVariants = {
 };
 
 const LeadershipMember = ({ member, reverse = false }) => {
-  const { name, title, description, image } = member;
+  const { name, title, description, image , qoute} = member;
 
   const textContent = (
     <motion.div
@@ -51,6 +53,9 @@ const LeadershipMember = ({ member, reverse = false }) => {
       <CardContent className="p-0 space-y-2">
         <p className="text-secondary text-sm font-semibold tracking-wide uppercase">
           {title}
+        </p>
+        <p className="text-muted-foreground text-lg leading-relaxed">
+          {qoute}
         </p>
         <p className="text-muted-foreground text-lg leading-relaxed">
           {description}

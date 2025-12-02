@@ -167,7 +167,7 @@ export const loginController = async (req, res) => {
             secure: true,
             sameSite: "none",
             path: "/",
-            maxAge: 1 * 24 * 60 * 60 * 1000, // 1 days
+            maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
         });
 
         return res.status(200).json({
@@ -320,7 +320,7 @@ export const refreshTokenController = (req, res) => {
                 name: decoded.name,
             },
             process.env.JWT_REFRESH_SECRET,
-            { expiresIn: "1d" }
+            { expiresIn: "7d" }
         );
 
         const newAccessToken = jwt.sign(
@@ -347,7 +347,7 @@ export const refreshTokenController = (req, res) => {
             secure: true,
             sameSite: "none",
             path: "/",
-            maxAge: 1 * 24 * 60 * 60 * 1000,
+            maxAge: 7 * 24 * 60 * 60 * 1000,
         });
 
         res.json({ success: true, message: "Tokens refreshed" });
