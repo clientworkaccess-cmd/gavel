@@ -3,7 +3,7 @@ import { Helmet } from "react-helmet";
 
 const HowGavelWork = () => {
   return (
-    <div>
+    <div className="container mx-auto">
       <Helmet>
         <title>How Gavel Works | Gavel Platform</title>
         <meta

@@ -67,7 +67,7 @@ const LeadershipMember = ({ member, reverse = false }) => {
       <img
         src={image}
         alt={name}
-        className="w-150 h-150 object-cover transition-transform duration-500 ease-in-out hover:scale-105"
+        className="w-150 h-150 object-cover transition-transform duration-500 ease-in-out hover:scale-105 rounded-2xl"
       />
     </motion.div>
   );

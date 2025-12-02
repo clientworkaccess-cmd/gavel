@@ -27,10 +27,11 @@ const About = () => {
         <meta property="og:image" content="/og-image.jpg" />
       </Helmet>
 
-      {/* ✅ Page Sections */}
+      <div className="container mx-auto ">
       <AboutSection />
       <TeamSection />
       <ValuesSection />
+      </div>
     </div>
   );
 };

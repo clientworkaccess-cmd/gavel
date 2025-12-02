@@ -133,18 +133,18 @@ export default function HowGavelWorks() {
               {steps.map((s) => {
                 const Icon = s.icon;
                 return (
-                  <div key={s.id} className="sm:flex items-start gap-4 p-4 bg-slate-800/30 rounded-lg border border-slate-800 ">
-                    <div className="flex items-center justify-center gap-2 pb-2" >
+                  <div key={s.id} className="sm:flex items-start justify-between gap-4 p-4 bg-slate-800/30 rounded-lg border border-slate-800 ">
+                    <div className="flex items-center justify-between gap-2 pb-2" >
                       <span className="p-3 rounded-lg bg-gradient-to-r from-indigo-600 to-secondary ">
                         <Icon className="w-5 h-5 text-white" />
                       </span>
-                      <div className="sm:hidden ml-auto text-xs text-slate-400">Step {s.id}</div>
+                      <div className="sm:hidden text-xs text-slate-400 ">Step {s.id}</div>
                     </div>
                     <div className="">
                       <h3 className="font-semibold">{s.title}</h3>
                       <p className="text-sm text-slate-300 mt-1">{s.desc}</p>
                     </div>
-                    <div className="max-sm:hidden ml-auto text-xs text-slate-400">Step {s.id}</div>
+                    <div className="max-sm:hidden text-xs text-slate-400 w-25 text-right">Step {s.id}</div>
                   </div>
                 );
               })}

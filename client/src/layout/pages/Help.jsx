@@ -29,12 +29,13 @@ const Help = () => {
         <meta property="og:image" content="/og-image.jpg" />
       </Helmet>
 
-      {/* ✅ Page Sections */}
+      <div className="container mx-auto">
       <HeroSection help />
       <QuickLinksSection />
       <FAQSection />
       <GuidesResourcesSection />
       <SupportSection />
+      </div>
     </div>
   );
 };
