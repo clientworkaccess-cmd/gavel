@@ -346,7 +346,7 @@ const Data = () => {
       <Modal type="add" show={addOpen} setShow={setAddOpen} variant="user" entity={entity}/>
 
       {/* Edit Modal */}
-      <Modal type="edit" show={editOpen} setShow={setEditOpen} variant="user" data={editData} />
+      <Modal type="edit" show={editOpen} setShow={setEditOpen} variant="user" data={editData} entity={entity}/>
 
       {/* View Modal */}
       <DetailDrawer type="user" open={viewOpen} setOpen={setViewOpen} data={viewData} />

@@ -65,23 +65,24 @@ const updateUser = async (req, res) => {
         if (!user) {
             return res.status(404).json({ success: false, message: "User not found" });
         }
+        if (oldPassword) {
+            const passwordMatch = await bcrypt.compare(oldPassword, user?.password);
 
-        const passwordMatch = await bcrypt.compare(oldPassword, user.password);
-
-        if (!passwordMatch) {
-           return res
-                .status(400)
-                .json({ success: false, message: "Old password is incorrect" });
-        }
-        if (newPassword || confirmPassword) {
-            if (newPassword !== confirmPassword) {
+            if (!passwordMatch) {
                 return res
                     .status(400)
-                    .json({ success: false, message: "Confirm password does not match" });
+                    .json({ success: false, message: "Old password is incorrect" });
             }
+            if (newPassword || confirmPassword) {
+                if (newPassword !== confirmPassword) {
+                    return res
+                        .status(400)
+                        .json({ success: false, message: "Confirm password does not match" });
+                }
 
-            const salt = await bcrypt.genSalt(10);
-            user.password = await bcrypt.hash(newPassword, salt);
+                const salt = await bcrypt.genSalt(10);
+                user.password = await bcrypt.hash(newPassword, salt);
+            }
         }
 
         // 3️⃣ Update other fields
