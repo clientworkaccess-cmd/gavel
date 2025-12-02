@@ -15,7 +15,7 @@ export default function AiRecomandationSection({ score , analysis}) {
         datasets: [
             {
                 data: [score, 100 - score],
-                backgroundColor: ["#1ad41a", "#ff3b3b"],
+                backgroundColor: ["#1eb108", "#ff3b3b"],
                 borderWidth: 0,
             },
         ],

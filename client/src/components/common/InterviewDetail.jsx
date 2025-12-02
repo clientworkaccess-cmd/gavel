@@ -66,7 +66,7 @@ const InterviewDetail = ({ dummyData }) => {
 
     const getStatusConfig = (status) => {
         switch (status) {
-            case "approved": return { color: "bg-green-500", label: "Approved", icon: CheckCircle2 };
+            case "approved": return { color: "bg-[#1eb108]", label: "Approved", icon: CheckCircle2 };
             case "reject": return { color: "bg-red-500", label: "Rejected", icon: XCircle };
             case "pending": return { color: "bg-yellow-700", label: "Pending", icon: Clock };
             default: return { color: "bg-yellow-700", label: "Maybe", icon: HelpCircle };
@@ -194,7 +194,7 @@ const InterviewDetail = ({ dummyData }) => {
                                     <CardTitle>Decision</CardTitle>
                                 </CardHeader>
                                 <CardContent className="flex flex-col space-y-2">
-                                    <Button onClick={() => handleUpdateStatus("approved")} variant={interview.reviewStatus === "approved" ? "default" : "outline"} className="w-full justify-start bg-[#1ad41a3b] hover:bg-green-600">
+                                    <Button onClick={() => handleUpdateStatus("approved")} variant={interview.reviewStatus === "approved" ? "default" : "outline"} className="w-full justify-start bg-[#1eb108] hover:bg-[#179404]">
                                         <CheckCircle2 className="w-4 h-4 mr-2" /> Approve
                                     </Button>
                                     <Button onClick={() => handleUpdateStatus("reject")} variant={interview.reviewStatus === "reject" ? "default" : "outline"} className="w-full justify-start bg-[#e7080860] hover:bg-red-600">
@@ -255,7 +255,7 @@ const InterviewDetail = ({ dummyData }) => {
                                     </Card>
                                     <Card className="bg-transparent">
                                         <CardHeader><CardTitle>Expected Salary</CardTitle></CardHeader>
-                                        <CardContent className="text-green-600">
+                                        <CardContent className="text-[#1eb108]">
                                             {interview.expectedSalary || "Not specified"}
                                         </CardContent>
                                     </Card>
@@ -297,7 +297,7 @@ const InterviewDetail = ({ dummyData }) => {
                             {activeTab === 'insights' && role !== "candidate" && (
                                 <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className={`grid grid-cols-1 ${interview?.goodkeyInsights.length > 0 && interview?.badkeyInsights.length > 0 && "md:grid-cols-2"} gap-8`}>
                                     {interview?.goodkeyInsights.length > 0 &&
-                                        <Card className="bg-[#1ad41a3b] w-full">
+                                        <Card className="bg-[#1eb108] w-full">
                                             <CardContent>
                                                 <ul className="space-y-3">
                                                     {interview?.goodkeyInsights?.map((insight, idx) => (
