@@ -16,7 +16,7 @@ export const GavelSpotlight = () => {
 
     return (
         <div
-            className="text-center relative font-bold text-6xl min-[370px]:text-[5rem] min-[480px]:text-[7rem] min-[600px]:text-[9rem] md:text-[12rem] lg:text-[16rem] xl:text-[18rem] text-transparent bg-clip-text bg-gradient-to-b from-secondary/30 to-background/25 cursor-pointer "
+            className="text-center relative font-bold text-7xl min-[380px]:text-[5.7rem] min-[480px]:text-[7rem] min-[600px]:text-[9rem] md:text-[12rem] lg:text-[16rem] xl:text-[18rem] text-transparent bg-clip-text bg-gradient-to-b from-secondary/30 to-background/25 cursor-pointer select-none pt-6 "
             onMouseMove={handleMove}
             onMouseLeave={() => setIsMove(false)}
             style={{
