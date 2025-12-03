@@ -19,7 +19,6 @@ export const AuthProvider = ({ children }) => {
                 setUser(res.user);
                 setRole(res.user.role);
                 setUserId(res.user._id);
-                setupAutoRefresh();
             } else {
                 clearUser();
             }
@@ -52,18 +51,9 @@ export const AuthProvider = ({ children }) => {
         }
     };
     useEffect(() => {
-        const handleVisibilityChange = () => {
-            if (document.visibilityState === 'visible' && user) {
-                checkSession();
-            }
-        };
+        setupAutoRefresh();
+    });
 
-        document.addEventListener('visibilitychange', handleVisibilityChange);
-
-        return () => {
-            document.removeEventListener('visibilitychange', handleVisibilityChange);
-        };
-    }, [user]);
     useEffect(() => {
         checkSession();
         return () => {
