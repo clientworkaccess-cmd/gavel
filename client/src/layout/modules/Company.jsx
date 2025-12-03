@@ -127,6 +127,13 @@ const Company = () => {
                     <div className="flex justify-center gap-2">
                         <Button
                             size="sm"
+                            variant="secondary"
+                            onClick={() => openView(row.original)}
+                        >
+                            <Eye className="w-4 h-4" />
+                        </Button>
+                        <Button
+                            size="sm"
                             variant="outline"
                             onClick={() => openEdit(row.original)}
                         >
@@ -138,13 +145,6 @@ const Company = () => {
                             onClick={() => setDeleteId(row.original._id)}
                         >
                             <Trash2 className="w-4 h-4" />
-                        </Button>
-                        <Button
-                            size="sm"
-                            variant="secondary"
-                            onClick={() => openView(row.original)}
-                        >
-                            <Eye className="w-4 h-4" />
                         </Button>
                     </div>
                 ),

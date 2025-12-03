@@ -124,13 +124,12 @@ const Data = () => {
   /* ----------------------- columns ----------------------- */
   const columns = useMemo(() => {
     const base = [
-      { accessorKey: "_id", header: "ID", cell: (info) => info.getValue() },
       { accessorKey: "name", header: "Name", cell: (info) => info.getValue() || "—" },
       { accessorKey: "email", header: "Email", cell: (info) => info.getValue() || "—" },
       { accessorKey: "phoneNumber", header: "Phone", cell: (info) => info.getValue() || "—" },
     ];
 
-    if (pathname !== "/admin/candidate" || pathname !== "/admin/admins") {
+    if (pathname !== "/admin/candidates" && pathname !== "/admin/admins") {
       base.push({
         accessorKey: "company",
         header: "Company",
@@ -150,7 +149,7 @@ const Data = () => {
         const item = row.original;
         return (
           <div className="flex justify-center gap-2">
-            <Button size="icon" variant="outline" onClick={() => { setViewData(item); setViewOpen(true); }}>
+            <Button size="icon" variant="secondary" onClick={() => { setViewData(item); setViewOpen(true); }}>
               <Eye className="w-4 h-4" />
             </Button>
             {pathname !== "/admin/candidates" && (

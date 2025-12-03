@@ -39,16 +39,9 @@ const AboutSection = () => {
 
           </p>
 
-          <p className="text-lg text-foreground/60 leading-relaxed mb-8">
+          <p className="text-lg text-foreground/60 leading-relaxed ">
             After years of leading Evolve Workforce Solutions, they saw that the biggest barrier to hiring wasn't a lack of talent, but a lack of time. They built Gavel to handle the heavy lifting of sourcing and screening, allowing recruiters to get back to what they do best: building relationships
           </p>
-
-          <div className="mt-8">
-            <h3 className="text-2xl font-bold mb-4 text-secondary">Our Mission</h3>
-            <p className="text-foreground/60 mb-8">
-              Empowering businesses to discover top talent through AI automation that’s intelligent, consistent, and human-friendly.
-            </p>
-          </div>
         </motion.div>
       </div>
 

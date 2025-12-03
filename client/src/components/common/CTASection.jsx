@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import BookingModal from "./BookingModal";
 import { useState } from "react";
+import { FaArrowRight } from "react-icons/fa";
 
 const containerVariants = {
   hidden: { opacity: 0, y: 40 },
@@ -18,6 +19,32 @@ const itemVariants = {
   hidden: { opacity: 0, x: -20 },
   visible: { opacity: 1, x: 0, transition: { duration: 0.5 } },
 };
+
+export const JoinUsCTA = () => (
+  <section className="py-20 px-6 container mx-auto ">
+    <motion.div
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true, amount: 0.5 }}
+      variants={containerVariants}
+      className="py-16 px-2 sm:px-8 rounded-3xl text-center border hover:bg-[#0B1138] transition-colors duration-900"
+    >
+      <motion.h2 variants={itemVariants} className="text-3xl sm:text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+        Join Us in Redefining Recruitment
+      </motion.h2>
+      <motion.p variants={itemVariants} className="mb-10 max-w-xl mx-auto text-primary-foreground/80 text-lg">
+        Experience how our AI-powered platform can transform your hiring process.
+      </motion.p>
+      <motion.div variants={itemVariants}>
+        <Button asChild size="lg" className="bg-secondary hover:bg-secondary/80 font-semibold text-lg px-8 py-6 rounded-xl shadow-lg transition-transform hover:scale-105">
+          <Link to="/contact">
+            Get Started <FaArrowRight className="ml-2 h-4 w-4" />
+          </Link>
+        </Button>
+      </motion.div>
+    </motion.div>
+  </section>
+);
 
 const CTASection = () => {
 

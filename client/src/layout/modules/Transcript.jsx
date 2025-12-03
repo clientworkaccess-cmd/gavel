@@ -17,6 +17,7 @@ import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 import { Input } from "@/components/ui/input";
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Eye, EyeIcon, Trash2 } from "lucide-react";
 
 const Transcript = () => {
     const { userId, role } = useAuth();
@@ -87,9 +88,10 @@ const Transcript = () => {
 
     const columns = [
         "Candidate",
-        "Position",
+        "Job Name",
         "Interview Data & Time",
         "Review Status",
+        "Actions"
     ]
 
 
@@ -109,10 +111,10 @@ const Transcript = () => {
                         <Table>
                             <TableHeader>
                                 <TableRow >
+                                    {role !== "candidate" && <TableHead className="text-center text-foreground font-extrabold">ID</TableHead>}
                                     {columns.map((col, ind) => (
-                                        <TableHead key={ind} className="text-foreground font-extrabold">{col}</TableHead>
+                                        <TableHead key={ind} className="text-center text-foreground font-extrabold">{col}</TableHead>
                                     ))}
-                                    <TableHead className={role === "admin" && "text-center text-foreground font-extrabold"}>Action</TableHead>
                                 </TableRow>
                             </TableHeader>
                             <TableBody>
@@ -133,7 +135,8 @@ const Transcript = () => {
                                     </TableRow>
                                 ) : filterdData.length > 0 ? (
                                     filterdData?.map((row, idx) => (
-                                        <TableRow key={idx}>
+                                        <TableRow key={idx} className="text-center">
+                                            {role !== "candidate" && <TableCell>{row?._id}</TableCell>}
                                             <TableCell>{row?.candidate}</TableCell>
                                             <TableCell>{row?.jobName}</TableCell>
                                             <TableCell>{new Date(row?.createdAt).toLocaleString()}</TableCell>
@@ -150,18 +153,19 @@ const Transcript = () => {
                                                 </span>
                                             </TableCell>
                                             <TableCell className={role === "admin" && "flex gap-2 items-center justify-center"}>
-                                                <Button variant="outline" onClick={() => navigate(role === "candidate" ? `/candidate/interview-detail/${row._id}` : role === "admin" ? `/admin/interview-detail/${row._id}` : `/client/interview-detail/${row._id}`)}>
-                                                    View Details
+                                                <Button variant="secondary" onClick={() => navigate(role === "candidate" ? `/candidate/interview-detail/${row._id}` : role === "admin" ? `/admin/interview-detail/${row._id}` : `/client/interview-detail/${row._id}`)}>
+                                                    <Eye className="w-4 h-4" /> 
                                                 </Button>
                                                 {role === "admin" && <Button variant="destructive" onClick={() => { setShowDelete(true); setInterviewId(row._id) }}>
-                                                    Delete
+                                                   <Trash2 className="w-4 h-4" />
                                                 </Button>}
                                             </TableCell>
                                         </TableRow>
                                     ))
                                 ) : (
                                     dataRows?.map((row, idx) => (
-                                        <TableRow key={idx}>
+                                        <TableRow key={idx} className="text-center">
+                                            {role !== "candidate" && <TableCell>{row?._id}</TableCell>}
                                             <TableCell>{row?.candidate}</TableCell>
                                             <TableCell>{row?.jobName}</TableCell>
                                             <TableCell>{new Date(row?.createdAt).toLocaleString()}</TableCell>
@@ -178,11 +182,11 @@ const Transcript = () => {
                                                 </span>
                                             </TableCell>
                                             <TableCell className={role === "admin" && "flex gap-2 items-center justify-center"}>
-                                                <Button variant="outline" onClick={() => navigate(role === "candidate" ? `/candidate/interview-detail/${row._id}` : role === "admin" ? `/admin/interview-detail/${row._id}` : `/client/interview-detail/${row._id}`)}>
-                                                    View Details
+                                                <Button variant="secondary" onClick={() => navigate(role === "candidate" ? `/candidate/interview-detail/${row._id}` : role === "admin" ? `/admin/interview-detail/${row._id}` : `/client/interview-detail/${row._id}`)}>
+                                                   <Eye className="w-4 h-4" /> 
                                                 </Button>
                                                 {role === "admin" && <Button variant="destructive" onClick={() => { setShowDelete(true); setInterviewId(row._id) }}>
-                                                    Delete
+                                                   <Trash2 className="w-4 h-4" />
                                                 </Button>}
                                             </TableCell>
                                         </TableRow>

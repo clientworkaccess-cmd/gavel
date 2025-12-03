@@ -312,17 +312,6 @@ export const refreshTokenController = (req, res) => {
     try {
         const decoded = jwt.verify(oldRefreshToken, process.env.JWT_REFRESH_SECRET);
 
-        const newRefreshToken = jwt.sign(
-            {
-                id: decoded.id,
-                role: decoded.role,
-                email: decoded.email,
-                name: decoded.name,
-            },
-            process.env.JWT_REFRESH_SECRET,
-            { expiresIn: "7d" }
-        );
-
         const newAccessToken = jwt.sign(
             {
                 id: decoded.id,
@@ -340,14 +329,6 @@ export const refreshTokenController = (req, res) => {
             sameSite: "none",
             path: "/",
             maxAge: 15 * 60 * 1000,
-        });
-
-        res.cookie("refreshToken", newRefreshToken, {
-            httpOnly: true,
-            secure: true,
-            sameSite: "none",
-            path: "/",
-            maxAge: 7 * 24 * 60 * 60 * 1000,
         });
 
         res.json({ success: true, message: "Tokens refreshed" });

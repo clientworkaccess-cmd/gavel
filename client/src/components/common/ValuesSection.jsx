@@ -43,6 +43,24 @@ const itemVariants = {
   },
 };
 
+const Mission = () => (
+  <section className="pt-20 px-6 text-center">
+    <motion.div
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true, amount: 0.3 }}
+      variants={containerVariants}
+    >
+      <motion.h2 variants={itemVariants} className="text-4xl md:text-5xl font-bold text-secondary mb-4">
+        Our Mission
+      </motion.h2>
+      <motion.p variants={itemVariants} className="text-muted-foreground mb-16 text-lg max-w-4xl mx-auto">
+        Empowering businesses to discover top talent through AI automation that’s intelligent, consistent, and human-friendly.
+      </motion.p>
+    </motion.div>
+  </section>
+)
+
 const Values = () => (
   <section className="py-20 px-6 text-center ">
     <motion.div
@@ -118,6 +136,7 @@ const JoinUsCTA = () => (
 const ValuesSection = () => {
   return (
     <div className="">
+      <Mission />
       <Values />
       <JoinUsCTA />
     </div>

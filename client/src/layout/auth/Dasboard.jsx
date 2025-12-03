@@ -75,7 +75,7 @@ const Dashboard = () => {
     if (loading && role && userId) fetchDashboardData();
   }, [loading, role, userId]);
 
-  const columns = ["Candidate", "Position", "Interview Date & Time", "Status", "Action"];
+  const columns = ["Candidate", "Position", "Interview Date & Time", "Status"];
 
   const cardData = [
     {
@@ -176,8 +176,9 @@ const Dashboard = () => {
                 <TableHeader>
                   <TableRow>
                     {columns.map((col, ind) => (
-                      <TableHead key={ind}>{col}</TableHead>
+                        <TableHead key={ind}>{col}</TableHead>
                     ))}
+                    <TableHead className="text-center">Action</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -210,7 +211,7 @@ const Dashboard = () => {
                             {row.reviewStatus}
                           </span>
                         </TableCell>
-                        <TableCell>
+                        <TableCell className="text-center">
                           <Button
                             variant="outline"
                             onClick={() =>

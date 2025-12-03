@@ -1,18 +1,18 @@
 import { Link } from "react-router-dom";
-import { motion } from "framer-motion";
 import { Facebook, Twitter, Linkedin, Mail } from "lucide-react";
 import { FaGavel } from "react-icons/fa";
+import { GavelSpotlight } from "./GavelSpotHighlight";
 
 const Footer = () => {
     return (
-        <footer className="border-t border-border/50">
-            <div className="container mx-auto px-4 py-12">
+        <footer className="container mx-auto border-t border-border/50 px-4 xl:px-16">
+            <div className="px-6 py-12 overflow-hidden">
                 <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
                     {/* Logo & Description */}
                     <div className="col-span-1 md:col-span-2">
-                        <Link to="/" className="flex items-center gap-2 mb-4">
-                            <FaGavel className="text-primary text-2xl" />
-                            <span className="text-xl font-bold text-foreground">Gavel</span>
+                        <Link to="/" className="flex items-center gap-2 mb-4 text-secondary">
+                            <FaGavel className="text-2xl" />
+                            <span className="text-xl font-bold ">Gavel</span>
                         </Link>
                         <p className="text-muted-foreground max-w-xs">
                             AI-powered interviews that help you shortlist candidates faster and smarter.
@@ -37,6 +37,8 @@ const Footer = () => {
                         </ul>
                     </div>
                 </div>
+
+                <GavelSpotlight />
 
                 {/* Divider */}
                 <div className="border-t border-border/50 my-8" />

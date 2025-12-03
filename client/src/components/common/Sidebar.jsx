@@ -54,10 +54,10 @@ const Sidebar = ({ collapsed, setCollapsed }) => {
       if (role === "admin") {
         setLinks([
           { to: "/", label: "Dashboard", icon: Home },
-          { to: "/admin/clients", label: "Clients", icon: BarChart },
           { to: "/admin/companies", label: "Companies", icon: Building },
-          { to: "/admin/candidates", label: "Candidates", icon: CreditCard },
           { to: "/admin/positions", label: "Positions", icon: Wrench },
+          { to: "/admin/clients", label: "Clients", icon: BarChart },
+          { to: "/admin/candidates", label: "Candidates", icon: CreditCard },
           { to: "/admin/transcripts", label: "Interviews", icon: FileText },
           { to: "/admin/admins", label: "Admins", icon: Users },
         ]);

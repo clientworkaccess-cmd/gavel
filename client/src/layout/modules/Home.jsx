@@ -5,6 +5,7 @@ import BuiltForSection from "@/components/common/BuiltForSection";
 import ProductSection from "@/components/common/ProductSection";
 import SocialProofSection from "@/components/common/SocialProofSection";
 import InterviewDetailDemo from "@/components/common/DummyInterview";
+import { JoinUsCTA } from "@/components/common/CTASection";
 
 
 const Home = () => {
@@ -16,6 +17,7 @@ const Home = () => {
       <BuiltForSection />
       <ProductSection />
       <SocialProofSection />
+      <JoinUsCTA />
     </div>
   );
 };

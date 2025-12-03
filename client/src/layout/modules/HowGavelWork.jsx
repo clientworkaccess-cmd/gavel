@@ -184,8 +184,8 @@ export default function HowGavelWorks() {
               <p className="text-sm opacity-90 mt-1">Start a free trial and see how Gavel speeds up your screening process.</p>
             </div>
             <div className="flex gap-3 flex-wrap max-[400px]:justify-center">
-              <button className="rounded-full bg-white text-indigo-700 px-5 py-2 font-semibold">Start Free Trial</button>
-              <button className="rounded-full border border-white/30 px-5 py-2">Contact Sales</button>
+              <button className="rounded-full bg-foreground text-secondary px-5 py-2 font-semibold hover:bg-foreground/80">Start Free Trial</button>
+              <Link to="/contact" className="rounded-full border border-white/30 px-5 py-2 hover:bg-secondary/80">Contact Sales</Link>
             </div>
           </div>
         </section>
