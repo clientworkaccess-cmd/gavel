@@ -63,7 +63,7 @@ export const ChatWindow: React.FC<ChatWindowProps> = ({ onClose }) => {
         connectionError: "Tengo problemas para conectarme a la red. Por favor, verifica tu conexión e inténtalo de nuevo."
       }
     };
-  } else {
+  } else if (role !== "") {
     role = "client"
     CONFIG = {
       en: {
@@ -88,6 +88,33 @@ export const ChatWindow: React.FC<ChatWindowProps> = ({ onClose }) => {
       }
     };
   }
+  else {
+    CONFIG = {
+      en: {
+        webhookUrl: import.meta.env.VITE_WEBHOOK_URL_ENG || '',
+        welcomeText: "Welcome to Gavel! I’m your AI assistant here to make hiring or finding a job simple. Are you a company looking to hire or a candidate searching for opportunities?",
+        welcomeButtons: [
+          { label: "Find a job", value: "I am a candidate searching for a job", type: 'action' } as ActionButton,
+          { label: "Hire talent", value: "I am a company looking to hire talent", type: 'action' } as ActionButton
+        ],
+        placeholder: "Write a message...",
+        poweredBy: "Powered by Gavel",
+        connectionError: "I'm having trouble connecting to the network. Please check your connection and try again."
+      },
+      es: {
+        webhookUrl: import.meta.env.VITE_WEBHOOK_URL_ES || '',
+        welcomeText: "¡Hola! Soy tu asistente de IA de Gavel. Estoy aquí para simplificar la contratación o la búsqueda de empleo. ¿Eres una empresa que busca talento o un candidato buscando oportunidades?",
+        welcomeButtons: [
+          { label: "Buscar empleo", value: "Soy un candidato buscando empleo", type: 'action' } as ActionButton,
+          { label: "Contratar talento", value: "Soy una empresa buscando talento", type: 'action' } as ActionButton
+        ],
+        placeholder: "Escribe un mensaje...",
+        poweredBy: "Tecnología Gavel",
+        connectionError: "Tengo problemas para conectarme a la red. Por favor, verifica tu conexión e inténtalo de nuevo."
+      }
+    };
+  }
+
   // Initialize Chat
   useEffect(() => {
     if (messages.length === 0) {
