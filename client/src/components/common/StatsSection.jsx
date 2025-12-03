@@ -22,7 +22,7 @@ const StatsSection = () => {
           initial={{ opacity: 0, y: 50 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.8 }}
-          className="grid grid-cols-1 min-[400px]:grid-cols-2 md:grid-cols-4 gap-6 max-w-5xl mx-auto"
+          className="grid grid-cols-1 min-[400px]:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 max-w-6xl mx-auto"
         >
           {[
             { icon: Mic, end: 50000, suffix: "+", label: "Interviews Conducted" },

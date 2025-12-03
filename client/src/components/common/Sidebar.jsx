@@ -33,7 +33,7 @@ const Sidebar = ({ collapsed, setCollapsed }) => {
   const [links, setLinks] = useState([])
   const navigate = useNavigate();
   const location = useLocation();
-  const { role, setRole, checkSession, user , interviews} = useAuth();
+  const { role, setRole, checkSession, userId } = useAuth();
 
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 900);
 
@@ -48,37 +48,42 @@ const Sidebar = ({ collapsed, setCollapsed }) => {
   }, [isMobile]);
 
   useEffect(() => {
-    if (role === "admin") {
-      setLinks([
-        { to: "/", label: "Dashboard", icon: Home },
-        { to: "/admin/clients", label: "Clients", icon: BarChart },
-        { to: "/admin/companies", label: "Companies", icon: Building },
-        { to: "/admin/candidates", label: "Candidates", icon: CreditCard },
-        { to: "/admin/positions", label: "Positions", icon: Wrench },
-        { to: "/admin/transcripts", label: "Interviews", icon: FileText },
-        { to: "/admin/admins", label: "Admins", icon: Users },
-      ]);
-    } else if (role === "candidate") {
-      if (interviews?.length !== 0) {
+    const fetchData = async () => {
+      const res = await getReq(`${API_ENDPOINTS.INTERVIEW}/${userId}`);
+
+      if (role === "admin") {
         setLinks([
           { to: "/", label: "Dashboard", icon: Home },
-          { to: "/candidate/interview", label: "Interview", icon: Briefcase },
-          { to: "/candidate/transcript", label: "Transcript", icon: FileText },
+          { to: "/admin/clients", label: "Clients", icon: BarChart },
+          { to: "/admin/companies", label: "Companies", icon: Building },
+          { to: "/admin/candidates", label: "Candidates", icon: CreditCard },
+          { to: "/admin/positions", label: "Positions", icon: Wrench },
+          { to: "/admin/transcripts", label: "Interviews", icon: FileText },
+          { to: "/admin/admins", label: "Admins", icon: Users },
         ]);
+      } else if (role === "candidate") {
+        if (res.interviews?.length !== 0) {
+          setLinks([
+            { to: "/", label: "Dashboard", icon: Home },
+            { to: "/candidate/interview", label: "Interview", icon: Briefcase },
+            { to: "/candidate/transcript", label: "Transcript", icon: FileText },
+          ]);
+        } else {
+          setLinks([
+            { to: "/candidate/interview", label: "Interview", icon: Briefcase },
+            { to: "/candidate/transcript", label: "Transcript", icon: FileText },
+          ]);
+        }
       } else {
         setLinks([
-          { to: "/candidate/interview", label: "Interview", icon: Briefcase },
-          { to: "/candidate/transcript", label: "Transcript", icon: FileText },
+          { to: "/", label: "Dashboard", icon: Home },
+          { to: "/client/transcript", label: "Transcript", icon: FileText },
+          { to: "/client/contact-admin", label: "Contact Admin", icon: FaWpforms },
         ]);
       }
-    } else {
-      setLinks([
-        { to: "/", label: "Dashboard", icon: Home },
-        { to: "/client/transcript", label: "Transcript", icon: FileText },
-        { to: "/client/contact-admin", label: "Contact Admin", icon: FaWpforms },
-      ]);
     }
-  }, [role , interviews]);
+    fetchData()
+  }, [role , userId ]);
 
 
   const settingsLinks = [
