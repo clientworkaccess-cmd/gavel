@@ -17,7 +17,7 @@ import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 import { Input } from "@/components/ui/input";
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { Eye, EyeIcon, Trash2 } from "lucide-react";
+import { Clipboard, Eye, EyeIcon, Trash2 } from "lucide-react";
 
 const Transcript = () => {
     const { userId, role } = useAuth();
@@ -28,6 +28,17 @@ const Transcript = () => {
     const [showDelete, setShowDelete] = useState(false)
     const [interviewId, setInterviewId] = useState(null)
     const navigate = useNavigate()
+
+    const handleIdCopy = async (text) => {
+        try {
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                await navigator.clipboard.writeText(text);
+                toast.success("Interview Id Copied!");
+            }
+        } catch (error) {
+            console.error("Copy failed:", error);
+        }
+    };
 
     // 🔹 Fetch Data
     const fetchDashboardData = async () => {
@@ -136,7 +147,7 @@ const Transcript = () => {
                                 ) : filterdData.length > 0 ? (
                                     filterdData?.map((row, idx) => (
                                         <TableRow key={idx} className="text-center">
-                                            {role !== "candidate" && <TableCell>{row?._id}</TableCell>}
+                                            {role !== "candidate" && <TableCell className="group flex gap-2 items-center " onClick={() => handleIdCopy(row?._id)}>{row?._id}<Button variant="outline" size="icon" className="bg-transparent sm:hidden group-hover:flex"><Clipboard className="w-2 h-2"/></Button></TableCell>}
                                             <TableCell>{row?.candidate}</TableCell>
                                             <TableCell>{row?.jobName}</TableCell>
                                             <TableCell>{new Date(row?.createdAt).toLocaleString()}</TableCell>
@@ -154,10 +165,10 @@ const Transcript = () => {
                                             </TableCell>
                                             <TableCell className={role === "admin" && "flex gap-2 items-center justify-center"}>
                                                 <Button variant="secondary" onClick={() => navigate(role === "candidate" ? `/candidate/interview-detail/${row._id}` : role === "admin" ? `/admin/interview-detail/${row._id}` : `/client/interview-detail/${row._id}`)}>
-                                                    <Eye className="w-4 h-4" /> 
+                                                    <Eye className="w-4 h-4" />
                                                 </Button>
                                                 {role === "admin" && <Button variant="destructive" onClick={() => { setShowDelete(true); setInterviewId(row._id) }}>
-                                                   <Trash2 className="w-4 h-4" />
+                                                    <Trash2 className="w-4 h-4" />
                                                 </Button>}
                                             </TableCell>
                                         </TableRow>
@@ -183,10 +194,10 @@ const Transcript = () => {
                                             </TableCell>
                                             <TableCell className={role === "admin" && "flex gap-2 items-center justify-center"}>
                                                 <Button variant="secondary" onClick={() => navigate(role === "candidate" ? `/candidate/interview-detail/${row._id}` : role === "admin" ? `/admin/interview-detail/${row._id}` : `/client/interview-detail/${row._id}`)}>
-                                                   <Eye className="w-4 h-4" /> 
+                                                    <Eye className="w-4 h-4" />
                                                 </Button>
                                                 {role === "admin" && <Button variant="destructive" onClick={() => { setShowDelete(true); setInterviewId(row._id) }}>
-                                                   <Trash2 className="w-4 h-4" />
+                                                    <Trash2 className="w-4 h-4" />
                                                 </Button>}
                                             </TableCell>
                                         </TableRow>

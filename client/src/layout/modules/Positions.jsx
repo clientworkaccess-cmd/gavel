@@ -93,12 +93,12 @@ const Position = () => {
     () => [
       {
         accessorKey: "name",
-        header: "Name",
+        header: "Job Title",
         cell: ({ row }) => row.original.name,
       },
       {
         accessorKey: "positionDescription",
-        header: "Description",
+        header: "Job Description",
         cell: ({ row }) => row.original.positionDescription.slice(0,50)+"..." || "—",
       },
       {

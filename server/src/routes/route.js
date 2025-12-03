@@ -98,7 +98,7 @@ router.delete("/api/interview/:id", verifyToken, deleteInterview);
 
 // ------------------- OTHER ROUTES ------------------- //
 router.get("/api/dashboard", verifyToken, dashboardController);
-router.get("/api/refresh-token", refreshTokenController);
+router.post("/api/refresh-token", refreshTokenController);
 router.post("/api/send-email", sendEmail);
 router.post("/api/send-email-admin", sendEmailToAdmin);
 

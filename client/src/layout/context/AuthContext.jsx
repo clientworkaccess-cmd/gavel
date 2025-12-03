@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, useEffect, useRef } from "react";
+import { createContext, useContext, useState, useEffect } from "react";
 import { getReq } from "../../axios/axios";
 import API_ENDPOINTS from "../../config/api";
 
@@ -9,57 +9,25 @@ export const AuthProvider = ({ children }) => {
     const [userId, setUserId] = useState("");
     const [user, setUser] = useState("");
     const [loading, setLoading] = useState(true);
-    const refreshIntervalRef = useRef(null);
 
     const checkSession = async () => {
         try {
-            await getReq(API_ENDPOINTS.REFRESH_TOKEN);
             const res = await getReq(API_ENDPOINTS.DASHBOARD);
             if (res?.user?.role) {
                 setUser(res.user);
                 setRole(res.user.role);
                 setUserId(res.user._id);
-            } else {
-                clearUser();
             }
         } catch (error) {
             console.error("Session check failed:", error);
-            clearUser();
         } finally {
             setLoading(false);
         }
     };
 
-    const clearUser = () => {
-        setUser("");
-        setRole("");
-        setUserId("");
-        clearAutoRefresh();
-    };
-
-    const setupAutoRefresh = () => {
-        clearAutoRefresh();
-        refreshIntervalRef.current = setInterval(async () => {
-            await getReq(API_ENDPOINTS.REFRESH_TOKEN);
-        }, 14 * 60 * 1000);
-    };
-
-    const clearAutoRefresh = () => {
-        if (refreshIntervalRef.current) {
-            clearInterval(refreshIntervalRef.current);
-            refreshIntervalRef.current = null;
-        }
-    };
-    useEffect(() => {
-        setupAutoRefresh();
-    });
-
     useEffect(() => {
         checkSession();
-        return () => {
-            clearAutoRefresh();
-        };
-    }, []);
+    }, [role]);
 
     return (
         <AuthContext.Provider

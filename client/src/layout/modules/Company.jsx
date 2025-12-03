@@ -104,7 +104,7 @@ const Company = () => {
                 cell: ({ row }) =>
                     row.original.website ? (
                         <a
-                            href={row.original.website}
+                            href={`${row.original.website.includes("https") ? "" : "https://"}${row.original.website}`}
                             target="_blank"
                             rel="noreferrer"
                             className="text-blue-600 hover:underline"

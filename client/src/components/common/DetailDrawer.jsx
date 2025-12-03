@@ -105,9 +105,9 @@ export default function DetailDrawer({ open, setOpen, data, type }) {
                     {/* POSITION DETAILS */}
                     {type === "position" && (
                         <>
-                            <DetailItem label="Name" value={data.name} />
+                            <DetailItem label="Job Title" value={data.name} />
                             <DetailItem
-                                label="Description"
+                                label="Job Description"
                                 value={data.positionDescription}
                             />
                             <DetailItem label="Category" value={data.category} />
