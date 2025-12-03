@@ -22,7 +22,7 @@ const ContactSection = () => {
 
   const onSubmit = async (data) => {
     if (!captchaValue) {
-      toast.warn("Please complete catcha")
+      toast.warn("Please complete captcha")
       return
     }
     await postReq(API_ENDPOINTS.SEND_EMAIL, {

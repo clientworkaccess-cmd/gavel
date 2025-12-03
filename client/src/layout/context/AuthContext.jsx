@@ -1,7 +1,7 @@
 import { createContext, useContext, useState, useEffect } from "react";
 import { getReq } from "../../axios/axios";
 import API_ENDPOINTS from "../../config/api";
-import App from "@/App";
+
 
 const AuthContext = createContext();
 
@@ -12,6 +12,7 @@ export const AuthProvider = ({ children }) => {
     const [loading, setLoading] = useState(true);
 
     const checkSession = async () => {
+        await getReq(API_ENDPOINTS.REFRESH_TOKEN)
         const res = await getReq(API_ENDPOINTS.DASHBOARD);
         if (res?.user?.role) {
             setLoading(false);
@@ -25,12 +26,13 @@ export const AuthProvider = ({ children }) => {
             setLoading(false);
         };
     };
+
     useEffect(() => {
         checkSession();
     }, []);
 
     return (
-        <AuthContext.Provider value={{ role, setRole, userId, setUserId, user, setUser, checkSession}}>
+        <AuthContext.Provider value={{ role, setRole, userId, setUserId, user, setUser, checkSession }}>
             {loading ?
                 <div className="flex items-center justify-center h-screen">
                     <div className="loader"></div>

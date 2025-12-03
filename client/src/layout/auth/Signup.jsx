@@ -39,7 +39,7 @@ const SignupForm = () => {
 
   const onSubmit = async (data) => {
     if (!captchaValue) {
-      toast.warn("Please complete catcha")
+      toast.warn("Please complete captcha")
       return
     }
 

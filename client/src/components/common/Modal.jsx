@@ -132,12 +132,12 @@ const Modal = ({ type, show, setShow, data, variant, entity }) => {
             return (
                 <>
                     <div>
-                        <Label>Name </Label>
+                        <Label>Job Title </Label>
                         <Input className="border-foreground/60 text-foreground/50" {...register("name", { required: true })} />
                     </div>
                     <div>
-                        <Label>Position Description</Label>
-                        <Textarea className="max-h-30 border-foreground/60 text-foreground/50" {...register("positionDescription")} />
+                        <Label>Job Description</Label>
+                        <Textarea className="max-h-60 border-foreground/60 text-foreground/50" {...register("positionDescription")} />
                     </div>
                     <div>
                         <Label>Company </Label>
@@ -271,7 +271,7 @@ const Modal = ({ type, show, setShow, data, variant, entity }) => {
 
     return (
         <Dialog open={show} onOpenChange={(open) => !open && setShow(false)}>
-            <DialogContent onOpenAutoFocus={(e) => e.preventDefault()}>
+            <DialogContent onOpenAutoFocus={(e) => e.preventDefault()} className="overflow-y-auto">
                 <DialogHeader>
                     <DialogTitle className="text-center">
                         {type === "add" ? `Add ${variant}` : `Edit ${variant}`}

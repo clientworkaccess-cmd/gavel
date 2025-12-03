@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from "react";
-import { Outlet, useLocation, useNavigate } from "react-router-dom";
+import { Outlet, useLocation } from "react-router-dom";
 import Navbar from "../components/common/Navbar";
 import Sidebar from "../components/common/Sidebar";
 import { useAuth } from "./context/AuthContext";
@@ -14,19 +14,6 @@ const Layout = () => {
   const [chatOpen, setChatOpen] = useState(false)
   const location = useLocation();
   const mainRef = useRef(null);
-
-  const navigate = useNavigate()
-
-
-  useEffect(() => {
-    const refreshToken = async () => {
-      const res = await getReq(API_ENDPOINTS.REFRESH_TOKEN)
-      if (res.message === "No refresh token provided") {
-        navigate("/login")
-      }
-    }
-    refreshToken()
-  }, [])
 
   // Reset scroll on route change
   useEffect(() => {

@@ -55,8 +55,8 @@ const Sidebar = ({ collapsed, setCollapsed }) => {
         setLinks([
           { to: "/", label: "Dashboard", icon: Home },
           { to: "/admin/companies", label: "Companies", icon: Building },
-          { to: "/admin/positions", label: "Positions", icon: Wrench },
           { to: "/admin/clients", label: "Clients", icon: BarChart },
+          { to: "/admin/positions", label: "Positions", icon: Wrench },
           { to: "/admin/candidates", label: "Candidates", icon: CreditCard },
           { to: "/admin/transcripts", label: "Interviews", icon: FileText },
           { to: "/admin/admins", label: "Admins", icon: Users },
