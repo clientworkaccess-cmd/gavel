@@ -176,8 +176,8 @@ const Interview = () => {
             const checkRes = await getReq(
                 `${API_ENDPOINTS.INTERVIEW_CHECK}?candidateId=${userId}&jobName=${found.name}`
             );
-            if (checkRes.alreadyApplied) {
-                toast.warn(checkRes.message)
+            if (checkRes?.alreadyApplied) {
+                toast.warn(checkRes?.message)
                 setSelectedPosition("");
                 return
             }

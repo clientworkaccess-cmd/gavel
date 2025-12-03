@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/table";
 import { GiSandsOfTime } from "react-icons/gi";
 import { Progress } from "@/components/ui/progress";
-import { CheckCircle, Clock, Briefcase, TrendingUp } from "lucide-react";
+import { CheckCircle, Clock, Briefcase, TrendingUp, ClipboardCheck, ArrowRight } from "lucide-react";
 import { toast } from "react-toastify";
 import { getReq } from "@/axios/axios";
 import API_ENDPOINTS from "@/config/api";
@@ -67,7 +67,7 @@ const Dashboard = () => {
     const reject = interviews.filter((i) => i.reviewStatus === "reject").length;
     const maybe = interviews.filter((i) => i.reviewStatus === "maybe").length;
 
-    setStats({ total, completed, pending, reject , maybe });
+    setStats({ total, completed, pending, reject, maybe });
     setLoading(false);
   };
 
@@ -92,7 +92,7 @@ const Dashboard = () => {
     },
     {
       title: "Maybe",
-      value: stats.maybe  ,
+      value: stats.maybe,
       icon: <GiSandsOfTime className="w-6 h-6" />,
       color: "from-blue-600 to-blue-800",
     },
@@ -117,7 +117,33 @@ const Dashboard = () => {
   }
 
   if (role === "candidate" && stats.total === 0) {
-    return <Interview />
+    return <div className="w-full h-full flex items-center justify-center p-6">
+      <Card className="max-w-lg w-full text-center p-10 rounded-2xl shadow-lg border border-border/40 bg-background/60 backdrop-blur-sm">
+        <CardContent>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.4 }}
+            className="flex flex-col items-center gap-6"
+          >
+            <div className="w-20 h-20 flex items-center justify-center rounded-full bg-muted/40">
+              <ClipboardCheck className="w-10 h-10" />
+            </div>
+
+
+            <h2 className="text-2xl font-semibold">No Dashboard Data Available</h2>
+            <p className="text-muted-foreground text-base max-w-sm leading-relaxed">
+              Your dashboard does not contain any activity yet. Please complete your initial interview to unlock your personalized insights and begin tracking your progress.
+            </p>
+
+
+            <Button className="mt-4 text-base px-6 py-5 rounded-xl flex items-center gap-2">
+              Start Interview <ArrowRight className="w-4 h-4" />
+            </Button>
+          </motion.div>
+        </CardContent>
+      </Card>
+    </div>
   }
 
   return (
@@ -176,7 +202,7 @@ const Dashboard = () => {
                 <TableHeader>
                   <TableRow>
                     {columns.map((col, ind) => (
-                        <TableHead key={ind}>{col}</TableHead>
+                      <TableHead key={ind}>{col}</TableHead>
                     ))}
                     <TableHead className="text-center">Action</TableHead>
                   </TableRow>
