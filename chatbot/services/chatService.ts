@@ -3,7 +3,8 @@ import { WebhookResponse } from '../types';
 export const sendMessageToWebhook = async (
   message: string,
   sessionId: string,
-  webhookUrl: string
+  webhookUrl: string,
+  role: string
 ): Promise<WebhookResponse> => {
   try {
     const response = await fetch(webhookUrl, {
@@ -14,6 +15,7 @@ export const sendMessageToWebhook = async (
       body: JSON.stringify({
         message,
         sessionId,
+        role,
         timestamp: new Date().toISOString(),
       }),
     });
