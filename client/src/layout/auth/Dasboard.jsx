@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { motion } from "framer-motion";
 import { Card, CardHeader, CardContent } from "@/components/ui/card";
 import {
   Table,
@@ -16,8 +17,7 @@ import { getReq } from "@/axios/axios";
 import API_ENDPOINTS from "@/config/api";
 import { useAuth } from "../context/AuthContext";
 import { Button } from "@/components/ui/button";
-import { useNavigate } from "react-router-dom";
-import Interview from "../modules/Interviews";
+import { Link, useNavigate } from "react-router-dom";
 
 const Dashboard = () => {
   const { userId, user, role } = useAuth();
@@ -117,8 +117,8 @@ const Dashboard = () => {
   }
 
   if (role === "candidate" && stats.total === 0) {
-    return <div className="w-full h-full flex items-center justify-center p-6">
-      <Card className="max-w-lg w-full text-center p-10 rounded-2xl shadow-lg border border-border/40 bg-background/60 backdrop-blur-sm">
+    return <div className="w-full min-h-screen flex items-center justify-center p-6">
+      <Card className="max-w-xl w-full text-center sm:p-5 rounded-2xl border-none bg-transparent backdrop-blur-sm">
         <CardContent>
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -126,22 +126,22 @@ const Dashboard = () => {
             transition={{ duration: 0.4 }}
             className="flex flex-col items-center gap-6"
           >
-            <div className="w-20 h-20 flex items-center justify-center rounded-full bg-muted/40">
-              <ClipboardCheck className="w-10 h-10" />
-            </div>
+            <p className="text-6xl font-extrabold tracking-wider">
+              OOPS!
+            </p>
 
 
             <h2 className="text-2xl font-semibold">No Dashboard Data Available</h2>
-            <p className="text-muted-foreground text-base max-w-sm leading-relaxed">
+            <p className="text-muted-foreground text-sm sm:text-base max-w-md leading-relaxed">
               Your dashboard does not contain any activity yet. Please complete your initial interview to unlock your personalized insights and begin tracking your progress.
             </p>
 
 
-            <Button className="mt-4 text-base px-6 py-5 rounded-xl flex items-center gap-2">
+            <Link to="/candidate/interview" className="mt-4 text-base px-6 py-2 rounded-xl flex items-center gap-2 bg-secondary">
               Start Interview <ArrowRight className="w-4 h-4" />
-            </Button>
+            </Link>
           </motion.div>
-        </CardContent>
+        </CardContent>  
       </Card>
     </div>
   }
