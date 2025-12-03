@@ -158,6 +158,7 @@ export const loginController = async (req, res) => {
             httpOnly: true,
             secure: true,
             sameSite: "none",
+            domain: ".postoria.site",
             path: "/",
             maxAge: 15 * 60 * 1000, // 15 min
         });
@@ -166,6 +167,7 @@ export const loginController = async (req, res) => {
             httpOnly: true,
             secure: true,
             sameSite: "none",
+            domain: ".postoria.site",
             path: "/",
             maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
         });
@@ -290,6 +292,7 @@ export const logoutController = (req, res) => {
         httpOnly: true,
         secure: true,
         sameSite: "none",
+        domain: ".postoria.site",
         path: "/"
     });
 
@@ -297,6 +300,7 @@ export const logoutController = (req, res) => {
         httpOnly: true,
         secure: true,
         sameSite: "none",
+        domain: ".postoria.site",
         path: "/"
     });
 
@@ -338,6 +342,7 @@ export const refreshTokenController = (req, res) => {
             httpOnly: true,
             secure: true,
             sameSite: "none",
+            domain: ".postoria.site",
             path: "/",
             maxAge: 15 * 60 * 1000,
         });
@@ -346,6 +351,7 @@ export const refreshTokenController = (req, res) => {
             httpOnly: true,
             secure: true,
             sameSite: "none",
+            domain: ".postoria.site",
             path: "/",
             maxAge: 7 * 24 * 60 * 60 * 1000,
         });

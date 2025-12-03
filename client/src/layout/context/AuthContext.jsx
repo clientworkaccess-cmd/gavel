@@ -1,6 +1,7 @@
 import { createContext, useContext, useState, useEffect } from "react";
 import { getReq } from "../../axios/axios";
 import API_ENDPOINTS from "../../config/api";
+import App from "@/App";
 
 const AuthContext = createContext();
 
