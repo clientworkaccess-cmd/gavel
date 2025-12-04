@@ -53,6 +53,7 @@ import {
 import { Badge } from "@/components/ui/badge";
 import Modal from "@/components/common/Modal";
 import DetailDrawer from "@/components/common/DetailDrawer";
+import { cleanHtml } from "@/lib/helper";
 
 const PAGE_SIZE_OPTIONS = [10, 20, 50];
 
@@ -99,7 +100,7 @@ const Position = () => {
       {
         accessorKey: "positionDescription",
         header: "Job Description",
-        cell: ({ row }) => row.original.positionDescription.slice(0,50)+"..." || "—",
+        cell: ({ row }) => cleanHtml(row.original.positionDescription.slice(0,50))+"..." || "—",
       },
       {
         accessorKey: "category",

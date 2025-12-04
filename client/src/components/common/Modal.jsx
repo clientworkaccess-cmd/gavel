@@ -24,15 +24,18 @@ import { Textarea } from "../ui/textarea";
 import PhoneInput, { isValidPhoneNumber } from "react-phone-number-input";
 import "react-phone-number-input/style.css";
 import { toast } from "react-toastify";
+import TextEditor from "./TextEditor";
 
 const Modal = ({ type, show, setShow, data, variant, entity }) => {
     const [companies, setCompanies] = useState([]);
+    const [editorData, setEditorData] = useState("");
     const [value, setValu] = useState("");
     const {
         register,
         handleSubmit,
         reset,
         setValue,
+        getValues,
         formState: { isSubmitting, errors },
     } = useForm();
 
@@ -59,11 +62,13 @@ const Modal = ({ type, show, setShow, data, variant, entity }) => {
         }
     }, [variant]);
 
+
     // ✅ Submit Handlers
     const handleAdd = async (formData) => {
         if (variant === "company") {
             await postReq(API_ENDPOINTS.COMPANY, formData);
         } else if (variant === "position") {
+            setValue("positionDescription", editorData)
             await postReq(API_ENDPOINTS.POSITION, formData);
         } else if (variant === "user") {
             if (entity !== "admins" && formData.role === "admin") {
@@ -83,6 +88,7 @@ const Modal = ({ type, show, setShow, data, variant, entity }) => {
         if (variant === "company") {
             await putReq(`${API_ENDPOINTS.COMPANY}/${data._id}`, formData);
         } else if (variant === "position") {
+            setValue("positionDescription", editorData)
             await putReq(`${API_ENDPOINTS.POSITION}/${data._id}`, formData);
         } else if (variant === "user") {
             if (entity !== "admins" && formData.role === "admin") {
@@ -137,8 +143,9 @@ const Modal = ({ type, show, setShow, data, variant, entity }) => {
                     </div>
                     <div>
                         <Label>Job Description</Label>
-                        <Textarea className="max-h-60 border-foreground/60 text-foreground/50" {...register("positionDescription")} />
-                    </div>
+                        <TextEditor onChange={(html)=>setValue("positionDescription", html)} data={data?.positionDescription} />
+                        <input type="hidden" {...register("positionDescription", { required: true })} />
+                    </div >
                     <div>
                         <Label>Company </Label>
                         <Select
@@ -173,21 +180,23 @@ const Modal = ({ type, show, setShow, data, variant, entity }) => {
                             </SelectContent>
                         </Select>
                     </div>
-                    {type === "edit" && <div>
-                        <Label>Status</Label>
-                        <Select
-                            onValueChange={(val) => setValue("status", val)}
-                            defaultValue={data?.status || "open"}
-                        >
-                            <SelectTrigger className="w-full">
-                                <SelectValue placeholder="Select status" />
-                            </SelectTrigger>
-                            <SelectContent>
-                                <SelectItem value="open">Open</SelectItem>
-                                <SelectItem value="closed">Closed</SelectItem>
-                            </SelectContent>
-                        </Select>
-                    </div>}
+                    {
+                        type === "edit" && <div>
+                            <Label>Status</Label>
+                            <Select
+                                onValueChange={(val) => setValue("status", val)}
+                                defaultValue={data?.status || "open"}
+                            >
+                                <SelectTrigger className="w-full">
+                                    <SelectValue placeholder="Select status" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                    <SelectItem value="open">Open</SelectItem>
+                                    <SelectItem value="closed">Closed</SelectItem>
+                                </SelectContent>
+                            </Select>
+                        </div>
+                    }
                     <div>
                         <Label>Red Flag</Label>
                         <Input className="border-foreground/60 text-foreground/50" {...register("redFlag")} />
@@ -270,8 +279,8 @@ const Modal = ({ type, show, setShow, data, variant, entity }) => {
     };
 
     return (
-        <Dialog open={show} onOpenChange={(open) => !open && setShow(false)}>
-            <DialogContent onOpenAutoFocus={(e) => e.preventDefault()} className="overflow-y-auto">
+        <Dialog open={show} onOpenChange={(open) => !open && setShow(false)} >
+            <DialogContent onOpenAutoFocus={(e) => e.preventDefault()} className="max-h-[90vh] overflow-y-auto">
                 <DialogHeader>
                     <DialogTitle className="text-center">
                         {type === "add" ? `Add ${variant}` : `Edit ${variant}`}
@@ -279,7 +288,7 @@ const Modal = ({ type, show, setShow, data, variant, entity }) => {
                 </DialogHeader>
                 <form
                     onSubmit={handleSubmit(type === "add" ? handleAdd : handleEdit)}
-                    className="space-y-4 mt-2"
+                    className="space-y-4 mt-2 "
                 >
                     {renderFields()}
                     <DialogFooter>

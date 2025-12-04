@@ -89,6 +89,7 @@ export const ChatWindow: React.FC<ChatWindowProps> = ({ onClose }) => {
     };
   }
   else {
+    role = "not-login"
     CONFIG = {
       en: {
         webhookUrl: import.meta.env.VITE_WEBHOOK_URL_ENG || '',

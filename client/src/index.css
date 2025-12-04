@@ -50,6 +50,29 @@ body {
     animation: mltShdSpin 1.7s infinite ease, round 1.7s infinite ease;
 }
 
+.editor h2 {
+    font-weight: 700;
+    font-size: 18px;
+    margin: 10px 0px;
+}
+.editor ul {
+    list-style: disc;
+    margin: 5px 0px;
+    margin-left: 25px;
+}
+.editor ol {
+    list-style: decimal;
+    margin: 5px 0px;
+    margin-left: 25px;
+}
+.editor ul li {
+    margin: 5px 0px;
+}
+.editor ol li {
+    margin: 5px 0px;
+}
+
+
 @keyframes mltShdSpin {
     0% {
         box-shadow: 0 -0.83em 0 -0.4em,

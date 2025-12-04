@@ -92,7 +92,7 @@ const InterviewDetail = ({ dummyData }) => {
 
     if (loading)
         return (
-            <div className="flex flex-col items-center justify-center min-h-screen bg-background">
+            <div className="flex flex-col items-center justify-center min-h-screen">
                 <div className="w-16 h-16 border-4 border-primary/20 rounded-full border-t-primary animate-spin"></div>
                 <p className="mt-4 text-muted-foreground">Loading Report...</p>
             </div>
@@ -100,12 +100,12 @@ const InterviewDetail = ({ dummyData }) => {
 
     if (!interview)
         return (
-            <div className="flex flex-col items-center justify-center min-h-screen bg-background">
+            <div className="flex flex-col items-center justify-center min-h-screen">
                 <div className="text-center p-8">
                     <FileText className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
                     <h2 className="text-2xl font-semibold text-foreground mb-2">Interview Not Found</h2>
                     <p className="text-muted-foreground mb-6">This interview report could not be located.</p>
-                    <Button variant="outline" onClick={handleNavigate}>Return to Dashboard</Button>
+                    <Button variant="outline" onClick={handleNavigate}>Return to Transcripts</Button>
                 </div>
             </div>
         );
@@ -231,7 +231,7 @@ const InterviewDetail = ({ dummyData }) => {
                         <div className="py-8">
                             {activeTab === 'overview' && (
                                 <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-7">
-                                   {role !== "candidate" && <AiRecomandationSection score={interview.scores.overallFit} analysis={interview.recommendation}/>}
+                                    {role !== "candidate" && <AiRecomandationSection score={interview.scores.overallFit} analysis={interview.recommendation} />}
                                     {/* <Card className="bg-transparent">
                                         <CardHeader><CardTitle>AI Recommendation</CardTitle></CardHeader>
                                         <CardContent>
@@ -260,17 +260,14 @@ const InterviewDetail = ({ dummyData }) => {
                                         </CardContent>
                                     </Card>
                                     <Card className={`bg-transparent overflow-hidden pb-0  ${role === "candidate" && "md:mt-59"}`}>
-                                            <CardContent className="px-6 pb-2">
-                                                <h2 className="text-2xl font-bold">Job Description</h2>
-                                            </CardContent>
-                                            <Separator />
-                                            <div className="relative h-[20vh] px-4 overflow-y-auto">
-                                                <p className="text-sm whitespace-pre-wrap pr-2">
-                                                    {interview.jobDescription}
-                                                </p>
-
-                                                <div className="pointer-events-none sticky bottom-0 left-0 right-0 h-6 z-10 bg-gradient-to-t from-background to-[#000000a6]"></div>
-                                            </div>
+                                        <CardContent className="px-6 pb-2">
+                                            <h2 className="text-2xl font-bold">Job Description</h2>
+                                        </CardContent>
+                                        <Separator />
+                                        <div className="relative h-[20vh] px-4 overflow-y-auto">
+                                            <div className="text-sm whitespace-pre-wrap pr-2 editor" dangerouslySetInnerHTML={{ __html: interview.jobDescription }}></div>
+                                            <div className="pointer-events-none sticky bottom-0 left-0 right-0 h-6 z-10 bg-gradient-to-t from-background to-[#000000a6]"></div>
+                                        </div>
                                     </Card>
                                 </motion.div>
                             )}

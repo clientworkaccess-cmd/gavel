@@ -5,13 +5,13 @@ import Sidebar from "../components/common/Sidebar";
 import { useAuth } from "./context/AuthContext";
 import Footer from "@/components/common/Footer";
 import { FaGavel } from "react-icons/fa";
-import { getReq } from "@/axios/axios";
-import API_ENDPOINTS from "@/config/api";
+
 
 const Layout = () => {
   const { role } = useAuth();
   const [collapsed, setCollapsed] = useState(false);
   const [chatOpen, setChatOpen] = useState(false)
+
   const location = useLocation();
   const mainRef = useRef(null);
 
