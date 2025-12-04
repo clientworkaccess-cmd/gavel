@@ -29,6 +29,7 @@ import TextEditor from "./TextEditor";
 const Modal = ({ type, show, setShow, data, variant, entity }) => {
     const [companies, setCompanies] = useState([]);
     const [editorData, setEditorData] = useState("");
+    const [loading, setLoading] = useState(false)
     const [value, setValu] = useState("");
     const {
         register,
@@ -36,7 +37,7 @@ const Modal = ({ type, show, setShow, data, variant, entity }) => {
         reset,
         setValue,
         getValues,
-        formState: { isSubmitting, errors },
+        formState: { errors },
     } = useForm();
 
     useEffect(() => {
@@ -65,6 +66,7 @@ const Modal = ({ type, show, setShow, data, variant, entity }) => {
 
     // ✅ Submit Handlers
     const handleAdd = async (formData) => {
+        setLoading(true)
         if (variant === "company") {
             await postReq(API_ENDPOINTS.COMPANY, formData);
         } else if (variant === "position") {
@@ -80,11 +82,13 @@ const Modal = ({ type, show, setShow, data, variant, entity }) => {
             }
             await postReq(API_ENDPOINTS.SIGNUP, formData);
         }
+        setLoading(false)
         setShow(false);
         reset();
     };
 
     const handleEdit = async (formData) => {
+        setLoading(true)
         if (variant === "company") {
             await putReq(`${API_ENDPOINTS.COMPANY}/${data._id}`, formData);
         } else if (variant === "position") {
@@ -97,6 +101,7 @@ const Modal = ({ type, show, setShow, data, variant, entity }) => {
             }
             await putReq(`${API_ENDPOINTS.USERS}/${data._id}`, formData);
         }
+        setLoading(false)
         setShow(false);
         reset();
     };
@@ -143,7 +148,7 @@ const Modal = ({ type, show, setShow, data, variant, entity }) => {
                     </div>
                     <div>
                         <Label>Job Description</Label>
-                        <TextEditor onChange={(html)=>setValue("positionDescription", html)} data={data?.positionDescription} />
+                        <TextEditor onChange={(html) => setValue("positionDescription", html)} data={data?.positionDescription} />
                         <input type="hidden" {...register("positionDescription", { required: true })} />
                     </div >
                     <div>
@@ -292,8 +297,8 @@ const Modal = ({ type, show, setShow, data, variant, entity }) => {
                 >
                     {renderFields()}
                     <DialogFooter>
-                        <Button type="submit" disabled={isSubmitting} variant="secondary">
-                            {isSubmitting ? "Saving..." : type === "add" ? "Add" : "Update"}
+                        <Button type="submit" disabled={loading} variant="secondary">
+                            {loading ? "Saving..." : type === "add" ? "Add" : "Update"}
                         </Button>
                     </DialogFooter>
                 </form>

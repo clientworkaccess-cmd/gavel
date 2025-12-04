@@ -41,7 +41,7 @@ const Layout = () => {
   return (
     <div>
       {role ? (
-        <div className="bg-background bg-[radial-gradient(circle_at_top_center,#0B1138,transparent_70%)]">
+        <div className="bg-background bg-[radial-gradient(circle_at_top_center,#0B1138,transparent_70%)] overflow-y-hidden">
           {/* Sidebar */}
           <Sidebar collapsed={collapsed} setCollapsed={setCollapsed} />
           {/* Main Content */}
