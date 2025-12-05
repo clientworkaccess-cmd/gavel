@@ -6,159 +6,319 @@ const resend = new Resend(process.env.RESEND_API_KEY);
 
 const sendEmail = async (req, res) => {
   try {
-    const { email, subject, text } = req.body;
+    const { email, subject, text, phone } = req.body;
 
-    const htmlTemplate = `<!doctype html>
+    const htmlTemplate = `<!DOCTYPE html>
 <html lang="en">
 
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>${subject}</title>
-
-  <style>
-    body, table, td, a { -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; }
-    img { border: 0; outline: none; text-decoration: none; }
-
-    body {
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Professional Email Template</title>
+    <style>
+    * {
       margin: 0;
       padding: 0;
-      width: 100% !important;
-      font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial;
-      background-color: #f5f6f8;
-      color: #374151;
+      box-sizing: border-box;
     }
 
-    /* Container */
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      padding: 40px 20px;
+    }
+
     .email-container {
-      width: 100%;
-      max-width: 640px;
-      margin: 24px auto;
+      max-width: 650px;
+      margin: 0 auto;
       background: #ffffff;
-      border-radius: 8px;
+      border-radius: 16px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
       overflow: hidden;
-      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
     }
 
-    /* Header */
-    .header {
-      padding: 20px 22px;
-      background: linear-gradient(90deg, #0ea5e9, #7c3aed);
-      color: #fff;
-      display: flex;
-      align-items: center;
-      gap: 14px;
+    .email-header {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      padding: 40px 30px;
+      text-align: center;
+      position: relative;
     }
 
     .logo {
-      width: 44px;
-      height: 44px;
-      border-radius: 6px;
-      background: #ffffff;
-      padding: 6px;
-      object-fit: contain;
-      background-color: rgba(52, 49, 248, 0.884);
+      width: 70px;
+      height: 70px;
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 100%;
+      margin: 0px auto;
+      margin-bottom: 20px;
+      backdrop-filter: blur(10px);
+      position: relative;
+      font-size: 32px;
+      color: #ffffff;
+      font-weight: bold;
+      padding: 10px;
     }
 
-    /* Body */
-    .content {
-      padding: 24px;
+    .email-header h1 {
+      color: #ffffff;
+      font-size: 28px;
+      font-weight: 700;
+      margin-bottom: 8px;
+      position: relative;
+    }
+
+    .email-header p {
+      color: rgba(255, 255, 255, 0.9);
+      font-size: 14px;
+      position: relative;
+    }
+
+    .badge {
+      display: inline-block;
+      background: rgba(255, 255, 255, 0.25);
+      color: #ffffff;
+      padding: 6px 16px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 600;
+      margin-top: 15px;
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .email-body {
+      padding: 40px 35px;
+    }
+
+    .greeting {
+      font-size: 16px;
+      color: #2d3748;
+      margin-bottom: 20px;
+      font-weight: 500;
+    }
+
+    .message-intro {
+      color: #4a5568;
+      line-height: 1.7;
+      margin-bottom: 25px;
       font-size: 15px;
-      line-height: 1.55;
-      color: #111827;
     }
 
-    .message-box {
-      background: #f9fafb;
-      border: 1px solid #e5e7eb;
-      padding: 12px 14px;
-      border-radius: 6px;
-      margin: 20px 0;
-      white-space: pre-wrap;
-      text-align: left;
+    .info-card {
+      background: linear-gradient(135deg, #f7fafc 0%, #edf2f7 100%);
+      border-radius: 12px;
+      padding: 25px;
+      margin: 25px 0;
+      border-left: 4px solid #667eea;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+    }
+
+    .info-row {
+      display: flex;
+      margin-bottom: 15px;
+      align-items: flex-start;
+    }
+
+    .info-row:last-child {
+      margin-bottom: 0;
+    }
+
+    .info-label {
+      font-weight: 700;
+      color: #2d3748;
+      min-width: 130px;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .info-value {
+      color: #4a5568;
+      flex: 1;
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    .message-content {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      padding: 20px;
+      margin-top: 12px;
+      color: #4a5568;
+      line-height: 1.7;
       font-size: 14px;
     }
 
-    /* CTA */
-    .btn-primary {
+    .closing-text {
+      margin-top: 30px;
+      color: #4a5568;
+      line-height: 1.7;
+      font-size: 15px;
+    }
+
+    .cta-button {
       display: inline-block;
-      background: #111827;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
       color: #ffffff !important;
-      padding: 12px 20px;
+      padding: 14px 32px;
       border-radius: 8px;
-      font-weight: 600;
       text-decoration: none;
-      margin-top: 8px;
+      font-weight: 400;
+      margin-top: 25px;
+      transition: transform 0.2s, box-shadow 0.2s;
+      font-size: 15px;
+      box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
     }
 
-    .center {
+    .cta-button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(102, 126, 234, 0.5);
+    }
+
+    .divider {
+      height: 1px;
+      background: linear-gradient(to right, transparent, #e2e8f0, transparent);
+      margin: 30px 0;
+    }
+
+    .email-footer {
+      background: #f7fafc;
+      padding: 30px 35px;
+      border-top: 1px solid #e2e8f0;
+    }
+
+    .footer-content {
       text-align: center;
-      margin-top: 10px;
-    }
-
-    /* Footer */
-    .footer {
-      padding: 18px 22px;
+      color: #718096;
       font-size: 13px;
-      text-align: center;
-      background: #fafafa;
-      color: #6b7280;
+      line-height: 1.6;
+    }
+
+    .footer-links {
+      margin-top: 15px;
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    .footer-links a {
+      color: #667eea;
+      text-decoration: none;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+
+    .footer-links a:hover {
+      color: #764ba2;
+    }
+
+    @media (max-width: 600px) {
+      .email-body {
+        padding: 30px 25px;
+      }
+
+      .email-header {
+        padding: 30px 20px;
+      }
+
+      .email-footer {
+        padding: 25px 20px;
+      }
+
+      .info-row {
+        flex-direction: column;
+        gap: 5px;
+      }
+
+      .info-label {
+        min-width: auto;
+      }
     }
   </style>
 </head>
 
 <body>
-  <div class="email-container">
 
+  <div class="email-container">
     <!-- Header -->
-    <div class="header">
-      <img src="https://gavel-frontend.vercel.app/site.png" alt="Gavel Logo" class="logo" />
-      <div>
-        <div style="font-size: 17px; font-weight: 700;">Gavel</div>
-        <div style="font-size: 13px; opacity: .95;">${subject}</div>
+    <div class="email-header">
+      <div class="logo">
+        ✉
       </div>
+      <h1>New Contact Message</h1>
+      <p>You have received a new inquiry</p>
+      <span class="badge">Priority: Normal</span>
     </div>
 
     <!-- Body -->
-    <div class="content">
-      <div style="font-size: 18px; font-weight: 600; margin-bottom: 10px;">Hello,</div>
+    <div class="email-body">
+      <div class="greeting">Dear Admin,</div>
+      
+      <p class="message-intro">
+        You have received a new message through the <strong>Gavel AI</strong> contact form. Please review the details below and respond at your earliest convenience.
+      </p>
 
-      <div style="font-size:14px; color:#4b5563;">
-        You have received a new message from the Gavel contact form.
-      </div>
-
-      <div style="margin-top: 14px;">
-        <strong>From:</strong> <a href="mailto:${email}" style="color:#2563eb; text-decoration:none;">${email}</a>
-
-        <div style="font-size:12px; color:#9ca3af; margin-top:4px;">
-          If this seems suspicious, contact support: wasikhatri4@gmail.com
+      <div class="info-card">
+        <div class="info-row">
+          <div class="info-label">
+            Subject:
+          </div>
+          <div class="info-value">${subject}</div>
         </div>
-      </div>
 
-      <!-- Message Box -->
-      <div class="message-box">
-        ${text}
-      </div>
-
-      <!-- CTA -->
-      <div class="center">
-        <a href="mailto:${email}" class="btn-primary">Reply to sender</a>
-
-        <div style="margin-top: 20px; color:#6b7280; font-size: 13px;">
-          —<br />Gavel Team
+        <div class="info-row">
+          <div class="info-label">
+            Email:
+          </div>
+          <div class="info-value">${email}</div>
         </div>
+        <div class="info-row">
+          <div class="info-label">
+            Phone Number:
+          </div>
+          <div class="info-value">${phone}</div>
+        </div>
+
+        <div class="info-row">
+          <div class="info-label">
+            Message:
+          </div>
+        </div>
+        
+        <div class="message-content">
+         ${text}
+       </div>
       </div>
+
+      <div class="closing-text">
+        <strong>Next Steps:</strong><br>
+        Please review the inquiry and respond to the sender within 24 hours. If this requires immediate attention, please escalate to the relevant department.
+      </div>
+
+      <a href="mailto:${email}?subject=${encodeURIComponent(subject)}" class="cta-button">Respond to Message</a>
+
+      <div class="divider"></div>
+
+      <p style="color: #718096; font-size: 13px; line-height: 1.6;">
+        This is an automated notification from your contact form system. For support or questions, please contact your system administrator.
+      </p>
     </div>
 
     <!-- Footer -->
-    <div class="footer">
-      © ${new Date().getFullYear()} Gavel. All rights reserved.<br />
-      <span style="font-size:12px; color:#9ca3af;">
-        Contact: <a href="mailto:wasikhatri4@gmail.com" style="color:#9ca3af;">wasikhatri4@gmail.com</a>
-      </span>
+    <div class="email-footer">
+      <div class="footer-content">
+        <p><strong>© 2025 Gavel AI. All rights reserved.</strong></p>
+        <p style="margin-top: 10px;">
+          Transforming legal services with intelligent automation
+        </p>
+      </div>
     </div>
-
   </div>
+
 </body>
 
 </html>
@@ -178,7 +338,7 @@ const sendEmail = async (req, res) => {
 };
 const sendEmailToAdmin = async (req, res) => {
   try {
-    const { name, email, subject, message , company} = req.body;
+    const { name, email, subject, message, company } = req.body;
 
     const htmlTemplate = `<!DOCTYPE html>
 <html lang="en">
@@ -187,71 +347,132 @@ const sendEmailToAdmin = async (req, res) => {
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Email</title>
+
   <style>
     body {
       margin: 0;
       padding: 0;
-      background: #f6f8fa;
-      font-family: Arial, Helvetica, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
     }
 
     .wrapper {
-      width: 100%;
-      background: #f6f8fa;
-      padding: 40px 0;
+      padding: 40px 20px;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
     }
 
     .content {
-      max-width: 600px;
-      margin: auto;
+      max-width: 650px;
+      width: 100%;
+      margin: 0 auto;
       background: #ffffff;
-      border-radius: 10px;
-      padding: 30px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
     }
 
+    /* HEADER */
     .header {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
       text-align: center;
-      border-bottom: 1px solid #e5e7eb;
-      padding-bottom: 15px;
+      padding: 40px 25px;
+    }
+
+    .logo {
+      width: 70px;
+      height: 70px;
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 100%;
+      margin: 0px auto;
+      margin-bottom: 20px;
+      backdrop-filter: blur(10px);
+      position: relative;
+      font-size: 32px;
+      color: #ffffff;
+      font-weight: bold;
+      padding: 18px 10px 0px 10px;
     }
 
     .header h1 {
-      margin: 0;
-      color: #1f2937;
-      font-size: 22px;
+      color: white;
+      font-size: 26px;
+      margin-bottom: 6px;
+      font-weight: 700;
     }
 
-    .body-section {
-      padding: 20px 0;
-      color: #374151;
-      line-height: 1.6;
-      font-size: 15px;
+    .header p {
+      color: rgba(255, 255, 255, 0.9);
+      font-size: 14px;
     }
 
-    .footer {
-      text-align: center;
-      margin-top: 30px;
-      color: #6b7280;
+    .badge {
+      background: rgba(255, 255, 255, 0.25);
+      color: white;
+      padding: 6px 16px;
       font-size: 12px;
+      border-radius: 20px;
+      display: inline-block;
+      margin-top: 12px;
+      backdrop-filter: blur(10px);
     }
 
-    .tagline {
-      display: inline-block;
-      padding: 6px 12px;
-      background: #2563eb;
-      color: #ffffff;
-      border-radius: 6px;
-      font-size: 13px;
-      margin-bottom: 10px;
+    /* BODY */
+    .body-section {
+      padding: 35px 35px;
+      color: #2d3748;
+      font-size: 15px;
+      line-height: 1.7;
+    }
+
+    .body-section p {
+      margin-bottom: 15px;
     }
 
     .info-box {
-      background: #f3f4f6;
-      padding: 15px 20px;
-      border-radius: 6px;
+      background: linear-gradient(135deg, #f8fafc 0%, #edf2f7 100%);
+      border-radius: 12px;
+      padding: 20px 25px;
       margin-top: 20px;
-      border-left: 4px solid #2563eb;
+      border-left: 4px solid #667eea;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+    }
+
+    .info-box p {
+      margin: 8px 0;
+      font-size: 14px;
+      color: #4a5568;
+    }
+
+    .info-box strong {
+      color: #2d3748;
+    }
+    .message-content {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      padding: 20px;
+      margin-top: 12px;
+      color: #4a5568;
+      line-height: 1.7;
+      font-size: 14px;
+    }
+    /* FOOTER */
+    .footer {
+      text-align: center;
+      background: #f7fafc;
+      padding: 28px 20px;
+      font-size: 12px;
+      color: #718096;
+      border-top: 1px solid #e2e8f0;
+    }
+
+    @media (max-width: 600px) {
+      .body-section {
+        padding: 25px 20px;
+      }
     }
   </style>
 </head>
@@ -260,29 +481,38 @@ const sendEmailToAdmin = async (req, res) => {
 
   <div class="wrapper">
     <div class="content">
+
+      <!-- HEADER -->
       <div class="header">
-        <span class="tagline">New Message From Gavel AI</span>
-        <h1>You've Received a New Query</h1>
+        <div class="logo">✉</div>
+        <h1>New Message Received</h1>
+        <p>You have a new inquiry from Gavel</p>
+        <span class="badge">Priority: Normal</span>
       </div>
 
+      <!-- BODY -->
       <div class="body-section">
         <p>Dear Admin,</p>
-        <p>You have received a new message from the <strong>Gavel</strong> contact admin form. Details are below:</p>
+        <p>You have received a new message from the <strong>Gavel</strong> admin contact form. Please review the details below:</p>
 
         <div class="info-box">
-          <p><strong>Subject:</strong> ${subject}</p>
+          <p style="text-transform: capitalize;"><strong>Subject:</strong> ${subject}</p>
           <p><strong>Company:</strong> ${company}</p>
           <p><strong>Sender Name:</strong> ${name}</p>
           <p><strong>Sender Email:</strong> ${email}</p>
-          <p><strong>Message:</strong><br> ${message}</p>
+          <p><strong>Message:</strong></p>
+          <div class="message-content">
+         ${message}
+       </div>
         </div>
 
-        <p style="margin-top:20px;">
-          Please respond accordingly.<br>
+        <p style="margin-top: 20px;">
+          Please respond at your earliest convenience.<br>
           Thank you.
         </p>
       </div>
 
+      <!-- FOOTER -->
       <div class="footer">
         © ${new Date().getUTCFullYear()} Gavel AI. All rights reserved.
       </div>
@@ -309,4 +539,4 @@ const sendEmailToAdmin = async (req, res) => {
 };
 
 
-export { sendEmail , sendEmailToAdmin};
+export { sendEmail, sendEmailToAdmin };
