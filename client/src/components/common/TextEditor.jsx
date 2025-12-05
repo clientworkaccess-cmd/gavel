@@ -46,7 +46,7 @@ const TextEditor = ({ onChange, data }) => {
     return (
         <div
             id="editorjs"
-            className="border rounded p-4 py-2 h-full max-h-100 overflow-y-auto"
+            className="border rounded p-4 sm:pr-0 py-2 h-full max-h-100 max-w-md overflow-y-auto mx-auto overflow-x-hidden"
         ></div>
     );
 };

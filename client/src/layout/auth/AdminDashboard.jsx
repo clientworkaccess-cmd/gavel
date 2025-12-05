@@ -3,7 +3,7 @@ import { useEffect, useMemo, useState } from "react";
 import { Card, CardHeader, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Link } from "react-router-dom";
-import { Bar, Line, Doughnut } from "react-chartjs-2";
+import { Bar, Doughnut, Line } from "react-chartjs-2";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -15,7 +15,7 @@ import {
   Tooltip,
   Legend,
 } from "chart.js";
-import { Users, Briefcase, Building2, UserCheck} from "lucide-react";
+import { Users, Briefcase, Building2, UserCheck } from "lucide-react";
 import API_ENDPOINTS from "../../config/api";
 import { getReq } from "../../axios/axios";
 
@@ -65,13 +65,13 @@ const bucketByMonth = (items = [], monthsLabels = []) => {
   return counts;
 };
 
-const roleDistribution = (users = []) => {
-  const map = { candidate: 0, client: 0, admin: 0 };
-  users.forEach((u) => {
-    const r = (u.role || "").toLowerCase();
+const categoryDistribution = (positions = []) => {
+  const map = { legal: 0, hospitality: 0};
+  positions.forEach((u) => {
+    const r = (u.category || "").toLowerCase();
     if (map[r] !== undefined) map[r]++;
   });
-  return [map.candidate, map.admin , map.client,];
+  return [map.legal, map.hospitality];
 };
 
 const AdminDashboard = () => {
@@ -80,7 +80,7 @@ const AdminDashboard = () => {
   const [companies, setCompanies] = useState([]);
   const [positions, setPositions] = useState([]);
   const [interviews, setInterviews] = useState([]);
-  const [loading , setLoading] = useState(true)
+  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     setLoading(true)
@@ -93,7 +93,7 @@ const AdminDashboard = () => {
       ]);
 
       setUsers(uRes?.users || uRes || []);
-      setNewCandidates(uRes?.users.filter(item => item.role === "candidate") || [])
+      setNewCandidates(uRes?.users.filter(item => item.category === "candidate") || [])
       setCompanies(cRes?.companies || cRes || []);
       setPositions(pRes?.positions || pRes || []);
       setInterviews(iRes?.interviews || iRes || []);
@@ -104,9 +104,9 @@ const AdminDashboard = () => {
 
   const months = useMemo(() => lastNMonths(6), []);
   const monthlyUsers = useMemo(() => bucketByMonth(newCandidates, months), [newCandidates, months]);
-  const monthlyInterview = useMemo(() => bucketByMonth(interviews , months),[interviews, months]);
+  const monthlyInterview = useMemo(() => bucketByMonth(interviews, months), [interviews, months]);
 
-  const roleDist = useMemo(() => roleDistribution(users), [users]);
+  const categoryDist = useMemo(() => categoryDistribution(positions), [positions]);
   const clientsCount = users.filter(u => u.role !== "admin" && u.role !== "candidate").length;
   const candidatesCount = users.filter(u => u.role === "candidate").length;
 
@@ -118,15 +118,46 @@ const AdminDashboard = () => {
     labels: months,
     datasets: [{ label: "Interview", data: monthlyInterview, borderColor: "#06b6d4", tension: 0.4 }],
   };
-  const uniqueRoles = Array.from(
-    new Map(users.map((item) => [item.role, item])).values()
+  const uniquecategories = Array.from(
+    new Map(positions.map((item) => [item.category, item])).values()
   );
 
-  const roleData = {
-    labels: uniqueRoles.map(item => item.role) ,
-    datasets: [{ data: roleDist, backgroundColor: ["#6366f1", "#06b6d4", "#22c55e"] }],
+  const categoryData = {
+    labels: uniquecategories.map(item => item.category),
+    datasets: [{ data: categoryDist, backgroundColor: ["#6366f1", "#06b6d4"] }],
   };
-  
+
+  const options = {
+    responsive: true,
+    maintainAspectRatio: false,
+    scales: {
+      y: {
+        beginAtZero: true,
+        max: 300,
+        ticks: {
+          callback: function (value) {
+            return value;
+          },
+        },
+      },
+    },
+  };
+  const lineOptions = {
+    responsive: true,
+    maintainAspectRatio: false,
+    scales: {
+      y: {
+        beginAtZero: true,
+        suggestedMax: 500,
+        ticks: {
+          callback: function (value) {
+            return value;
+          },
+        },
+      },
+    },
+  };
+
   if (loading) {
     return <div className="h-screen flex justify-center items-center">
       <div className="loader"></div>
@@ -159,39 +190,38 @@ const AdminDashboard = () => {
             </div>
           </CardHeader>
           <CardContent className="h-64">
-            <Bar data={monthlyUsersData} options={{ responsive: true, maintainAspectRatio: false }} />
+            <Bar data={monthlyUsersData} options={options} />
           </CardContent>
         </Card>
 
         <Card className="bg-transparent border-foreground/60">
           <CardHeader>
-            <div className="flex justify-between items-center">
-              <h3 className="font-semibold text-lg">Interview Trend</h3>
-              <Badge variant="secondary" className="animate-pulse bg-green-600">Live</Badge>
-            </div>
+            <h3 className="font-semibold text-lg">Categories Distribution</h3>
           </CardHeader>
-          <CardContent className="h-64">
-            <Line data={interviewLineData} options={{ responsive: true, maintainAspectRatio: false }} />
+          <CardContent className="flex flex-col xl:flex-row gap-6 items-center">
+            <div className="w-60 h-60">
+              <Doughnut data={categoryData} options={{ maintainAspectRatio: false }} />
+            </div>
+            <div>
+              <p className="text-sm text-muted-foreground mb-2">Breakdown of user categorys across the platform.</p>
+              <ul className="space-y-1">
+                <li><span className="text-cyan-600 font-semibold">Legal:</span> {categoryDist[0]}</li>
+                <li><span className="text-indigo-500 font-semibold">Hospitality:</span> {categoryDist[1]}</li>
+              </ul>
+            </div>
           </CardContent>
         </Card>
-      </div>
 
-      {/* Role distribution */}
+      </div>
       <Card className="bg-transparent border-foreground/60">
         <CardHeader>
-          <h3 className="font-semibold text-lg">Roles Distribution</h3>
+          <div className="flex justify-between items-center">
+            <h3 className="font-semibold text-lg">Interview Trend</h3>
+            <Badge variant="secondary" className="animate-pulse bg-green-600">Live</Badge>
+          </div>
         </CardHeader>
-        <CardContent className="flex flex-col md:flex-row gap-6 items-center">
-          <div className="w-60 h-60">
-            <Doughnut data={roleData} options={{ maintainAspectRatio: false }} />
-          </div>
-          <div>
-            <p className="text-sm text-muted-foreground mb-2">Breakdown of user roles across the platform.</p>
-            <ul className="space-y-1">
-              <li><span className="text-cyan-600 font-semibold">Clients:</span> {clientsCount}</li>
-              <li><span className="text-indigo-500 font-semibold">Candidates:</span> {candidatesCount}</li>
-            </ul>
-          </div>
+        <CardContent className="h-64">
+          <Line data={interviewLineData} options={lineOptions} />
         </CardContent>
       </Card>
     </div>
