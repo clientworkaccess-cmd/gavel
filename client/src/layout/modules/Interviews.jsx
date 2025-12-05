@@ -248,10 +248,9 @@ const Interview = () => {
     const handleStopInterview = async () => {
         vapi?.stop()
         setInterviewActive(false);
-        setInterviewCompleted(true);
         setSelectedPosition("");
         setLoading(true)
-
+        
         const payload = {
             transcript: transcript?.slice(1),
             jobDescription: positionDescriptionRef.current,
@@ -269,14 +268,15 @@ const Interview = () => {
 
             const text = await webhookReport.text()
             const webhookReportData = text ? JSON.parse(text) : null;
-
+            
             if (webhookReportData) {
                 webhookReportData[0].summary = JSON.parse(webhookReportData[0].summary);
                 webhookReportData[0].transcript = JSON.parse(webhookReportData[0].transcript);
             }
-
+            
             await postReq(API_ENDPOINTS.INTERVIEW, webhookReportData[0])
             setLoading(false)
+            setInterviewCompleted(true);
             fetchPositions();
         } catch (err) {
             console.error("Error fetching/saving report:", err);
