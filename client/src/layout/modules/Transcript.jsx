@@ -44,12 +44,12 @@ const Transcript = () => {
     const fetchDashboardData = async () => {
         setLoading(true);
         try {
-            if (role === "admin") {
+            if (role && role === "admin") {
                 const res = await getReq(API_ENDPOINTS.INTERVIEW);
                 if (res) {
                     setDataRows(res.interviews || []);
                 }
-            } else if (role === "candidate") {
+            } else if (role && role === "candidate") {
                 const res = await getReq(`${API_ENDPOINTS.INTERVIEW}/${userId}`);
                 if (res) {
                     setDataRows(res.interviews || []);
@@ -148,7 +148,7 @@ const Transcript = () => {
                                     filterdData?.map((row, idx) => (
                                         <TableRow key={idx} className="text-center">
                                             {role !== "candidate" && <TableCell className="group flex gap-2 items-center " onClick={() => handleIdCopy(row?._id)}>{row?._id}<Button variant="outline" size="icon" className="bg-transparent sm:hidden group-hover:flex"><Clipboard className="w-2 h-2"/></Button></TableCell>}
-                                            <TableCell>{row?.candidate}</TableCell>
+                                            <TableCell>{row?.candidateId.name}</TableCell>
                                             <TableCell>{row?.jobName}</TableCell>
                                             <TableCell>{new Date(row?.createdAt).toLocaleString()}</TableCell>
                                             <TableCell>

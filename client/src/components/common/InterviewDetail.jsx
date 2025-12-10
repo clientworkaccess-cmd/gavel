@@ -147,7 +147,7 @@ const InterviewDetail = ({ dummyData }) => {
                             <CardContent className="p-6 text-center">
                                 <Avatar className="w-24 h-24 mx-auto mb-4 border-4 border-primary/50">
                                     <AvatarImage src={`/assets/images/${interview.candidateId.name.split(' ')[0]}.jpeg`} alt={interview.candidateId.name} />
-                                    <AvatarFallback>{interview.candidateId.name.split(' ').map(n => n[0]).join('')}</AvatarFallback>
+                                    <AvatarFallback>{interview.candidateId.name.split(' ').slice(0, 2).map(n => n[0]).join('')}</AvatarFallback>
                                 </Avatar>
                                 <h2 className="text-2xl font-bold">{interview.candidateId.name}</h2>
                                 <p className="text-muted-foreground">{interview.jobName}</p>

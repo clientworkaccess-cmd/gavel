@@ -79,6 +79,7 @@ const EmailVerification = () => {
 
                     {/* Resend Button */}
                     <div className="mt-6 text-center text-sm text-gray-600">
+                        <p>This OTP expires in one hours</p>
                         <p>Didn’t get the code?</p>
                         <button
                             onClick={handleResend}

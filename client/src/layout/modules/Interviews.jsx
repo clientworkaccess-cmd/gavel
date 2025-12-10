@@ -232,9 +232,9 @@ const Interview = () => {
                 const cleanPayload = cleanAssistantPayload(webhookJson[0]);
                 await vapi.start(assistantId, cleanPayload);
 
-                setInterviewActive(true);
                 setInterviewCompleted(false);
                 toast.success("Interview started");
+                setInterviewActive(true);
             } catch (err) {
                 toast.error("Failed to start voice session");
             }
@@ -246,11 +246,11 @@ const Interview = () => {
     };
 
     const handleStopInterview = async () => {
-        vapi?.stop()
         setInterviewActive(false);
+        await vapi?.stop()
         setSelectedPosition("");
         setLoading(true)
-        
+
         const payload = {
             transcript: transcript?.slice(1),
             jobDescription: positionDescriptionRef.current,
@@ -268,12 +268,12 @@ const Interview = () => {
 
             const text = await webhookReport.text()
             const webhookReportData = text ? JSON.parse(text) : null;
-            
+
             if (webhookReportData) {
                 webhookReportData[0].summary = JSON.parse(webhookReportData[0].summary);
                 webhookReportData[0].transcript = JSON.parse(webhookReportData[0].transcript);
             }
-            
+
             await postReq(API_ENDPOINTS.INTERVIEW, webhookReportData[0])
             setLoading(false)
             setInterviewCompleted(true);
@@ -344,9 +344,11 @@ const Interview = () => {
                                                     <SelectTrigger className="w-full border-foreground/60 backdrop-blur-sm">
                                                         <SelectValue
                                                             placeholder={
-                                                                loading
-                                                                    ? "Loading interview..."
-                                                                    : "Choose a position"
+                                                                loading && !interviewActive
+                                                                    ? "Saving Interview..." :
+                                                                    loading
+                                                                        ? "Loading interview..."
+                                                                        : "Choose a position"
                                                             }
                                                         />
                                                     </SelectTrigger>

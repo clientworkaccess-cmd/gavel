@@ -10,5 +10,7 @@ const companySchema = new mongoose.Schema({
   positions: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Position' }],
 }, { timestamps: true });
 
+
+companySchema.index({ creattedAt: -1 });
 const Company = mongoose.model('Company', companySchema);
 export default Company;

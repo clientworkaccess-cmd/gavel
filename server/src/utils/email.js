@@ -22,17 +22,17 @@ const sendEmail = async (type, email, otp, token, password) => {
                 ${otp}
               </h1>
             </div>
-            <a href="http://localhost:5173/email-verification/${token}" style="background-color:#1a73e8; color:#fff; padding:12px 28px; border-radius:6px; text-decoration:none; font-weight:bold; display:inline-block;">Verify My Email</a>
+            <a href="https://gavel-frontend.postoria.site/email-verification/${token}" style="background-color:#1a73e8; color:#fff; padding:12px 28px; border-radius:6px; text-decoration:none; font-weight:bold; display:inline-block;">Verify My Email</a>
           </div>
         </div>
       `;
     }
 
-    /* =========================
+    /* ==========================
        🔐 Password Reset
     ========================== */
     else if (type === "passwordReset") {
-      const resetLink = `http://localhost:5173/reset-password/${token}`;
+      const resetLink = `https://gavel-frontend.postoria.site/reset-password/${token}`;
       subject = "Reset Your Password – Gavel";
       html = `
         <div style="font-family: 'Segoe UI', Arial, sans-serif; background-color: #f4f6f8; padding: 25px; border-radius: 10px; max-width: 520px; margin: auto; color: #333;">
@@ -68,7 +68,7 @@ const sendEmail = async (type, email, otp, token, password) => {
 
             <p>Your account has been successfully created. \nYou can log in using the link below. \nFor security reasons, please keep your password confidential and do not share it with anyone.</p>
             <div style="text-align:center; margin-top:25px;">
-              <a href="http://localhost:5173/login" style="background-color:#1a73e8; color:#fff; padding:12px 28px; border-radius:6px; text-decoration:none; font-weight:bold;">Go to Login</a>
+              <a href="https://gavel-frontend.postoria.site/login" style="background-color:#1a73e8; color:#fff; padding:12px 28px; border-radius:6px; text-decoration:none; font-weight:bold;">Go to Login</a>
             </div>
 
             <p style="margin-top:25px;">Welcome aboard,<br><strong>Team Gavel</strong></p>

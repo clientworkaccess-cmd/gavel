@@ -11,5 +11,8 @@ const positionSchema = new mongoose.Schema({
   redFlag: { type: String },
 }, { timestamps: true });
 
+
+
+positionSchema.index({ creattedAt: -1 });
 const Position = mongoose.model('Position', positionSchema);
 export default Position;

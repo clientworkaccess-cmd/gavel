@@ -32,6 +32,8 @@ const interviewSchema = new mongoose.Schema({
   reviewStatus: { type: String, default: 'pending' }
 }, { timestamps: true });
 
+
+interviewSchema.index({ creattedAt: -1 });
 const Interview = mongoose.model('Interview', interviewSchema);
 export default Interview;
 

@@ -12,7 +12,7 @@ const NotFound = () => {
 
   setTimeout(() => {
     setVisible(true);
-  }, 3000);
+  }, 1000);
 
   if (visible) {
   return (
