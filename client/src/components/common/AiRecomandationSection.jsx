@@ -37,8 +37,9 @@ export default function AiRecomandationSection({ score , analysis}) {
             </CardHeader>
 
             <CardContent className="flex lg:flex-row-reverse flex-col items-center space-y-4 justify-between pt-0">
-                <div className="w-25 h-25 xl:w-30 xl:h-30">
+                <div className="w-25 h-25 xl:w-30 xl:h-30 relative">
                     <Doughnut data={data} options={options} />
+                    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">{score}%</div>
                 </div>
                 <div>
                     <span className="text-xl font-bold ">

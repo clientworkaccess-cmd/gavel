@@ -13,6 +13,6 @@ const positionSchema = new mongoose.Schema({
 
 
 
-positionSchema.index({ creattedAt: -1 });
+positionSchema.index({ createdAt: -1 });
 const Position = mongoose.model('Position', positionSchema);
 export default Position;

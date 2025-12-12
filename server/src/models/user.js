@@ -29,7 +29,7 @@ const UserSchema = new mongoose.Schema({
 }, { timestamps: true })
 
 
-UserSchema.index({ creattedAt: -1 });
+UserSchema.index({ createdAt: -1 });
 const User = mongoose.model('User', UserSchema);
 
 export { User };

@@ -7,7 +7,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { ToastContainer } from "react-toastify";
-import { Mail, MapPin, MoveLeft, Phone, Linkedin, ChevronRight, CheckCircle2, XCircle, HelpCircle, Clock, FileText, BriefcaseBusiness, FileTextIcon, FolderKanban } from "lucide-react";
+import { Mail, MapPin, MoveLeft, Phone, Linkedin, ChevronRight, CheckCircle2, XCircle, HelpCircle, Clock, FileText} from "lucide-react";
 import { useAuth } from "@/layout/context/AuthContext";
 import { motion } from "framer-motion";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";

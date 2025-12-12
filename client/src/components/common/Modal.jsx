@@ -28,7 +28,6 @@ import TextEditor from "./TextEditor";
 
 const Modal = ({ type, show, setShow, data, variant, entity }) => {
     const [companies, setCompanies] = useState([]);
-    const [editorData, setEditorData] = useState("");
     const [loading, setLoading] = useState(false)
     const [value, setValu] = useState("");
     const {
@@ -36,7 +35,6 @@ const Modal = ({ type, show, setShow, data, variant, entity }) => {
         handleSubmit,
         reset,
         setValue,
-        getValues,
         formState: { errors },
     } = useForm();
 
@@ -63,14 +61,12 @@ const Modal = ({ type, show, setShow, data, variant, entity }) => {
         }
     }, [variant]);
 
-
     // ✅ Submit Handlers
     const handleAdd = async (formData) => {
         setLoading(true)
         if (variant === "company") {
             await postReq(API_ENDPOINTS.COMPANY, formData);
         } else if (variant === "position") {
-            setValue("positionDescription", editorData)
             await postReq(API_ENDPOINTS.POSITION, formData);
         } else if (variant === "user") {
             if (entity !== "admins" && formData.role === "admin") {
@@ -92,7 +88,6 @@ const Modal = ({ type, show, setShow, data, variant, entity }) => {
         if (variant === "company") {
             await putReq(`${API_ENDPOINTS.COMPANY}/${data._id}`, formData);
         } else if (variant === "position") {
-            setValue("positionDescription", editorData)
             await putReq(`${API_ENDPOINTS.POSITION}/${data._id}`, formData);
         } else if (variant === "user") {
             if (entity !== "admins" && formData.role === "admin") {
@@ -113,7 +108,8 @@ const Modal = ({ type, show, setShow, data, variant, entity }) => {
                 <>
                     <div>
                         <Label>Name </Label>
-                        <Input className="border-foreground/60 text-foreground/50" {...register("name", { required: true })} />
+                        <Input className="border-foreground/60 text-foreground/50" {...register("name", { required: "This field is required" })} />
+                        {errors.name && <p className="text-red-500 text-sm">{errors.name.message}</p>}
                     </div>
                     <div>
                         <Label>Address</Label>
@@ -144,12 +140,14 @@ const Modal = ({ type, show, setShow, data, variant, entity }) => {
                 <>
                     <div>
                         <Label>Job Title </Label>
-                        <Input className="border-foreground/60 text-foreground/50" {...register("name", { required: true })} />
+                        <Input className="border-foreground/60 text-foreground/50" {...register("name", { required: "This field is required" })} />
+                        {errors.name && <p className="text-red-500 text-sm">{errors.name.message}</p>}
                     </div>
                     <div>
                         <Label>Job Description</Label>
                         <TextEditor onChange={(html) => setValue("positionDescription", html)} data={data?.positionDescription} />
-                        <input type="hidden" {...register("positionDescription", { required: true })} />
+                        <input type="hidden" {...register("positionDescription", { required: "This field is required" })} />
+                        {errors.positionDescription && <p className="text-red-500 text-sm">{errors.positionDescription.message}</p>}
                     </div >
                     <div>
                         <Label>Company </Label>
@@ -168,11 +166,13 @@ const Modal = ({ type, show, setShow, data, variant, entity }) => {
                                 ))}
                             </SelectContent>
                         </Select>
+                        <input type="hidden" {...register("company", { required: "This field is required" })} />
+                        {errors.company && <p className="text-red-500 text-sm">{errors.company.message}</p>}
                     </div>
                     <div>
                         <Label>Category</Label>
                         <Select
-                            onValueChange={(val) => setValue("category", val)}
+                            onValueChange={(val) => setValue("category", val )}
                             defaultValue={data?.category || ""}
                         >
                             <SelectTrigger className="w-full">
@@ -184,6 +184,8 @@ const Modal = ({ type, show, setShow, data, variant, entity }) => {
                                 {/* <SelectItem value="Professional Services">Professional Services</SelectItem> */}
                             </SelectContent>
                         </Select>
+                        <input type="hidden" {...register("category", { required: "This field is required" })} />
+                        {errors.category && <p className="text-red-500 text-sm">{errors.category.message}</p>}
                     </div>
                     {
                         type === "edit" && <div>
@@ -213,16 +215,19 @@ const Modal = ({ type, show, setShow, data, variant, entity }) => {
                 <>
                     <div>
                         <Label>Name </Label>
-                        <Input className="border-foreground/60 text-foreground/50" {...register("name", { required: true })} />
+                        <Input className="border-foreground/60 text-foreground/50" {...register("name", { required: "This field is required" })} />
+                        {errors.name && <p className="text-red-500 text-sm">{errors.name.message}</p>}
                     </div>
                     <div>
                         <Label>Email </Label>
-                        <Input className="border-foreground/60 text-foreground/50" type="email" {...register("email", { required: true })} />
+                        <Input className="border-foreground/60 text-foreground/50" type="email" {...register("email", { required: "This field is required" })} />
+                        {errors.email && <p className="text-red-500 text-sm">{errors.email.message}</p>}
                     </div>
                     {type === "add" && (
                         <div>
                             <Label>Password </Label>
-                            <Input className="border-foreground/60 text-foreground/50" type="password" {...register("password", { required: true })} />
+                            <Input className="border-foreground/60 text-foreground/50" type="password" {...register("password", { required: "This field is required" })} />
+                            {errors.password && <p className="text-red-500 text-sm">{errors.password.message}</p>}
                         </div>
                     )}
                     <div>
